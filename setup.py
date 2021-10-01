@@ -24,7 +24,7 @@ setup(
     long_description = long_description,
     url = 'https://github.com/xxao/linque',
     author = 'Martin Strohalm',
-    author_email = 'linque@bymartin.cz',
+    author_email = '',
     license = 'MIT',
     packages = find_packages(),
     classifiers = classifiers,
