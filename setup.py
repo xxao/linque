@@ -22,6 +22,7 @@ setup(
     version = version,
     description = 'Linear Query - Python replica of popular .NET LINQ utilities.',
     long_description = long_description,
+    long_description_content_type = 'text/markdown',
     url = 'https://github.com/xxao/linque',
     author = 'Martin Strohalm',
     author_email = '',

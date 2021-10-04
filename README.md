@@ -549,7 +549,7 @@ print(result)
 # [1, 3, 5, 7, 9]
 ```
 
-### .zip(*sequences)
+### .zip(\*sequences)
 Produces new sequence by merging given sequences with current sequence as long as there are items available in all
 sequences. This call does not evaluate current sequence.
 
