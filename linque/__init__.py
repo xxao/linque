@@ -4,9 +4,9 @@
 version = (1, 0, 0)
 
 # import utils
-from .iters import aggregate, count, bisect, index
-from .iters import first, last, skip, skip_while, take, take_while, chunk, chain
-from .iters import distinct_by, group_by, union_by, intersect_by, exclude_by
+from .iters import aggregate, bisect, chunk, concat, count, index
+from .iters import first, last, skip, skip_while, take, take_while
+from .iters import distinct, exclude, group, intersect, union
 
 # import main class
 from .linque import Linque

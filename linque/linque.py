@@ -163,7 +163,7 @@ class Linque(object):
             Linque
         """
         
-        result = iters.chain(self, items)
+        result = iters.concat(self, items)
         
         return Linque(result, self._evaluate)
     
@@ -241,7 +241,7 @@ class Linque(object):
             Linque
         """
         
-        result = iters.distinct_by(self, key)
+        result = iters.distinct(self, key)
         
         return Linque(result, self._evaluate)
     
@@ -316,7 +316,7 @@ class Linque(object):
             Linque
         """
         
-        result = iters.exclude_by(self, items, key)
+        result = iters.exclude(self, items, key)
         
         return Linque(result, self._evaluate)
     
@@ -376,7 +376,7 @@ class Linque(object):
             Linque
         """
         
-        groups = iters.group_by(self, key)
+        groups = iters.group(self, key)
         result = [(k, Linque(g, self._evaluate)) for k, g in groups]
         
         return Linque(result, self._evaluate)
@@ -399,7 +399,7 @@ class Linque(object):
             Linque
         """
         
-        result = iters.intersect_by(self, items, key)
+        result = iters.intersect(self, items, key)
         
         return Linque(result, self._evaluate)
     
@@ -735,7 +735,7 @@ class Linque(object):
             Linque
         """
         
-        result = iters.union_by(self, items, key)
+        result = iters.union(self, items, key)
         
         return Linque(result, self._evaluate)
     
