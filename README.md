@@ -78,7 +78,8 @@ or simply by using pip
 ## Available Methods
 
 ### .aggregate(accumulator, seed)
-Applies accumulator function over current sequence. This call fully evaluates current sequence.
+Applies accumulator function over current sequence. This call fully evaluates current sequence. This functionality is
+also available as a *linque.aggregate(sequence, func, seed)* utility function.
 
 ```python
 data = (97, 103, 103, 114, 101, 103, 97, 116, 101)
@@ -137,7 +138,7 @@ print(result)
 
 ### .chunk(item)
 Determines whether current sequence contains specified item by using default comparer. This call partially evaluates
-current sequence.
+current sequence. This functionality is also available as a *linque.chunk(\*sequences)* utility function.
 
 ```python
 data = ((0, 0), (1, 10), (2, 20), (3, 30), (4, 40))
@@ -149,7 +150,7 @@ print(result)
 
 ### .concat(items)
 Produces new sequence by appending given items at the end of current sequence. This call does not evaluate current
-sequence.
+sequence. This functionality is also available as a *linque.concat(\*sequences)* utility function.
 
 ```python
 data1 = (0, 1, 2, 3, 4)
@@ -174,6 +175,7 @@ print(result)
 
 ### .count(condition)
 Returns number of items in current sequence satisfying given condition. This call fully evaluates current sequence.
+This functionality is also available as a *linque.count(sequence, condition)* utility function.
 
 ```python
 data = (0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
@@ -196,7 +198,8 @@ print(result)
 
 ### .distinct(key)
 Produces new sequence by selecting distinct items from current sequence using default comparer or specified item's key.
-First occurrence of each item is used. This call does not evaluate current sequence.
+First occurrence of each item is used. This call does not evaluate current sequence. This functionality is also
+available as a *linque.distinct(sequence, items, key)* utility function.
 
 ```python
 data = ((0, 1), (0, 1), (0, 2), (1, 1), (1, 2))
@@ -254,7 +257,8 @@ print(linq.list())
 
 ### .exclude(items, key)
 Produces new sequence by excluding specified items from current sequence using default comparer or selected item's key.
-This call does not evaluate current sequence.
+This call does not evaluate current sequence. This functionality is also available as a
+*linque.exclude(sequence, items, key)* utility function.
 
 ```python
 data1 = ((0, 1), (0, 1), (0, 2), (1, 2), (0, 3), (0, 4))
@@ -267,7 +271,8 @@ print(result)
 
 ### .first(condition, default)
 Returns the first item in current sequence that satisfies specified condition or specified default value if no item
-found. This call partially evaluates current sequence.
+found. This call partially evaluates current sequence. This functionality is also available as a
+*linque.first(sequence, condition, default)* utility function.
 
 ```python
 data = (0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
@@ -291,7 +296,8 @@ print(result)
 
 ### .group(key)
 Produces new sequence by grouping items of current sequence according to specified key selector and creates result
-values as (key, group) pairs. This call fully evaluates current sequence.
+values as (key, group) pairs. This call fully evaluates current sequence. This functionality is also available as a
+*linque.group(sequence, key)* utility function.
 
 ```python
 data = ((0, 1), (0, 1), (0, 2), (1, 1))
@@ -307,7 +313,8 @@ print(result)
 
 ### .intersect(items, key)
 Produces new sequence of shared unique items from current sequence and given items by using default comparer or selected
-item's key. This call does not evaluate current sequence.
+item's key. This call does not evaluate current sequence. This functionality is also available as a
+*linque.intersect(sequence, items, key)* utility function.
 
 ```python
 data1 = ((0, 1), (0, 1), (0, 2), (1, 2))
@@ -320,7 +327,8 @@ print(result)
 
 ### .last(condition, default)
 Returns the last item in current sequence that satisfies specified condition or specified default value if no item
-found. This call partially evaluates current sequence.
+found. This call partially evaluates current sequence. This functionality is also available as a
+*linque.last(sequence, condition, default)* utility function.
 
 ```python
 data = (0, 1, 2, 3, 4, 5, 4, 5, 6, 0)
@@ -421,7 +429,8 @@ print(result)
 
 ### .skip(count)
 Produces new sequence by bypassing specified number of items in current sequence and returns the remaining items. This
-call partially evaluates current sequence.
+call partially evaluates current sequence. This functionality is also available as a *linque.skip(sequence, n)* utility
+function.
 
 ```python
 data = (0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
@@ -433,7 +442,7 @@ print(result)
 
 ### .skip_while(condition)
 Produces new sequence by bypassing contiguous items from the start of current sequence until specified condition fails
-the first time.
+the first time. This functionality is also available as a *linque.skip_while(sequence, condition)* utility function.
 
 ```python
 data = (0, 1, 2, 3, 4, 5, 4, 3, 2, 2, 0)
@@ -480,7 +489,8 @@ print(result)
 
 ### .take(count)
 Produces new sequence by selecting specified number of contiguous items from the start of current sequence. This call
-partially evaluates current sequence.
+partially evaluates current sequence. This functionality is also available as a *linque.take(sequence, n)* utility
+function.
 
 ```python
 data = (0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
@@ -492,7 +502,8 @@ print(result)
 
 ### .take_while(condition)
 Produces new sequence by selecting items from current sequence as long as specified condition is true. This call
-partially evaluates current sequence.
+partially evaluates current sequence. This functionality is also available as a *linque.take_while(sequence, condition)*
+utility function.
 
 ```python
 data = (0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
@@ -515,7 +526,8 @@ print(result)
 
 ### .union(items, key)
 Produces new sequence of unique items from current sequence and given items by using default comparer or selected
-item's key. This call does not evaluate current sequence.
+item's key. This call does not evaluate current sequence.  This functionality is also available as a
+*linque.union(sequence, items, key)* utility function.
 
 ```python
 data1 = ((0, 1), (0, 1), (0, 2))
