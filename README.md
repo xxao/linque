@@ -35,21 +35,21 @@ from linque import Linque
 
 # using iterator as source
 linq = Linque(d for d in range(10))
-linq.sum() # this call evaluates the sequence
+s = linq.sum() # this call evaluates the sequence
 print(linq.list()) # there are no 'next' items available anymore
 
 # []
 
 # using fully evaluated source
 linq = Linque(list(range(10)))
-linq.sum()
+s = linq.sum()
 print(linq.list())
 
 # [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 
 # force source evaluation
 linq = Linque((d for d in range(10)), True)
-linq.sum()
+s = linq.sum()
 print(linq.list())
 
 # [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
@@ -57,7 +57,7 @@ print(linq.list())
 # evaluate current instance
 linq = Linque(d for d in range(10))
 linq.evaluate()
-linq.sum()
+s = linq.sum()
 print(linq.list())
 
 # [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]

@@ -14,7 +14,9 @@ with open("README.md", "r") as fh:
 # set classifiers
 classifiers = [
     'Development Status :: 5 - Production/Stable',
-    'Programming Language :: Python :: 3 :: Only']
+    'Programming Language :: Python :: 3 :: Only',
+    'Operating System :: OS Independent',
+    'Topic :: Utilities']
 
 # main setup
 setup(
