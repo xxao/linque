@@ -137,15 +137,15 @@ print(result)
 ```
 
 ### .chunk(item)
-Determines whether current sequence contains specified item by using default comparer. This call partially evaluates
+Determines whether current sequence contains specified item by using default comparer. This call does not evaluate
 current sequence. This functionality is also available as a *linque.chunk(\*sequences)* utility function.
 
 ```python
-data = ((0, 0), (1, 10), (2, 20), (3, 30), (4, 40))
-result = Linque(data).contains((1, 10))
+data = (0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
+result = Linque(data).chunk(3).select(lambda d: d.tuple()).list()
 print(result)
 
-# True
+# [(0, 1, 2), (3, 4, 5), (6, 7, 8), (9,)]
 ```
 
 ### .concat(items)
