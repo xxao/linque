@@ -166,33 +166,6 @@ class Linque(object):
         return iters.count(self, condition)
     
     
-    def dict(self, key, value=lambda d: d):
-        """
-        Evaluates items into dictionary. This call fully evaluates current
-        sequence.
-        
-        Args:
-            key: callable
-                Item's key selector.
-            
-            value: callable
-                Item's value selector.
-        
-        Returns:
-            dict
-        """
-        
-        result = {}
-        
-        for item in self:
-            k = key(item)
-            if k in result:
-                raise KeyError("Key is not unique.")
-            result[k] = value(item)
-        
-        return result
-    
-    
     def distinct(self):
         """
         Produces new sequence by selecting distinct items from current sequence
@@ -491,17 +464,6 @@ class Linque(object):
         return iters.last_or_default(self, condition, default)
     
     
-    def list(self):
-        """
-        Evaluate items into list. This call fully evaluates current sequence.
-        
-        Returns:
-            list
-        """
-        
-        return list(self)
-    
-    
     def max(self, selector=None):
         """
         Returns maximum value in current sequence by specified items data
@@ -665,17 +627,6 @@ class Linque(object):
         return Linque(result, self._evaluate)
     
     
-    def set(self):
-        """
-        Evaluate items into set. This call fully evaluates current sequence.
-        
-        Returns:
-            set
-        """
-        
-        return set(self)
-    
-    
     def single(self, condition=None):
         """
         Returns the single item in current sequence that satisfies specified
@@ -745,6 +696,20 @@ class Linque(object):
         return Linque(result, self._evaluate)
     
     
+    def sort_desc(self):
+        """
+        Sorts elements of current sequence in descending order by using default
+        comparer. This call fully evaluates current sequence.
+        
+        Returns:
+            Linque
+        """
+        
+        result = sorted(self, reverse=True)
+        
+        return Linque(result, self._evaluate)
+    
+    
     def sort_by(self, key):
         """
         Produces new sequence by sorting elements of current sequence in
@@ -760,20 +725,6 @@ class Linque(object):
         """
         
         result = sorted(self, key=key)
-        
-        return Linque(result, self._evaluate)
-    
-    
-    def sort_desc(self):
-        """
-        Sorts elements of current sequence in descending order by using default
-        comparer. This call fully evaluates current sequence.
-        
-        Returns:
-            Linque
-        """
-        
-        result = sorted(self, reverse=True)
         
         return Linque(result, self._evaluate)
     
@@ -853,7 +804,56 @@ class Linque(object):
         return Linque(result, self._evaluate)
     
     
-    def tuple(self):
+    def to_dict(self, key, value=lambda d: d):
+        """
+        Evaluates items into dictionary. This call fully evaluates current
+        sequence.
+        
+        Args:
+            key: callable
+                Item's key selector.
+            
+            value: callable
+                Item's value selector.
+        
+        Returns:
+            dict
+        """
+        
+        result = {}
+        
+        for item in self:
+            k = key(item)
+            if k in result:
+                raise KeyError("Key is not unique.")
+            result[k] = value(item)
+        
+        return result
+    
+    
+    def to_list(self):
+        """
+        Evaluate items into list. This call fully evaluates current sequence.
+        
+        Returns:
+            list
+        """
+        
+        return list(self)
+    
+    
+    def to_set(self):
+        """
+        Evaluate items into set. This call fully evaluates current sequence.
+        
+        Returns:
+            set
+        """
+        
+        return set(self)
+    
+    
+    def to_tuple(self):
         """
         Evaluate items into tuple. This call fully evaluates current sequence.
         

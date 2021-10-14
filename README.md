@@ -16,7 +16,7 @@ result = Linque(words) \
     .group_by(lambda d: len(d)) \
     .sort_by(lambda d: d[0]) \
     .flatten(lambda d: d[1]) \
-    .list()
+    .to_list() \
 
 print(result)
 
@@ -35,22 +35,22 @@ from linque import Linque
 
 # using iterator as source
 linq = Linque(d for d in range(10))
-s = linq.sum() # this call evaluates the sequence
-print(linq.list()) # there are no 'next' items available anymore
+s = linq.sum()  # this call evaluates the sequence
+print(linq.to_list())  # there are no 'next' items available anymore
 
 # []
 
 # using fully evaluated source
 linq = Linque(list(range(10)))
 s = linq.sum()
-print(linq.list())
+print(linq.to_list())
 
 # [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 
 # force source evaluation
 linq = Linque((d for d in range(10)), True)
 s = linq.sum()
-print(linq.list())
+print(linq.to_list())
 
 # [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 
@@ -58,7 +58,7 @@ print(linq.list())
 linq = Linque(d for d in range(10))
 linq.evaluate()
 s = linq.sum()
-print(linq.list())
+print(linq.to_list())
 
 # [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 ```
@@ -118,7 +118,7 @@ current sequence. This functionality is also available as a *linque.chunk(\*sequ
 
 ```python
 data = (0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
-result = Linque(data).chunk(3).select(lambda d: d.tuple()).list()
+result = Linque(data).chunk(3).select(lambda d: d.to_tuple()).to_list()
 print(result)
 
 # [(0, 1, 2), (3, 4, 5), (6, 7, 8), (9,)]
@@ -131,7 +131,7 @@ sequence. This functionality is also available as a *linque.concat(\*sequences)*
 ```python
 data1 = (0, 1, 2, 3, 4)
 data2 = (5, 6, 7, 8, 9)
-result = Linque(data1).concat(data2).list()
+result = Linque(data1).concat(data2).to_list()
 print(result)
 
 # [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
@@ -161,17 +161,6 @@ print(result)
 # 5
 ```
 
-### .dict(key, value)
-Evaluates items into dictionary. This call fully evaluates current sequence.
-
-```python
-data = ((0, 1, 'a'), (0, 2, 'b'), (0, 3, 'c'))
-result = Linque(data).dict(lambda d: d[1], lambda d: d[2])
-print(result)
-
-# {1: 'a', 2: 'b', 3: 'c'}
-```
-
 ### .distinct()
 Produces new sequence by selecting distinct items from current sequence using default comparer. First occurrence of each
 item is used. This call does not evaluate current sequence. This functionality is also available as a
@@ -179,7 +168,7 @@ item is used. This call does not evaluate current sequence. This functionality i
 
 ```python
 data = ((0, 1), (0, 1), (0, 2), (1, 1), (1, 2))
-result = Linque(data).distinct().list()
+result = Linque(data).distinct().to_list()
 print(result)
 
 # [(0, 1), (0, 2), (1, 1), (1, 2)]
@@ -192,7 +181,7 @@ each item is used. This call does not evaluate current sequence. This functional
 
 ```python
 data = ((0, 1), (0, 1), (0, 2), (1, 1), (1, 2))
-result = Linque(data).distinct_by(lambda d: d[1]).list()
+result = Linque(data).distinct_by(lambda d: d[1]).to_list()
 print(result)
 
 # [(0, 1), (0, 2)]
@@ -206,8 +195,9 @@ only with objects. Any return value of given function is ignored. This call full
 def action(d):
     d[1] = str(d[0])
 
+
 data = ([0, None], [1, None], [2, None], [3, None], [4, None])
-result = Linque(data).each(action).list()
+result = Linque(data).each(action).to_list()
 print(result)
 
 # [[0, '0'], [1, '1'], [2, '2'], [3, '3'], [4, '4']]
@@ -219,7 +209,7 @@ current sequence.
 
 ```python
 data = (5, 6, 7, 8, 9)
-result = Linque(data).enumerate().list()
+result = Linque(data).enumerate().to_list()
 print(result)
 
 # [(0, 5), (1, 6), (2, 7), (3, 8), (4, 9)]
@@ -232,14 +222,14 @@ Linque instance should be reused.
 ```python
 linq = Linque(d for d in range(10))
 linq.sum()
-print(linq.list())
+print(linq.to_list())
 
 # []
 
 linq = Linque(d for d in range(10))
 linq.evaluate()
 linq.sum()
-print(linq.list())
+print(linq.to_list())
 
 # [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 ```
@@ -252,7 +242,7 @@ evaluate current sequence. This functionality is also available as a
 ```python
 data1 = ((0, 1), (0, 1), (0, 2), (1, 2), (0, 3), (0, 4))
 data2 = ((0, 1), (1, 2), (1, 2), (1, 3))
-result = Linque(data1).exclude(data2).list()
+result = Linque(data1).exclude(data2).to_list()
 print(result)
 
 # [(0, 2), (0, 3), (0, 4)]
@@ -266,7 +256,7 @@ evaluate current sequence. This functionality is also available as a
 ```python
 data1 = ((0, 1), (0, 1), (0, 2), (1, 2), (0, 3), (0, 4))
 data2 = ((0, 1), (1, 2), (1, 2), (1, 3))
-result = Linque(data1).exclude_by(data2, lambda d: d[1]).list()
+result = Linque(data1).exclude_by(data2, lambda d: d[1]).to_list()
 print(result)
 
 # [(0, 4)]
@@ -304,7 +294,7 @@ current sequence.
 
 ```python
 data = ((0, 0), (1, 10), (2, 20), (3, 30), (4, 40))
-result = Linque(data).flatten().list()
+result = Linque(data).flatten().to_list()
 print(result)
 
 # [0, 0, 1, 10, 2, 20, 3, 30, 4, 40]
@@ -317,7 +307,7 @@ values as (key, group) pairs. This call fully evaluates current sequence. This f
 
 ```python
 data = ((0, 1), (0, 1), (0, 2), (1, 1))
-result = Linque(data).group().dict(lambda d: d[0], lambda d: d[1].list())
+result = Linque(data).group().to_dict(lambda d: d[0], lambda d: d[1].to_list())
 print(result)
 
 # {
@@ -334,7 +324,7 @@ values as (key, group) pairs. This call fully evaluates current sequence. This f
 
 ```python
 data = ((0, 1), (0, 1), (0, 2))
-result = Linque(data).group_by(lambda d:d[1]).dict(lambda d: d[0], lambda d: d[1].list())
+result = Linque(data).group_by(lambda d: d[1]).to_dict(lambda d: d[0], lambda d: d[1].to_list())
 print(result)
 
 # {
@@ -351,7 +341,7 @@ does not evaluate current sequence. This functionality is also available as a
 ```python
 data1 = ((0, 1), (0, 1), (0, 2), (1, 2))
 data2 = ((0, 1), (1, 2), (1, 2), (0, 3))
-result = Linque(data1).intersect(data2).list()
+result = Linque(data1).intersect(data2).to_list()
 print(result)
 
 # [(0, 1), (1, 2)]
@@ -365,7 +355,7 @@ call does not evaluate current sequence. This functionality is also available as
 ```python
 data1 = ((0, 1), (0, 1), (0, 2), (1, 2))
 data2 = ((0, 1), (1, 2), (1, 2), (0, 3))
-result = Linque(data1).intersect_by(data2, lambda d: d[1]).list()
+result = Linque(data1).intersect_by(data2, lambda d: d[1]).to_list()
 print(result)
 
 # [(0, 1), (0, 2)]
@@ -395,17 +385,6 @@ result = Linque(data).last_or_default(lambda d: d > 10, -1)
 print(result)
 
 # -1
-```
-
-### .list()
-Evaluate items into list. This call fully evaluates current sequence.
-
-```python
-data = (0, 1, 2, 3, 4, 0, 1)
-result = Linque(data).list()
-print(result)
-
-# [0, 1, 2, 3, 4, 0, 1]
 ```
 
 ### .max(selector)
@@ -481,7 +460,7 @@ Produces new sequence by selecting items data by specified selector. This call d
 
 ```python
 data = ((0, 0), (1, 10), (2, 20), (3, 30), (4, 40))
-result = Linque(data).select(lambda d: d[1]).list()
+result = Linque(data).select(lambda d: d[1]).to_list()
 print(result)
 
 # [0, 10, 20, 30, 40]
@@ -493,21 +472,10 @@ current sequence.
 
 ```python
 data = ((0, 0), (1, 10), (2, 20), (3, 30), (4, 40))
-result = Linque(data).flatten(lambda d: d).list()
+result = Linque(data).flatten(lambda d: d).to_list()
 print(result)
 
 # [0, 0, 1, 10, 2, 20, 3, 30, 4, 40]
-```
-
-### .set()
-Evaluate items into set. This call fully evaluates current sequence.
-
-```python
-data = (0, 1, 2, 3, 4, 0, 1)
-result = Linque(data).set()
-print(result)
-
-# {0, 1, 2, 3, 4}
 ```
 
 ### .single(condition)
@@ -530,7 +498,7 @@ function.
 
 ```python
 data = (0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
-result = Linque(data).skip(4).list()
+result = Linque(data).skip(4).to_list()
 print(result)
 
 # [4, 5, 6, 7, 8, 9]
@@ -542,7 +510,7 @@ the first time. This functionality is also available as a *linque.skip_while(seq
 
 ```python
 data = (0, 1, 2, 3, 4, 5, 4, 3, 2, 2, 0)
-result = Linque(data).skip_while(lambda d: d < 4).list()
+result = Linque(data).skip_while(lambda d: d < 4).to_list()
 print(result)
 
 # [4, 5, 4, 3, 2, 2, 0]
@@ -554,7 +522,7 @@ sequence.
 
 ```python
 data = (8, 0, 2, 3, 5, 1, 6, 7, 4, 9)
-result = Linque(data).sort().list()
+result = Linque(data).sort().to_list()
 print(result)
 
 # [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
@@ -566,7 +534,7 @@ evaluates current sequence.
 
 ```python
 data = ((1, 8), (2, 0), (3, 2), (4, 3), (5, 5), (6, 1), (7, 6), (8, 7), (9, 4), (0, 9))
-result = Linque(data).sort_by(lambda d: d[1]).list()
+result = Linque(data).sort_by(lambda d: d[1]).to_list()
 print(result)
 
 # [(2, 0), (6, 1), (3, 2), (4, 3), (9, 4), (5, 5), (7, 6), (8, 7), (1, 8), (0, 9)]
@@ -578,7 +546,7 @@ fully evaluates current sequence.
 
 ```python
 data = (8, 0, 2, 3, 5, 1, 6, 7, 4, 9)
-result = Linque(data).sort_desc().list()
+result = Linque(data).sort_desc().to_list()
 print(result)
 
 # [9, 8, 7, 6, 5, 4, 3, 2, 1, 0]
@@ -590,7 +558,7 @@ fully evaluates current sequence.
 
 ```python
 data = ((1, 8), (2, 0), (3, 2), (4, 3), (5, 5), (6, 1), (7, 6), (8, 7), (9, 4), (0, 9))
-result = Linque(data).sort_by_desc(lambda d: d[1]).list()
+result = Linque(data).sort_by_desc(lambda d: d[1]).to_list()
 print(result)
 
 # [(0, 9), (1, 8), (8, 7), (7, 6), (5, 5), (9, 4), (4, 3), (3, 2), (6, 1), (2, 0)]
@@ -614,7 +582,7 @@ function.
 
 ```python
 data = (0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
-result = Linque(data).take(4).list()
+result = Linque(data).take(4).to_list()
 print(result)
 
 # [0, 1, 2, 3]
@@ -627,18 +595,51 @@ utility function.
 
 ```python
 data = (0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
-result = Linque(data).take_while(lambda d: d < 4).list()
+result = Linque(data).take_while(lambda d: d < 4).to_list()
 print(result)
 
 # [0, 1, 2, 3]
 ```
 
-### .tuple()
+### .to_dict(key, value)
+Evaluates items into dictionary. This call fully evaluates current sequence.
+
+```python
+data = ((0, 1, 'a'), (0, 2, 'b'), (0, 3, 'c'))
+result = Linque(data).to_dict(lambda d: d[1], lambda d: d[2])
+print(result)
+
+# {1: 'a', 2: 'b', 3: 'c'}
+```
+
+### .to_list()
+Evaluate items into list. This call fully evaluates current sequence.
+
+```python
+data = (0, 1, 2, 3, 4, 0, 1)
+result = Linque(data).to_list()
+print(result)
+
+# [0, 1, 2, 3, 4, 0, 1]
+```
+
+### .to_set()
+Evaluate items into set. This call fully evaluates current sequence.
+
+```python
+data = (0, 1, 2, 3, 4, 0, 1)
+result = Linque(data).to_set()
+print(result)
+
+# {0, 1, 2, 3, 4}
+```
+
+### .to_tuple()
 Evaluate items into tuple. This call fully evaluates current sequence.
 
 ```python
 data = [0, 1, 2, 3, 4, 0, 1]
-result = Linque(data).tuple()
+result = Linque(data).to_tuple()
 print(result)
 
 # (0, 1, 2, 3, 4, 0, 1)
@@ -652,7 +653,7 @@ not evaluate current sequence.  This functionality is also available as a
 ```python
 data1 = ((0, 1), (0, 1), (0, 2))
 data2 = ((1, 1), (1, 2), (1, 2), (0, 3))
-result = Linque(data1).union(data2).list()
+result = Linque(data1).union(data2).to_list()
 print(result)
 
 # [(0, 1), (0, 2), (1, 1), (1, 2), (0, 3)]
@@ -666,7 +667,7 @@ item's key. This call does not evaluate current sequence.  This functionality is
 ```python
 data1 = ((0, 1), (0, 1), (0, 2))
 data2 = ((1, 1), (1, 2), (1, 2), (0, 3))
-result = Linque(data1).union_by(data2, lambda d: d[1]).list()
+result = Linque(data1).union_by(data2, lambda d: d[1]).to_list()
 print(result)
 
 # [(0, 1), (0, 2), (0, 3)]
@@ -677,7 +678,7 @@ Produces new sequence by selecting items by specified predicate. This call does 
 
 ```python
 data = (0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
-result = Linque(data).where(lambda d: d % 2).list()
+result = Linque(data).where(lambda d: d % 2).to_list()
 print(result)
 
 # [1, 3, 5, 7, 9]
@@ -690,7 +691,7 @@ sequences. This call does not evaluate current sequence.
 ```python
 data1 = (0, 1, 2, 3, 4)
 data2 = ('a', 'b', 'c')
-result = Linque(data1).zip(data2).list()
+result = Linque(data1).zip(data2).to_list()
 print(result)
 
 # [(0, 'a'), (1, 'b'), (2, 'c')]

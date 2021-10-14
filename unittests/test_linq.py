@@ -61,11 +61,11 @@ class TestCase(unittest.TestCase):
         
         linq = linque.Linque(data1)
         items2 = data2
-        self.assertEqual(linq.concat(items2).tuple(), (0, 1, 2, 3, 4, 5, 6, 7, 8, 9))
+        self.assertEqual(linq.concat(items2).to_tuple(), (0, 1, 2, 3, 4, 5, 6, 7, 8, 9))
         
         linq = linque.Linque(d for d in data1)
         items2 = (d for d in data2)
-        self.assertEqual(linq.concat(items2).tuple(), (0, 1, 2, 3, 4, 5, 6, 7, 8, 9))
+        self.assertEqual(linq.concat(items2).to_tuple(), (0, 1, 2, 3, 4, 5, 6, 7, 8, 9))
     
     
     def test_contains(self):
@@ -90,10 +90,12 @@ class TestCase(unittest.TestCase):
         data = (0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
         
         linq = linque.Linque(data)
-        self.assertEqual(linq.chunk(3).select(lambda d: d.tuple()).tuple(), ((0, 1, 2), (3, 4, 5), (6, 7, 8), (9,)))
+        self.assertEqual(
+            linq.chunk(3).select(lambda d: d.to_tuple()).to_tuple(), ((0, 1, 2), (3, 4, 5), (6, 7, 8), (9,)))
         
         linq = linque.Linque(d for d in data)
-        self.assertEqual(linq.chunk(3).select(lambda d: d.tuple()).tuple(), ((0, 1, 2), (3, 4, 5), (6, 7, 8), (9,)))
+        self.assertEqual(
+            linq.chunk(3).select(lambda d: d.to_tuple()).to_tuple(), ((0, 1, 2), (3, 4, 5), (6, 7, 8), (9,)))
     
     
     def test_count(self):
@@ -112,45 +114,16 @@ class TestCase(unittest.TestCase):
         self.assertEqual(linq.count(lambda d: d > 4), 5)
     
     
-    def test_dict(self):
-        """Tests whether dict works correctly."""
-        
-        data = ((0, 1, 'a'), (0, 2, 'b'), (0, 3, 'c'))
-        
-        linq = linque.Linque(data)
-        self.assertEqual(linq.dict(lambda d: d[1]), {
-            1: (0, 1, 'a'),
-            2: (0, 2, 'b'),
-            3: (0, 3, 'c')})
-        
-        self.assertEqual(linq.dict(lambda d: d[1], lambda d: d[2]), {
-            1: 'a',
-            2: 'b',
-            3: 'c'})
-        
-        linq = linque.Linque(d for d in data)
-        self.assertEqual(linq.dict(lambda d: d[1]), {
-            1: (0, 1, 'a'),
-            2: (0, 2, 'b'),
-            3: (0, 3, 'c')})
-        
-        linq = linque.Linque(d for d in data)
-        self.assertEqual(linq.dict(lambda d: d[1], lambda d: d[2]), {
-            1: 'a',
-            2: 'b',
-            3: 'c'})
-    
-    
     def test_distinct(self):
         """Tests whether distinct works correctly."""
         
         data = ((0, 1), (0, 1), (0, 2), (1, 1), (1, 2))
         
         linq = linque.Linque(data)
-        self.assertEqual(linq.distinct().tuple(), ((0, 1), (0, 2), (1, 1), (1, 2)))
+        self.assertEqual(linq.distinct().to_tuple(), ((0, 1), (0, 2), (1, 1), (1, 2)))
         
         linq = linque.Linque(d for d in data)
-        self.assertEqual(linq.distinct().tuple(), ((0, 1), (0, 2), (1, 1), (1, 2)))
+        self.assertEqual(linq.distinct().to_tuple(), ((0, 1), (0, 2), (1, 1), (1, 2)))
     
     
     def test_distinct_by(self):
@@ -159,10 +132,10 @@ class TestCase(unittest.TestCase):
         data = ((0, 1), (0, 1), (0, 2), (1, 1), (1, 2))
         
         linq = linque.Linque(data)
-        self.assertEqual(linq.distinct_by(lambda d: d[1]).tuple(), ((0, 1), (0, 2)))
+        self.assertEqual(linq.distinct_by(lambda d: d[1]).to_tuple(), ((0, 1), (0, 2)))
         
         linq = linque.Linque(d for d in data)
-        self.assertEqual(linq.distinct_by(lambda d: d[1]).tuple(), ((0, 1), (0, 2)))
+        self.assertEqual(linq.distinct_by(lambda d: d[1]).to_tuple(), ((0, 1), (0, 2)))
     
     
     def test_each(self):
@@ -174,10 +147,10 @@ class TestCase(unittest.TestCase):
         data = ([0, None], [1, None], [2, None], [3, None], [4, None])
         
         linq = linque.Linque(data)
-        self.assertEqual(linq.each(action).tuple(), ([0, '0'], [1, '1'], [2, '2'], [3, '3'], [4, '4']))
+        self.assertEqual(linq.each(action).to_tuple(), ([0, '0'], [1, '1'], [2, '2'], [3, '3'], [4, '4']))
         
         linq = linque.Linque(d for d in data)
-        self.assertEqual(linq.each(action).tuple(), ([0, '0'], [1, '1'], [2, '2'], [3, '3'], [4, '4']))
+        self.assertEqual(linq.each(action).to_tuple(), ([0, '0'], [1, '1'], [2, '2'], [3, '3'], [4, '4']))
     
     
     def test_enumerate(self):
@@ -186,10 +159,10 @@ class TestCase(unittest.TestCase):
         data = (5, 6, 7, 8, 9)
         
         linq = linque.Linque(data)
-        self.assertEqual(linq.enumerate().tuple(), ((0, 5), (1, 6), (2, 7), (3, 8), (4, 9)))
+        self.assertEqual(linq.enumerate().to_tuple(), ((0, 5), (1, 6), (2, 7), (3, 8), (4, 9)))
         
         linq = linque.Linque(d for d in data)
-        self.assertEqual(linq.enumerate().tuple(), ((0, 5), (1, 6), (2, 7), (3, 8), (4, 9)))
+        self.assertEqual(linq.enumerate().to_tuple(), ((0, 5), (1, 6), (2, 7), (3, 8), (4, 9)))
     
     
     def test_evaluate(self):
@@ -198,12 +171,12 @@ class TestCase(unittest.TestCase):
         data = (0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
         
         linq = linque.Linque(d for d in data)
-        self.assertEqual(linq.take(4).tuple(), (0, 1, 2, 3))
-        self.assertEqual(linq.take(4).tuple(), (4, 5, 6, 7))
+        self.assertEqual(linq.take(4).to_tuple(), (0, 1, 2, 3))
+        self.assertEqual(linq.take(4).to_tuple(), (4, 5, 6, 7))
         
         linq = linque.Linque(d for d in data).evaluate()
-        self.assertEqual(linq.take(4).tuple(), (0, 1, 2, 3))
-        self.assertEqual(linq.take(4).tuple(), (0, 1, 2, 3))
+        self.assertEqual(linq.take(4).to_tuple(), (0, 1, 2, 3))
+        self.assertEqual(linq.take(4).to_tuple(), (0, 1, 2, 3))
     
     
     def test_exclude(self):
@@ -214,11 +187,11 @@ class TestCase(unittest.TestCase):
         
         linq = linque.Linque(data1)
         items2 = data2
-        self.assertEqual(linq.exclude(items2).tuple(), ((0, 2), (0, 3), (0, 4)))
+        self.assertEqual(linq.exclude(items2).to_tuple(), ((0, 2), (0, 3), (0, 4)))
         
         linq = linque.Linque(d for d in data1)
         items2 = (d for d in data2)
-        self.assertEqual(linq.exclude(items2).tuple(), ((0, 2), (0, 3), (0, 4)))
+        self.assertEqual(linq.exclude(items2).to_tuple(), ((0, 2), (0, 3), (0, 4)))
     
     
     def test_exclude_by(self):
@@ -229,11 +202,11 @@ class TestCase(unittest.TestCase):
         
         linq = linque.Linque(data1)
         items2 = data2
-        self.assertEqual(linq.exclude_by(items2, lambda d: d[1]).tuple(), ((0, 4), ))
+        self.assertEqual(linq.exclude_by(items2, lambda d: d[1]).to_tuple(), ((0, 4),))
         
         linq = linque.Linque(d for d in data1)
         items2 = (d for d in data2)
-        self.assertEqual(linq.exclude_by(items2, lambda d: d[1]).tuple(), ((0, 4), ))
+        self.assertEqual(linq.exclude_by(items2, lambda d: d[1]).to_tuple(), ((0, 4),))
     
     
     def test_first(self):
@@ -292,10 +265,10 @@ class TestCase(unittest.TestCase):
         data = ((0, 0), (1, 10), (2, 20), (3, 30), (4, 40))
         
         linq = linque.Linque(data)
-        self.assertEqual(linq.flatten(lambda d: d).tuple(), (0, 0, 1, 10, 2, 20, 3, 30, 4, 40))
+        self.assertEqual(linq.flatten(lambda d: d).to_tuple(), (0, 0, 1, 10, 2, 20, 3, 30, 4, 40))
         
         linq = linque.Linque(d for d in data)
-        self.assertEqual(linq.flatten(lambda d: d).tuple(), (0, 0, 1, 10, 2, 20, 3, 30, 4, 40))
+        self.assertEqual(linq.flatten(lambda d: d).to_tuple(), (0, 0, 1, 10, 2, 20, 3, 30, 4, 40))
     
     
     def test_group(self):
@@ -304,13 +277,13 @@ class TestCase(unittest.TestCase):
         data = ((0, 1), (0, 1), (0, 2), (1, 1))
         
         linq = linque.Linque(data)
-        self.assertEqual(linq.group().dict(lambda d: d[0], lambda d: d[1].tuple()), {
+        self.assertEqual(linq.group().to_dict(lambda d: d[0], lambda d: d[1].to_tuple()), {
             (0, 1): ((0, 1), (0, 1)),
             (0, 2): ((0, 2),),
             (1, 1): ((1, 1),)})
         
         linq = linque.Linque(d for d in data)
-        self.assertEqual(linq.group().dict(lambda d: d[0], lambda d: d[1].tuple()), {
+        self.assertEqual(linq.group().to_dict(lambda d: d[0], lambda d: d[1].to_tuple()), {
             (0, 1): ((0, 1), (0, 1)),
             (0, 2): ((0, 2),),
             (1, 1): ((1, 1),)})
@@ -322,12 +295,12 @@ class TestCase(unittest.TestCase):
         data = ((0, 1), (0, 1), (0, 2), (1, 1))
         
         linq = linque.Linque(data)
-        self.assertEqual(linq.group_by(lambda d: d[1]).dict(lambda d: d[0], lambda d: d[1].tuple()), {
+        self.assertEqual(linq.group_by(lambda d: d[1]).to_dict(lambda d: d[0], lambda d: d[1].to_tuple()), {
             1: ((0, 1), (0, 1), (1, 1)),
             2: ((0, 2),)})
         
         linq = linque.Linque(d for d in data)
-        self.assertEqual(linq.group_by(lambda d: d[1]).dict(lambda d: d[0], lambda d: d[1].tuple()), {
+        self.assertEqual(linq.group_by(lambda d: d[1]).to_dict(lambda d: d[0], lambda d: d[1].to_tuple()), {
             1: ((0, 1), (0, 1), (1, 1)),
             2: ((0, 2),)})
     
@@ -340,11 +313,11 @@ class TestCase(unittest.TestCase):
         
         linq = linque.Linque(data1)
         items2 = data2
-        self.assertEqual(linq.intersect(items2).tuple(), ((0, 1), (1, 2)))
+        self.assertEqual(linq.intersect(items2).to_tuple(), ((0, 1), (1, 2)))
         
         linq = linque.Linque(d for d in data1)
         items2 = (d for d in data2)
-        self.assertEqual(linq.intersect(items2).tuple(), ((0, 1), (1, 2)))
+        self.assertEqual(linq.intersect(items2).to_tuple(), ((0, 1), (1, 2)))
     
     
     def test_intersect_by(self):
@@ -355,11 +328,11 @@ class TestCase(unittest.TestCase):
         
         linq = linque.Linque(data1)
         items2 = data2
-        self.assertEqual(linq.intersect_by(items2, lambda d: d[1]).tuple(), ((0, 1), (0, 2)))
+        self.assertEqual(linq.intersect_by(items2, lambda d: d[1]).to_tuple(), ((0, 1), (0, 2)))
         
         linq = linque.Linque(d for d in data1)
         items2 = (d for d in data2)
-        self.assertEqual(linq.intersect_by(items2, lambda d: d[1]).tuple(), ((0, 1), (0, 2)))
+        self.assertEqual(linq.intersect_by(items2, lambda d: d[1]).to_tuple(), ((0, 1), (0, 2)))
     
     
     def test_last(self):
@@ -410,18 +383,6 @@ class TestCase(unittest.TestCase):
         
         linq = linque.Linque(d for d in data)
         self.assertEqual(linq.last_or_default(lambda d: d > 10, -1), -1)
-    
-    
-    def test_list(self):
-        """Tests whether list works correctly."""
-        
-        data = (0, 1, 2, 3, 4, 0, 1)
-        
-        linq = linque.Linque(data)
-        self.assertEqual(linq.list(), list(data))
-        
-        linq = linque.Linque(d for d in data)
-        self.assertEqual(linq.list(), list(data))
     
     
     def test_max(self):
@@ -534,10 +495,10 @@ class TestCase(unittest.TestCase):
         data = (0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
         
         linq = linque.Linque(data)
-        self.assertEqual(linq.reverse().tuple(), (9, 8, 7, 6, 5, 4, 3, 2, 1, 0))
+        self.assertEqual(linq.reverse().to_tuple(), (9, 8, 7, 6, 5, 4, 3, 2, 1, 0))
         
         linq = linque.Linque(d for d in data)
-        self.assertEqual(linq.reverse().tuple(), (9, 8, 7, 6, 5, 4, 3, 2, 1, 0))
+        self.assertEqual(linq.reverse().to_tuple(), (9, 8, 7, 6, 5, 4, 3, 2, 1, 0))
     
     
     def test_select(self):
@@ -546,22 +507,10 @@ class TestCase(unittest.TestCase):
         data = ((0, 0), (1, 10), (2, 20), (3, 30), (4, 40))
         
         linq = linque.Linque(data)
-        self.assertEqual(linq.select(lambda d: d[1]).tuple(), (0, 10, 20, 30, 40))
+        self.assertEqual(linq.select(lambda d: d[1]).to_tuple(), (0, 10, 20, 30, 40))
         
         linq = linque.Linque(d for d in data)
-        self.assertEqual(linq.select(lambda d: d[1]).tuple(), (0, 10, 20, 30, 40))
-    
-    
-    def test_set(self):
-        """Tests whether set works correctly."""
-        
-        data = (0, 1, 2, 3, 4, 0, 1)
-        
-        linq = linque.Linque(data)
-        self.assertEqual(linq.set(), set(data))
-        
-        linq = linque.Linque(d for d in data)
-        self.assertEqual(linq.set(), set(data))
+        self.assertEqual(linq.select(lambda d: d[1]).to_tuple(), (0, 10, 20, 30, 40))
     
     
     def test_single(self):
@@ -606,10 +555,10 @@ class TestCase(unittest.TestCase):
         data = (0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
         
         linq = linque.Linque(data)
-        self.assertEqual(linq.skip(4).tuple(), (4, 5, 6, 7, 8, 9))
+        self.assertEqual(linq.skip(4).to_tuple(), (4, 5, 6, 7, 8, 9))
         
         linq = linque.Linque(d for d in data)
-        self.assertEqual(linq.skip(4).tuple(), (4, 5, 6, 7, 8, 9))
+        self.assertEqual(linq.skip(4).to_tuple(), (4, 5, 6, 7, 8, 9))
     
     
     def test_skip_while(self):
@@ -618,10 +567,10 @@ class TestCase(unittest.TestCase):
         data = (0, 1, 2, 3, 4, 5, 4, 3, 2, 2, 0)
         
         linq = linque.Linque(data)
-        self.assertEqual(linq.skip_while(lambda d: d < 4).tuple(), (4, 5, 4, 3, 2, 2, 0))
+        self.assertEqual(linq.skip_while(lambda d: d < 4).to_tuple(), (4, 5, 4, 3, 2, 2, 0))
         
         linq = linque.Linque(d for d in data)
-        self.assertEqual(linq.skip_while(lambda d: d < 4).tuple(), (4, 5, 4, 3, 2, 2, 0))
+        self.assertEqual(linq.skip_while(lambda d: d < 4).to_tuple(), (4, 5, 4, 3, 2, 2, 0))
     
     
     def test_sort(self):
@@ -630,10 +579,10 @@ class TestCase(unittest.TestCase):
         data = (8, 0, 2, 3, 5, 1, 6, 7, 4, 9)
         
         linq = linque.Linque(data)
-        self.assertEqual(linq.sort().tuple(), (0, 1, 2, 3, 4, 5, 6, 7, 8, 9))
+        self.assertEqual(linq.sort().to_tuple(), (0, 1, 2, 3, 4, 5, 6, 7, 8, 9))
         
         linq = linque.Linque(d for d in data)
-        self.assertEqual(linq.sort().tuple(), (0, 1, 2, 3, 4, 5, 6, 7, 8, 9))
+        self.assertEqual(linq.sort().to_tuple(), (0, 1, 2, 3, 4, 5, 6, 7, 8, 9))
     
     
     def test_sort_by(self):
@@ -642,10 +591,12 @@ class TestCase(unittest.TestCase):
         data = ((1, 8), (2, 0), (3, 2), (4, 3), (5, 5), (6, 1), (7, 6), (8, 7), (9, 4), (0, 9))
         
         linq = linque.Linque(data)
-        self.assertEqual(linq.sort_by(lambda d: d[1]).tuple(), ((2, 0), (6, 1), (3, 2), (4, 3), (9, 4), (5, 5), (7, 6), (8, 7), (1, 8), (0, 9)))
+        self.assertEqual(
+            linq.sort_by(lambda d: d[1]).to_tuple(), ((2, 0), (6, 1), (3, 2), (4, 3), (9, 4), (5, 5), (7, 6), (8, 7), (1, 8), (0, 9)))
         
         linq = linque.Linque(d for d in data)
-        self.assertEqual(linq.sort_by(lambda d: d[1]).tuple(), ((2, 0), (6, 1), (3, 2), (4, 3), (9, 4), (5, 5), (7, 6), (8, 7), (1, 8), (0, 9)))
+        self.assertEqual(
+            linq.sort_by(lambda d: d[1]).to_tuple(), ((2, 0), (6, 1), (3, 2), (4, 3), (9, 4), (5, 5), (7, 6), (8, 7), (1, 8), (0, 9)))
     
     
     def test_sort_desc(self):
@@ -654,10 +605,10 @@ class TestCase(unittest.TestCase):
         data = (8, 0, 2, 3, 5, 1, 6, 7, 4, 9)
         
         linq = linque.Linque(data)
-        self.assertEqual(linq.sort_desc().tuple(), (9, 8, 7, 6, 5, 4, 3, 2, 1, 0))
+        self.assertEqual(linq.sort_desc().to_tuple(), (9, 8, 7, 6, 5, 4, 3, 2, 1, 0))
         
         linq = linque.Linque(d for d in data)
-        self.assertEqual(linq.sort_desc().tuple(), (9, 8, 7, 6, 5, 4, 3, 2, 1, 0))
+        self.assertEqual(linq.sort_desc().to_tuple(), (9, 8, 7, 6, 5, 4, 3, 2, 1, 0))
     
     
     def test_sort_by_desc(self):
@@ -666,10 +617,10 @@ class TestCase(unittest.TestCase):
         data = ((1, 8), (2, 0), (3, 2), (4, 3), (5, 5), (6, 1), (7, 6), (8, 7), (9, 4), (0, 9))
         
         linq = linque.Linque(data)
-        self.assertEqual(linq.sort_by_desc(lambda d: d[1]).tuple(), ((0, 9), (1, 8), (8, 7), (7, 6), (5, 5), (9, 4), (4, 3), (3, 2), (6, 1), (2, 0)))
+        self.assertEqual(linq.sort_by_desc(lambda d: d[1]).to_tuple(), ((0, 9), (1, 8), (8, 7), (7, 6), (5, 5), (9, 4), (4, 3), (3, 2), (6, 1), (2, 0)))
         
         linq = linque.Linque(d for d in data)
-        self.assertEqual(linq.sort_by_desc(lambda d: d[1]).tuple(), ((0, 9), (1, 8), (8, 7), (7, 6), (5, 5), (9, 4), (4, 3), (3, 2), (6, 1), (2, 0)))
+        self.assertEqual(linq.sort_by_desc(lambda d: d[1]).to_tuple(), ((0, 9), (1, 8), (8, 7), (7, 6), (5, 5), (9, 4), (4, 3), (3, 2), (6, 1), (2, 0)))
     
     
     def test_sum(self):
@@ -698,12 +649,12 @@ class TestCase(unittest.TestCase):
         data = (0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
         
         linq = linque.Linque(data)
-        self.assertEqual(linq.take(4).tuple(), (0, 1, 2, 3))
-        self.assertEqual(linq.take(4).tuple(), (0, 1, 2, 3))
+        self.assertEqual(linq.take(4).to_tuple(), (0, 1, 2, 3))
+        self.assertEqual(linq.take(4).to_tuple(), (0, 1, 2, 3))
         
         linq = linque.Linque(d for d in data)
-        self.assertEqual(linq.take(4).tuple(), (0, 1, 2, 3))
-        self.assertEqual(linq.take(4).tuple(), (4, 5, 6, 7))
+        self.assertEqual(linq.take(4).to_tuple(), (0, 1, 2, 3))
+        self.assertEqual(linq.take(4).to_tuple(), (4, 5, 6, 7))
     
     
     def test_take_while(self):
@@ -712,25 +663,78 @@ class TestCase(unittest.TestCase):
         data = (0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
         
         linq = linque.Linque(data)
-        self.assertEqual(linq.take_while(lambda d: d < 4).tuple(), (0, 1, 2, 3))
+        self.assertEqual(linq.take_while(lambda d: d < 4).to_tuple(), (0, 1, 2, 3))
         
         linq = linque.Linque(d for d in data)
-        self.assertEqual(linq.take_while(lambda d: d < 4).tuple(), (0, 1, 2, 3))
+        self.assertEqual(linq.take_while(lambda d: d < 4).to_tuple(), (0, 1, 2, 3))
         
         linq = linque.Linque(d for d in data)
-        self.assertEqual(linq.take_while(lambda d: d < 20).tuple(), (0, 1, 2, 3, 4, 5, 6, 7, 8, 9))
+        self.assertEqual(linq.take_while(lambda d: d < 20).to_tuple(), (0, 1, 2, 3, 4, 5, 6, 7, 8, 9))
     
     
-    def test_tuple(self):
-        """Tests whether tuple works correctly."""
+    def test_to_dict(self):
+        """Tests whether to_dict works correctly."""
+        
+        data = ((0, 1, 'a'), (0, 2, 'b'), (0, 3, 'c'))
+        
+        linq = linque.Linque(data)
+        self.assertEqual(linq.to_dict(lambda d: d[1]), {
+            1: (0, 1, 'a'),
+            2: (0, 2, 'b'),
+            3: (0, 3, 'c')})
+        
+        self.assertEqual(linq.to_dict(lambda d: d[1], lambda d: d[2]), {
+            1: 'a',
+            2: 'b',
+            3: 'c'})
+        
+        linq = linque.Linque(d for d in data)
+        self.assertEqual(linq.to_dict(lambda d: d[1]), {
+            1: (0, 1, 'a'),
+            2: (0, 2, 'b'),
+            3: (0, 3, 'c')})
+        
+        linq = linque.Linque(d for d in data)
+        self.assertEqual(linq.to_dict(lambda d: d[1], lambda d: d[2]), {
+            1: 'a',
+            2: 'b',
+            3: 'c'})
+    
+    
+    def test_to_list(self):
+        """Tests whether to_list works correctly."""
+        
+        data = (0, 1, 2, 3, 4, 0, 1)
+        
+        linq = linque.Linque(data)
+        self.assertEqual(linq.to_list(), list(data))
+        
+        linq = linque.Linque(d for d in data)
+        self.assertEqual(linq.to_list(), list(data))
+    
+    
+    def test_to_set(self):
+        """Tests whether to_set works correctly."""
+        
+        data = (0, 1, 2, 3, 4, 0, 1)
+        
+        linq = linque.Linque(data)
+        self.assertEqual(linq.to_set(), set(data))
+        
+        linq = linque.Linque(d for d in data)
+        self.assertEqual(linq.to_set(), set(data))
+    
+    
+    def test_to_tuple(self):
+        """Tests whether to_tuple works correctly."""
         
         data = [0, 1, 2, 3, 4, 0, 1]
         
         linq = linque.Linque(data)
-        self.assertEqual(linq.tuple(), tuple(data))
+        self.assertEqual(linq.to_tuple(), tuple(data))
         
         linq = linque.Linque(d for d in data)
-        self.assertEqual(linq.tuple(), tuple(data))
+        self.assertEqual(linq.to_tuple(), tuple(data))
     
     
     def test_union(self):
@@ -741,11 +745,11 @@ class TestCase(unittest.TestCase):
         
         linq = linque.Linque(data1)
         items2 = data2
-        self.assertEqual(linq.union(items2).tuple(), ((0, 1), (0, 2), (1, 1), (1, 2), (0, 3)))
+        self.assertEqual(linq.union(items2).to_tuple(), ((0, 1), (0, 2), (1, 1), (1, 2), (0, 3)))
         
         linq = linque.Linque(d for d in data1)
         items2 = (d for d in data2)
-        self.assertEqual(linq.union(items2).tuple(), ((0, 1), (0, 2), (1, 1), (1, 2), (0, 3)))
+        self.assertEqual(linq.union(items2).to_tuple(), ((0, 1), (0, 2), (1, 1), (1, 2), (0, 3)))
     
     
     def test_union_by(self):
@@ -756,11 +760,11 @@ class TestCase(unittest.TestCase):
         
         linq = linque.Linque(data1)
         items2 = data2
-        self.assertEqual(linq.union_by(items2, lambda d: d[1]).tuple(), ((0, 1), (0, 2), (0, 3)))
+        self.assertEqual(linq.union_by(items2, lambda d: d[1]).to_tuple(), ((0, 1), (0, 2), (0, 3)))
         
         linq = linque.Linque(d for d in data1)
         items2 = (d for d in data2)
-        self.assertEqual(linq.union_by(items2, lambda d: d[1]).tuple(), ((0, 1), (0, 2), (0, 3)))
+        self.assertEqual(linq.union_by(items2, lambda d: d[1]).to_tuple(), ((0, 1), (0, 2), (0, 3)))
     
     
     def test_where(self):
@@ -769,10 +773,10 @@ class TestCase(unittest.TestCase):
         data = (0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
         
         linq = linque.Linque(data)
-        self.assertEqual(linq.where(lambda d: d % 2).tuple(), (1, 3, 5, 7, 9))
+        self.assertEqual(linq.where(lambda d: d % 2).to_tuple(), (1, 3, 5, 7, 9))
         
         linq = linque.Linque(d for d in data)
-        self.assertEqual(linq.where(lambda d: d % 2).tuple(), (1, 3, 5, 7, 9))
+        self.assertEqual(linq.where(lambda d: d % 2).to_tuple(), (1, 3, 5, 7, 9))
     
     
     def test_zip(self):
@@ -783,11 +787,11 @@ class TestCase(unittest.TestCase):
         
         linq = linque.Linque(data1)
         items2 = data2
-        self.assertEqual(linq.zip(items2).tuple(), ((0, 'a'), (1, 'b'), (2, 'c')))
+        self.assertEqual(linq.zip(items2).to_tuple(), ((0, 'a'), (1, 'b'), (2, 'c')))
         
         linq = linque.Linque(d for d in data1)
         items2 = (d for d in data2)
-        self.assertEqual(linq.zip(items2).tuple(), ((0, 'a'), (1, 'b'), (2, 'c')))
+        self.assertEqual(linq.zip(items2).to_tuple(), ((0, 'a'), (1, 'b'), (2, 'c')))
 
 
 # run test case
