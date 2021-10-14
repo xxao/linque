@@ -108,7 +108,7 @@ or simply by using pip
 - [flatten](#flattenselector): Produces new sequence by selecting and flattening items data using specified selector.
 - [select](#selectselector): Produces new sequence by selecting items data by specified selector.
 - [select_many](#select_manyselector): Produces new sequence by selecting and flattening items data using specified selector.
-- [zip](#zipsequences): Produces new sequence by merging with given sequences as long as there are some items available in all sequences.
+- [zip](#zipsequences): Produces new sequence by merging given sequences as long as there are items in all sequences.
 
 ### Grouping Operations
 
@@ -199,8 +199,8 @@ print(result)
 ```
 
 ### .chunk(size)
-Splits current sequence into chunks of specified size. This call does not evaluate current sequence. This functionality
-is also available as a *linque.chunk(sequence, size)* utility function.
+Produces new sequence by splitting current sequence into chunks of specified size. This call does not evaluate current
+sequence. This functionality is also available as a *linque.chunk(sequence, size)* utility function.
 
 ```python
 data = (0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
