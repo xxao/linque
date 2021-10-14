@@ -84,6 +84,22 @@ class TestCase(unittest.TestCase):
         self.assertFalse(linq.contains((1, -10)))
     
     
+    def test_contains_by(self):
+        """Tests whether contains_by works correctly."""
+        
+        data = ((0, 0), (1, 10), (2, 20), (3, 30), (4, 40))
+        
+        linq = linque.Linque(data)
+        self.assertTrue(linq.contains_by(10, lambda d: d[1]))
+        self.assertFalse(linq.contains_by(-10, lambda d: d[1]))
+        
+        linq = linque.Linque(d for d in data)
+        self.assertTrue(linq.contains_by(10, lambda d: d[1]))
+        
+        linq = linque.Linque(d for d in data)
+        self.assertFalse(linq.contains_by(-10, lambda d: d[1]))
+    
+    
     def test_chunk(self):
         """Tests whether chunk works correctly."""
         

@@ -77,6 +77,13 @@ or simply by using pip
 
 ## Available Operations
 
+### Quantifier Operations
+
+- [all](#allcondition): Determines whether all items satisfy given condition.
+- [any](#anycondition): Determines whether a sequence contains any item or whether any item satisfies given condition.
+- [contains](#containsitem): Determines whether a sequence contains specified item by using default comparer.
+- [contains_by](#containsvalue-key): Determines whether a sequence contains item with given value by using specified item's key.
+
 ### Element Operations
 
 - [first](#firstcondition): Returns the first item that satisfies specified condition or raises error.
@@ -93,12 +100,6 @@ or simply by using pip
 - [sort_desc](#sort_desc): Produces new sequence by sorting elements in ascending order by using default comparer.
 - [sort_by](#sort_bykey): Produces new sequence by sorting elements in ascending order by using selected item's key.
 - [sort_by_desc](#sort_by_desckey): Produces new sequence by sorting elements in ascending order by using selected item's key.
-
-### Quantifier Operations
-
-- [all](#allcondition): Determines whether all items satisfy given condition.
-- [any](#anycondition): Determines whether a sequence contains any item or whether any item satisfies given condition.
-- [contains](#containsitem): Determines whether a sequence contains specified item by using default comparer.
 
 ### Filtering Operations
 
@@ -231,6 +232,17 @@ current sequence.
 ```python
 data = ((0, 0), (1, 10), (2, 20), (3, 30), (4, 40))
 result = Linque(data).contains((1, 10))
+print(result)
+
+# True
+```
+### .contains_by(value, key)
+Determines whether current sequence contains item with given value by using specified item's key. This call partially
+evaluates current sequence.
+
+```python
+data = ((0, 0), (1, 10), (2, 20), (3, 30), (4, 40))
+result = Linque(data).contains_by(10, lambda d: d[1])
 print(result)
 
 # True

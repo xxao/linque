@@ -150,6 +150,25 @@ class Linque(object):
         return item in self
     
     
+    def contains_by(self, value, key):
+        """
+        Determines whether current sequence contains item with given value by
+        using specified item's key. This call partially evaluates current sequence.
+        
+        Args:
+            value: any
+                Value to check.
+            
+            key: callable
+                Item's key selector.
+        
+        Returns:
+            bool
+        """
+        
+        return value in (key(d) for d in self)
+    
+    
     def count(self, condition=None):
         """
         Returns number of items in current sequence satisfying given condition.

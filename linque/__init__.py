@@ -1,7 +1,7 @@
 #  Created byMartin.cz
 #  Copyright (c) Martin Strohalm. All rights reserved.
 
-version = (2, 0, 0)
+version = (2, 1, 0)
 
 # import utils
 from .iters import aggregate, bisect, chunk, concat, count, index
