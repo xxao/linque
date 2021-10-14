@@ -82,7 +82,7 @@ or simply by using pip
 - [all](#allcondition): Determines whether all items satisfy given condition.
 - [any](#anycondition): Determines whether a sequence contains any item or whether any item satisfies given condition.
 - [contains](#containsitem): Determines whether a sequence contains specified item by using default comparer.
-- [contains_by](#containsbyvalue-key): Determines whether a sequence contains item with given value by using specified item's key.
+- [contains_by](##contains_byvalue-key): Determines whether a sequence contains item with given value by using specified item's key.
 
 ### Element Operations
 
