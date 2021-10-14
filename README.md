@@ -91,7 +91,7 @@ or simply by using pip
 - [last](#lastcondition): Returns the last item that satisfies specified condition or raises error.
 - [last_or_default](#last_or_defaultcondition-default): Returns the last item that satisfies specified condition or specified default.
 - [single](#singlecondition): Returns the single item that satisfies specified condition or raises error.
-- [single_or_default](#single_or_defaultcondition-default): Returns the single item that satisfies specified condition or specified default or raises error if more.
+- [single_or_default](#single_or_defaultcondition-default): Returns the single item that satisfies specified condition, specified default or raises error if more.
 
 ### Sorting Operations
 
