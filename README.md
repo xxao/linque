@@ -79,86 +79,86 @@ or simply by using pip
 
 ### Element Operations
 
-- [first](#firstcondition)
-- [first_or_default](#first_or_defaultcondition-default)
-- [last](#lastcondition)
-- [last_or_default](#last_or_defaultcondition-default)
-- [single](#singlecondition)
+- [first](#firstcondition): Returns the first item that satisfies specified condition or raises error.
+- [first_or_default](#first_or_defaultcondition-default): Returns the first item that satisfies specified condition or specified default.
+- [last](#lastcondition): Returns the last item that satisfies specified condition or raises error.
+- [last_or_default](#last_or_defaultcondition-default): Returns the last item that satisfies specified condition or specified default.
+- [single](#singlecondition): Returns the single item that satisfies specified condition or raises error.
 
 ### Sorting Operations
 
-- [reverse](#reverse)
-- [sort](#sort)
-- [sort_desc](#sort_desc)
-- [sort_by](#sort_bykey)
-- [sort_by_desc](#sort_by_desckey)
+- [reverse](#reverse): Produces new sequence by inverting order of items.
+- [sort](#sort): Produces new sequence by sorting elements in ascending order by using default comparer.
+- [sort_desc](#sort_desc): Produces new sequence by sorting elements in ascending order by using default comparer.
+- [sort_by](#sort_bykey): Produces new sequence by sorting elements in ascending order by using selected item's key.
+- [sort_by_desc](#sort_by_desckey): Produces new sequence by sorting elements in ascending order by using selected item's key.
 
 ### Quantifier Operations
 
-- [all](#allcondition)
-- [any](#anycondition)
-- [contains](#containsitem)
+- [all](#allcondition): Determines whether all items satisfy given condition.
+- [any](#anycondition): Determines whether a sequence contains any item or whether any item satisfies given condition.
+- [contains](#containsitem): Determines whether a sequence contains specified item by using default comparer.
 
 ### Filtering Operations
 
-- [where](#wherecondition)
+- [where](#wherecondition): Produces new sequence by selecting items by specified predicate.
 
 ### Projection Operations
 
-- [flatten](#flattenselector)
-- [select](#selectselector)
-- [select_many](#select_manyselector)
-- [zip](#zipsequences)
+- [flatten](#flattenselector): Produces new sequence by selecting and flattening items data using specified selector.
+- [select](#selectselector): Produces new sequence by selecting items data by specified selector.
+- [select_many](#select_manyselector): Produces new sequence by selecting and flattening items data using specified selector.
+- [zip](#zipsequences): Produces new sequence by merging with given sequences as long as there are some items available in all sequences.
 
 ### Grouping Operations
 
-- [group](#group)
-- [group_by](#group_bykey)
+- [group](#group): Produces new sequence by grouping items according to default comparer.
+- [group_by](#group_bykey): Produces new sequence by grouping items according to specified key selector.
 
 ### Partitioning Operations
 
-- [chunk](#chunksize)
-- [skip](#skipcount)
-- [skip_while](#skip_whilecondition)
-- [take](#takecount)
-- [take_while](#take_whilecondition)
+- [chunk](#chunksize): Produces new sequence by splitting into chunks of specified size.
+- [skip](#skipcount): Produces new sequence by bypassing specified number of items and returns the remaining items.
+- [skip_while](#skip_whilecondition): Produces new sequence by bypassing contiguous items from the start until specified condition fails.
+- [take](#takecount): Produces new sequence by selecting specified number of contiguous items.
+- [take_while](#take_whilecondition): Produces new sequence by selecting items as long as specified condition is true.
 
 ### Concatenation Operations
 
-- [concat](#concatitems) 
+- [concat](#concatitems): Produces new sequence by appending given items at the end of a sequence. 
 
 ### Set Operations
 
-- [distinct](#distinct)
-- [distinct_by](#distinct_bykey)
-- [exclude](#excludeitems)
-- [exclude_by](#exclude_byitems-key)
-- [intersect](#intersectitems)
-- [intersect_by](#intersect_byitems-key)
-- [union](#unionitems)
-- [union_by](#union_byitems-key)
+- [distinct](#distinct): Produces new sequence by selecting distinct items by using default comparer.
+- [distinct_by](#distinct_bykey): Produces new sequence by selecting distinct items by using specified item's key.
+- [exclude](#excludeitems): Produces new sequence by excluding specified items by using default comparer.
+- [exclude_by](#exclude_byitems-key): Produces new sequence by excluding specified items by using selected item's key.
+- [intersect](#intersectitems): Produces new sequence of shared unique items by using default comparer.
+- [intersect_by](#intersect_byitems-key): Produces new sequence of shared unique items by using selected item's key.
+- [union](#unionitems): Produces new sequence of unique items by using default comparer.
+- [union_by](#union_byitems-key): Produces new sequence of unique items by using selected item's key.
 
 ### Converting Operations
 
-- [each](#eachaction)
-- [enumerate](#enumerate)
-- [evaluate](#evaluate)
-- [to_dict](#to_dictkey-value)
-- [to_list](#to_list)
-- [to_set](#to_set)
-- [to_tuple](#to_tuple)
+- [each](#eachaction): Applies specified function to every item in a sequence.
+- [enumerate](#enumerate): Produces new sequence by enumerating items into (index, item) pairs.
+- [evaluate](#evaluate): Evaluates all the iterators in a sequence and stores items as internal list.
+- [to_dict](#to_dictkey-value): Evaluates items into dictionary.
+- [to_list](#to_list): Evaluates items into list.
+- [to_set](#to_set): Evaluates items into set.
+- [to_tuple](#to_tuple): Evaluates items into tuple.
 
 ### Aggregation Operations
 
-- [aggregate](#aggregateaccumulator-seed)
-- [count](#countcondition)
-- [max](#maxselector)
-- [max_by](#max_bykey)
-- [mean](#meanselector)
-- [median](#medianselector)
-- [min](#minselector)
-- [min_by](#min_bykey)
-- [sum](#sumselector)
+- [aggregate](#aggregateaccumulator-seed): Applies accumulator function over a sequence.
+- [count](#countcondition): Returns number of items in a sequence satisfying given condition.
+- [max](#maxselector): Returns maximum value in a sequence by specified items data selector.
+- [max_by](#max_bykey): Returns item having maximum value in a sequence specified item's key.
+- [mean](#meanselector): Returns average value of a sequence by specified items data selector.
+- [median](#medianselector): Returns median value of a sequence by specified items data selector.
+- [min](#minselector): Returns minimum value in a sequence by specified items data selector.
+- [min_by](#min_bykey): Returns item having minimum value in a sequence by using specified item's key.
+- [sum](#sumselector): Returns summed value in a sequence by specified items data selector.
 
 
 ## Examples
@@ -485,8 +485,8 @@ print(result)
 ```
 
 ### .max_by(key)
-Returns item having maximum value in current sequence by using default comparer or specified item's key. This call fully
-evaluates current sequence.
+Returns item having maximum value in current sequence by using specified item's key. This call fully evaluates current
+sequence.
 
 ```python
 data = ((0, 0), (1, 10), (2, 20), (3, 30), (4, 40))
@@ -530,8 +530,8 @@ print(result)
 ```
 
 ### .min_by(key)
-Returns item having minimum value in current sequence by using default comparer or specified item's key. This call fully
-evaluates current sequence.
+Returns item having minimum value in current sequence by using specified item's key. This call fully evaluates current
+sequence.
 
 ```python
 data = ((0, 0), (1, -10), (2, -20), (3, -30), (4, -40))
@@ -757,8 +757,8 @@ print(result)
 ```
 
 ### .union_by(items, key)
-Produces new sequence of unique items from current sequence and given items by using default comparer or selected
-item's key. This call does not evaluate current sequence.  This functionality is also available as a
+Produces new sequence of unique items from current sequence and given items by using selected item's key. This call does
+not evaluate current sequence.  This functionality is also available as a
 *linque.union_by(sequence, items, key)* utility function.
 
 ```python
