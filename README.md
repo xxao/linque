@@ -80,7 +80,7 @@ or simply by using pip
 - [aggregate](#aggregateaccumulator-seed): Applies accumulator function over current sequence.
 - [all](#allcondition): Determines whether all items of current sequence satisfy given condition.
 - [any](#anycondition): Determines whether current sequence contains any item or whether any item of current sequence satisfies given condition.
-- [chunk](#chunkcondition):Determines whether current sequence contains any item or whether any item of current sequence satisfies given condition.
+- [chunk](#chunksize): Splits current sequence into chunks of specified size.
 - [concat](#concatitems): Produces new sequence by appending given items at the end of current sequence. 
 - [contains](#containsitem): Determines whether current sequence contains specified item by using default comparer.
 - [count](#countcondition): Returns number of items in current sequence satisfying given condition.
@@ -163,9 +163,9 @@ print(result)
 # True
 ```
 
-### .chunk(item)
-Determines whether current sequence contains specified item by using default comparer. This call does not evaluate
-current sequence. This functionality is also available as a *linque.chunk(\*sequences)* utility function.
+### .chunk(size)
+Splits current sequence into chunks of specified size. This call does not evaluate current sequence. This functionality
+is also available as a *linque.chunk(sequence, size)* utility function.
 
 ```python
 data = (0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
@@ -579,18 +579,6 @@ print(result)
 # [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 ```
 
-### .sort_by(key)
-Sorts elements of current sequence in ascending order by using selected item's key. This call fully
-evaluates current sequence.
-
-```python
-data = ((1, 8), (2, 0), (3, 2), (4, 3), (5, 5), (6, 1), (7, 6), (8, 7), (9, 4), (0, 9))
-result = Linque(data).sort_by(lambda d: d[1]).to_list()
-print(result)
-
-# [(2, 0), (6, 1), (3, 2), (4, 3), (9, 4), (5, 5), (7, 6), (8, 7), (1, 8), (0, 9)]
-```
-
 ### .sort_desc()
 Produces new sequence by sorting elements of current sequence in ascending order by using default comparer. This call
 fully evaluates current sequence.
@@ -601,6 +589,18 @@ result = Linque(data).sort_desc().to_list()
 print(result)
 
 # [9, 8, 7, 6, 5, 4, 3, 2, 1, 0]
+```
+
+### .sort_by(key)
+Sorts elements of current sequence in ascending order by using selected item's key. This call fully
+evaluates current sequence.
+
+```python
+data = ((1, 8), (2, 0), (3, 2), (4, 3), (5, 5), (6, 1), (7, 6), (8, 7), (9, 4), (0, 9))
+result = Linque(data).sort_by(lambda d: d[1]).to_list()
+print(result)
+
+# [(2, 0), (6, 1), (3, 2), (4, 3), (9, 4), (5, 5), (7, 6), (8, 7), (1, 8), (0, 9)]
 ```
 
 ### .sort_by_desc(key)
