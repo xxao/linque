@@ -549,6 +549,48 @@ class TestCase(unittest.TestCase):
             linq.single(lambda d: d>5)
     
     
+    def test_single_or_default(self):
+        """Tests whether single_or_default works correctly."""
+        
+        data = (42, )
+        
+        linq = linque.Linque(data)
+        self.assertEqual(linq.single_or_default(), 42)
+        
+        linq = linque.Linque(d for d in data)
+        self.assertEqual(linq.single_or_default(), 42)
+        
+        data = (0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
+        
+        linq = linque.Linque(data)
+        self.assertEqual(linq.single_or_default(lambda d: 3 < d < 5), 4)
+        
+        linq = linque.Linque(data)
+        self.assertEqual(linq.single_or_default(lambda d: d > 10, -1), -1)
+        
+        linq = linque.Linque(d for d in data)
+        self.assertEqual(linq.single_or_default(lambda d: 3 < d < 5), 4)
+        
+        linq = linque.Linque(d for d in data)
+        self.assertEqual(linq.single_or_default(lambda d: d > 10, -1), -1)
+        
+        linq = linque.Linque(data)
+        with self.assertRaises(ValueError):
+            linq.single()
+        
+        linq = linque.Linque(d for d in data)
+        with self.assertRaises(ValueError):
+            linq.single()
+        
+        linq = linque.Linque(data)
+        with self.assertRaises(ValueError):
+            linq.single(lambda d: d > 5)
+        
+        linq = linque.Linque(d for d in data)
+        with self.assertRaises(ValueError):
+            linq.single(lambda d: d > 5)
+    
+    
     def test_skip(self):
         """Tests whether skip works correctly."""
         

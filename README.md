@@ -84,6 +84,7 @@ or simply by using pip
 - [last](#lastcondition): Returns the last item that satisfies specified condition or raises error.
 - [last_or_default](#last_or_defaultcondition-default): Returns the last item that satisfies specified condition or specified default.
 - [single](#singlecondition): Returns the single item that satisfies specified condition or raises error.
+- [single_or_default](#single_or_defaultcondition-default): Returns the single item that satisfies specified condition or specified default or raises error if more.
 
 ### Sorting Operations
 
@@ -586,6 +587,19 @@ result = Linque(data).single(lambda d: 3<d<5)
 print(result)
 
 # 4
+```
+
+### .single_or_default(condition, default)
+Returns the single item in current sequence that satisfies specified condition or specified default value if no item
+found. Raises error if more items found. This call fully evaluates current sequence. This functionality is also
+available as a *linque.single_or_default(sequence, condition, default)* utility function.
+
+```python
+data = (0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
+result = Linque(data).single_or_default(lambda d: d>10, -1)
+print(result)
+
+# -1
 ```
 
 ### .skip(count)

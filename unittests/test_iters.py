@@ -329,10 +329,10 @@ class TestCase(unittest.TestCase):
         data = (0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
         
         items = data
-        self.assertEqual(linque.single(items, lambda d: 3<d<5), 4)
+        self.assertEqual(linque.single(items, lambda d: 3 < d < 5), 4)
         
         items = (d for d in data)
-        self.assertEqual(linque.single(items, lambda d: 3<d<5), 4)
+        self.assertEqual(linque.single(items, lambda d: 3 < d < 5), 4)
         
         items = data
         with self.assertRaises(ValueError):
@@ -344,11 +344,53 @@ class TestCase(unittest.TestCase):
         
         items = data
         with self.assertRaises(ValueError):
-            linque.single(items, lambda d: d>5)
+            linque.single(items, lambda d: d > 5)
         
         items = (d for d in data)
         with self.assertRaises(ValueError):
-            linque.single(items, lambda d: d>5)
+            linque.single(items, lambda d: d > 5)
+    
+    
+    def test_single_or_default(self):
+        """Tests whether single_or_default works correctly."""
+        
+        data = (42, )
+        
+        items = data
+        self.assertEqual(linque.single_or_default(items), 42)
+        
+        items = (d for d in data)
+        self.assertEqual(linque.single_or_default(items), 42)
+        
+        data = (0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
+        
+        items = data
+        self.assertEqual(linque.single_or_default(items, lambda d: 3 < d < 5), 4)
+        
+        items = data
+        self.assertEqual(linque.single_or_default(items, lambda d: d > 10, -1), -1)
+        
+        items = (d for d in data)
+        self.assertEqual(linque.single_or_default(items, lambda d: 3 < d < 5), 4)
+        
+        items = (d for d in data)
+        self.assertEqual(linque.single_or_default(items, lambda d: d > 10, -1), -1)
+        
+        items = data
+        with self.assertRaises(ValueError):
+            linque.single(items)
+        
+        items = (d for d in data)
+        with self.assertRaises(ValueError):
+            linque.single(items)
+        
+        items = data
+        with self.assertRaises(ValueError):
+            linque.single(items, lambda d: d > 5)
+        
+        items = (d for d in data)
+        with self.assertRaises(ValueError):
+            linque.single(items, lambda d: d > 5)
     
     
     def test_skip(self):

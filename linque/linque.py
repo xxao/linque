@@ -644,6 +644,26 @@ class Linque(object):
         return iters.single(self, condition)
     
     
+    def single_or_default(self, condition=None, default=None):
+        """
+        Returns the single item in current sequence that satisfies specified
+        condition or specified default value if no item found. Raises error if
+        more items found. This call fully evaluates current sequence.
+        
+        Args:
+            condition: callable
+                Condition to test.
+            
+            default: any
+                Default value.
+        
+        Returns:
+            any
+        """
+        
+        return iters.single_or_default(self, condition, default)
+    
+    
     def skip(self, count):
         """
         Produces new sequence by bypassing specified number of items in current

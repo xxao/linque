@@ -502,6 +502,35 @@ def single(sequence, condition=None):
     raise ValueError
 
 
+def single_or_default(sequence, condition=None, default=None):
+    """
+    Returns the single item in a sequence that satisfies specified condition or
+    specified default value if no item found. Raises error if more items found.
+    
+    Args:
+        sequence: iterable
+            Sequence of items to go through.
+        
+        condition: callable
+            Condition to test.
+        
+        default: any
+            Default value.
+    
+    Returns:
+        any
+            Single valid item.
+    """
+    
+    items = list(sequence) if condition is None else [d for d in sequence if condition(d)]
+    if len(items) == 1:
+        return items[0]
+    if len(items) == 0:
+        return default
+    
+    raise ValueError
+
+
 def skip(sequence, n):
     """
     Bypasses specified number of items in a sequence and returns the remaining
