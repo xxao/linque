@@ -79,86 +79,86 @@ or simply by using pip
 
 ### Element Operations
 
-- [first](#firstcondition): Returns the first item in current sequence that satisfies specified condition or raises error if no item found.
-- [first_or_default](#first_or_defaultcondition-default): Returns the first item in current sequence that satisfies specified condition or specified default value if no item found.
-- [last](#lastcondition): Returns the last item in current sequence that satisfies specified condition or raises error if no item found.
-- [last_or_default](#last_or_defaultcondition-default): Returns the last item in current sequence that satisfies specified condition or specified default value if no item found.
-- [single](#singlecondition): Returns the single item in current sequence that satisfies specified condition or raises error if none or more items found.
+- [first](#firstcondition)
+- [first_or_default](#first_or_defaultcondition-default)
+- [last](#lastcondition)
+- [last_or_default](#last_or_defaultcondition-default)
+- [single](#singlecondition)
 
 ### Sorting Operations
 
-- [reverse](#reverse): Produces new sequence by inverting order of items in current sequence.
-- [sort](#sort): Sorts elements of current sequence in ascending order by using default comparer.
-- [sort_desc](#sort_desc): Produces new sequence by sorting elements of current sequence in ascending order by using default comparer.
-- [sort_by](#sort_bykey): Sorts elements of current sequence in ascending order by using selected item's key.
-- [sort_by_desc](#sort_by_desckey): Produces new sequence by sorting elements of current sequence in ascending order by using selected item's key.
+- [reverse](#reverse)
+- [sort](#sort)
+- [sort_desc](#sort_desc)
+- [sort_by](#sort_bykey)
+- [sort_by_desc](#sort_by_desckey)
 
 ### Quantifier Operations
 
-- [all](#allcondition): Determines whether all items of current sequence satisfy given condition.
-- [any](#anycondition): Determines whether current sequence contains any item or whether any item of current sequence satisfies given condition.
-- [contains](#containsitem): Determines whether current sequence contains specified item by using default comparer.
+- [all](#allcondition)
+- [any](#anycondition)
+- [contains](#containsitem)
 
 ### Filtering Operations
 
-- [where](#wherecondition): Produces new sequence by selecting items by specified predicate.
+- [where](#wherecondition)
 
 ### Projection Operations
 
-- [flatten](#flattenselector): Produces new sequence by selecting and flattening items data using specified selector.
-- [select](#selectselector): Produces new sequence by selecting items data by specified selector.
-- [select_many](#select_manyselector): Produces new sequence by selecting and flattening items data using specified selector.
-- [zip](#zipsequences): Produces new sequence by merging given sequences with current sequence as long as there are items available in all sequences.
+- [flatten](#flattenselector)
+- [select](#selectselector)
+- [select_many](#select_manyselector)
+- [zip](#zipsequences)
 
 ### Grouping Operations
 
-- [group](#group): Produces new sequence by grouping items of current sequence according to default comparer and creates result values as (key, group) pairs.
-- [group_by](#group_bykey): Produces new sequence by grouping items of current sequence according to specified key selector and creates result values as (key, group) pairs.
+- [group](#group)
+- [group_by](#group_bykey)
 
 ### Partitioning Operations
 
-- [chunk](#chunksize): Splits current sequence into chunks of specified size.
-- [skip](#skipcount): Produces new sequence by bypassing specified number of items in current sequence and returns the remaining items.
-- [skip_while](#skip_whilecondition): Produces new sequence by bypassing contiguous items from the start of current sequence until specified condition fails the first time.
-- [take](#takecount): Produces new sequence by selecting specified number of contiguous items from the start of current sequence.
-- [take_while](#take_whilecondition): Produces new sequence by selecting items from current sequence as long as specified condition is true.
+- [chunk](#chunksize)
+- [skip](#skipcount)
+- [skip_while](#skip_whilecondition)
+- [take](#takecount)
+- [take_while](#take_whilecondition)
 
 ### Concatenation Operations
 
-- [concat](#concatitems): Produces new sequence by appending given items at the end of current sequence. 
+- [concat](#concatitems) 
 
 ### Set Operations
 
-- [distinct](#distinct): Produces new sequence by selecting distinct items from current sequence using default comparer.
-- [distinct_by](#distinct_bykey): Produces new sequence by selecting distinct items from current sequence using specified item's key.
-- [exclude](#excludeitems): Produces new sequence by excluding specified items from current sequence using default comparer.
-- [exclude_by](#exclude_byitems-key): Produces new sequence by excluding specified items from current sequence using selected item's key.
-- [intersect](#intersectitems): Produces new sequence of shared unique items from current sequence and given items by using default comparer.
-- [intersect_by](#intersect_byitems-key): Produces new sequence of shared unique items from current sequence and given items by using selected item's key.
-- [union](#unionitems): Produces new sequence of unique items from current sequence and given items by using default comparer.
-- [union_by](#union_byitems-key): Produces new sequence of unique items from current sequence and given items by using default comparer or selected item's key.
+- [distinct](#distinct)
+- [distinct_by](#distinct_bykey)
+- [exclude](#excludeitems)
+- [exclude_by](#exclude_byitems-key)
+- [intersect](#intersectitems)
+- [intersect_by](#intersect_byitems-key)
+- [union](#unionitems)
+- [union_by](#union_byitems-key)
 
 ### Converting Operations
 
-- [each](#eachaction): Applies specified function to every item in current sequence.
-- [enumerate](#enumerate): Produces new sequence by enumerating items of current sequence into (index, item) pairs.
-- [evaluate](#evaluate): Evaluates all the iterators in current sequence and stores items as internal list.
-- [to_dict](#to_dictkey-value): Evaluates items into dictionary.
-- [to_list](#to_list): Evaluate items into list.
-- [to_set](#to_set): Evaluate items into set.
-- [to_tuple](#to_tuple): Evaluate items into tuple.
+- [each](#eachaction)
+- [enumerate](#enumerate)
+- [evaluate](#evaluate)
+- [to_dict](#to_dictkey-value)
+- [to_list](#to_list)
+- [to_set](#to_set)
+- [to_tuple](#to_tuple)
 
 ### Aggregation Operations
 
-- [aggregate](#aggregateaccumulator-seed): Applies accumulator function over current sequence.
-- [count](#countcondition): Returns number of items in current sequence satisfying given condition.
-- [max](#maxselector): Returns maximum value in current sequence by specified items data selector.
-- [max_by](#max_bykey): Returns item having maximum value in current sequence by using default comparer or specified item's key.
-- [mean](#meanselector): Returns average value of current sequence by specified items data selector.
-- [median](#medianselector): Returns median value of current sequence by specified items data selector.
-- [min](#minselector): Returns minimum value in current sequence by specified items data selector.
-- [min_by](#min_bykey): Returns item having minimum value in current sequence by using default comparer or specified item's key.
-- [sum](#sumselector): Returns summed value in current sequence by specified items data selector.
+- [aggregate](#aggregateaccumulator-seed)
+- [count](#countcondition)
+- [max](#maxselector)
+- [max_by](#max_bykey)
+- [mean](#meanselector)
+- [median](#medianselector)
+- [min](#minselector)
+- [min_by](#min_bykey)
+- [sum](#sumselector)
 
 
 ## Examples
