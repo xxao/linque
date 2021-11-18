@@ -422,7 +422,7 @@ values as (key, group) pairs. This call fully evaluates current sequence. This f
 *linque.group_by(sequence, key)* utility function.
 
 ```python
-data = ((0, 1), (0, 1), (0, 2))
+data = ((0, 1), (0, 1), (0, 2), (1, 1))
 result = Linque(data).group_by(lambda d: d[1]).to_dict(lambda d: d[0], lambda d: d[1].to_list())
 print(result)
 
