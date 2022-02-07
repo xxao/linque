@@ -582,7 +582,7 @@ current sequence.
 
 ```python
 data = ((0, 0), (1, 10), (2, 20), (3, 30), (4, 40))
-result = Linque(data).flatten(lambda d: d).to_list()
+result = Linque(data).select_many(lambda d: d).to_list()
 print(result)
 
 # [0, 0, 1, 10, 2, 20, 3, 30, 4, 40]

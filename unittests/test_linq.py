@@ -527,8 +527,20 @@ class TestCase(unittest.TestCase):
         
         linq = linque.Linque(d for d in data)
         self.assertEqual(linq.select(lambda d: d[1]).to_tuple(), (0, 10, 20, 30, 40))
-    
-    
+
+
+    def test_select_many(self):
+        """Tests whether select_many works correctly."""
+
+        data = ((0, 0), (1, 10), (2, 20), (3, 30), (4, 40))
+
+        linq = linque.Linque(data)
+        self.assertEqual(linq.select_many(lambda d: d).to_tuple(), (0, 0, 1, 10, 2, 20, 3, 30, 4, 40))
+
+        linq = linque.Linque(d for d in data)
+        self.assertEqual(linq.select_many(lambda d: d).to_tuple(), (0, 0, 1, 10, 2, 20, 3, 30, 4, 40))
+
+
     def test_single(self):
         """Tests whether single works correctly."""
         
