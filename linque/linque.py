@@ -96,6 +96,45 @@ class Linque(object):
         return any(condition(d) for d in self)
     
     
+    def argsort(self, reverse=False):
+        """
+        Returns items indices that would sort current sequence by using
+        default comparer. This call fully evaluates current sequence.
+        
+        Args:
+            reverse: bool
+                If set to True, sorting is reversed.
+        
+        Returns:
+            Linque
+        """
+        
+        result = iters.argsort(self, reverse=reverse)
+        
+        return Linque(result, self._evaluate)
+    
+    
+    def argsort_by(self, key, reverse=False):
+        """
+        Returns items indices that would sort current sequence by using
+        specified item's key. This call fully evaluates current sequence.
+        
+        Args:
+            key: callable
+                Item's key selector.
+            
+            reverse: bool
+                If set to True, sorting is reversed.
+        
+        Returns:
+            Linque
+        """
+        
+        result = iters.argsort_by(self, key, reverse=reverse)
+        
+        return Linque(result, self._evaluate)
+    
+    
     def chunk(self, size):
         """
         Splits current sequence into chunks of specified size. This call does

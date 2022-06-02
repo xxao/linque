@@ -53,6 +53,38 @@ class TestCase(unittest.TestCase):
         self.assertTrue(linq.any(lambda d: d > 5))
     
     
+    def test_argsort(self):
+        """Tests whether argsort works correctly."""
+        
+        data = (3, 1, 2)
+        
+        linq = linque.Linque(data)
+        self.assertEqual(linq.argsort().to_tuple(), (1, 2, 0))
+        self.assertEqual(linq.argsort(True).to_tuple(), (0, 2, 1))
+        
+        linq = linque.Linque(d for d in data)
+        self.assertEqual(linq.argsort().to_tuple(), (1, 2, 0))
+        
+        linq = linque.Linque(d for d in data)
+        self.assertEqual(linq.argsort(True).to_tuple(), (0, 2, 1))
+    
+    
+    def test_argsort_by(self):
+        """Tests whether argsort_by works correctly."""
+        
+        data = ((2, 3), (1, 1), (3, 2))
+        
+        linq = linque.Linque(data)
+        self.assertEqual(linq.argsort_by(lambda d: d[1]).to_tuple(), (1, 2, 0))
+        self.assertEqual(linq.argsort_by(lambda d: d[1], True).to_tuple(), (0, 2, 1))
+        
+        linq = linque.Linque(d for d in data)
+        self.assertEqual(linq.argsort_by(lambda d: d[1]).to_tuple(), (1, 2, 0))
+        
+        linq = linque.Linque(d for d in data)
+        self.assertEqual(linq.argsort_by(lambda d: d[1], True).to_tuple(), (0, 2, 1))
+    
+    
     def test_concat(self):
         """Tests whether concat works correctly."""
         

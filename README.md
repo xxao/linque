@@ -95,6 +95,8 @@ or simply by using pip
 
 ### Sorting Operations
 
+- [argsort](#argsort-reverse): Returns items indices that would sort current sequence by using default comparer.
+- [argsort_by](#argsort_bykey-reverse): Returns items indices that would sort current sequence by using selected item's key.
 - [reverse](#reverse): Produces new sequence by inverting order of items.
 - [sort](#sort-reverse): Produces new sequence by sorting elements by using default comparer.
 - [sort_by](#sort_bykey-reverse): Produces new sequence by sorting elements by using selected item's key.
@@ -196,6 +198,30 @@ result = Linque(data).any(lambda d: d > 5)
 print(result)
 
 # True
+```
+
+### .argsort(reverse)
+Returns items indices that would sort current sequence by using default comparer.
+This call fully evaluates current sequence.
+
+```python
+data = (3, 1, 2)
+result = Linque(data).argsort().to_list()
+print(result)
+
+# [1, 2, 0]
+```
+
+### .argsort_by(key, reverse)
+Returns items indices that would sort current sequence by using specified item's key.
+This call fully evaluates current sequence.
+
+```python
+data = (3, 1, 2)
+result = Linque(data).argsort().to_list()
+print(result)
+
+# [1, 2, 0]
 ```
 
 ### .chunk(size)
