@@ -95,12 +95,12 @@ or simply by using pip
 
 ### Sorting Operations
 
-- [argsort](#argsort-reverse): Returns items indices that would sort current sequence by using default comparer.
+- [argsort](#argsortreverse): Returns items indices that would sort current sequence by using default comparer.
 - [argsort_by](#argsort_bykey-reverse): Returns items indices that would sort current sequence by using selected item's key.
 - [reverse](#reverse): Produces new sequence by inverting order of items.
-- [rank](#rank-method-reverse): Provides 1-based rank for each item of current sequence by using default comparer.
+- [rank](#rankmethod-reverse): Provides 1-based rank for each item of current sequence by using default comparer.
 - [rank_by](#rank_bykey-method-reverse): Provides 1-based rank for each item of current sequence by using selected item's key.
-- [sort](#sort-reverse): Produces new sequence by sorting elements by using default comparer.
+- [sort](#sortreverse): Produces new sequence by sorting elements by using default comparer.
 - [sort_by](#sort_bykey-reverse): Produces new sequence by sorting elements by using selected item's key.
 
 ### Filtering Operations
