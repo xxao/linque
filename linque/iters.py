@@ -34,6 +34,50 @@ def aggregate(sequence, func, seed=None):
     return res
 
 
+def argsort(sequence, reverse=False):
+    """
+    Returns items indices that would sort a sequence by using default comparer.
+    
+    Args:
+        sequence: iterable
+            Sequence of items to sort.
+        
+        reverse: bool
+            If set to True, sorting is reversed.
+    
+    Returns:
+        (int,)
+            Indexes of sorted items.
+    """
+    
+    items = list(sequence)
+    return sorted(range(len(items)), key=items.__getitem__, reverse=reverse)
+
+
+def argsort_by(sequence, key, reverse=False):
+    """
+    Returns items indices that would sort a sequence by using specified item's
+    key.
+    
+    Args:
+        sequence: iterable
+            Sequence of items to sort.
+        
+        key: callable
+            Item's key selector.
+        
+        reverse: bool
+            If set to True, sorting is reversed.
+    
+    Returns:
+        (int,)
+            Indexes of sorted items.
+    """
+    
+    keys = [key(d) for d in sequence]
+    return sorted(range(len(keys)), key=keys.__getitem__, reverse=reverse)
+
+
 def bisect(sequence, value, key=None, side='left'):
     """
     Uses binary search to find index where if given value inserted, the order

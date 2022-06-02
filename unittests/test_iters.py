@@ -21,6 +21,38 @@ class TestCase(unittest.TestCase):
         self.assertEqual(linque.aggregate(items, lambda r, n: r+chr(n), ''), 'aggregate')
     
     
+    def test_argsort(self):
+        """Tests whether argsort works correctly."""
+        
+        data = (3, 1, 2)
+        
+        items = data
+        self.assertEqual(linque.argsort(items), [1, 2, 0])
+        self.assertEqual(linque.argsort(items, True), [0, 2, 1])
+        
+        items = (d for d in data)
+        self.assertEqual(linque.argsort(items), [1, 2, 0])
+        
+        items = (d for d in data)
+        self.assertEqual(linque.argsort(items, True), [0, 2, 1])
+    
+    
+    def test_argsort_by(self):
+        """Tests whether argsort_by works correctly."""
+        
+        data = ((2, 3), (1, 1), (3, 2))
+        
+        items = data
+        self.assertEqual(linque.argsort_by(items, lambda d: d[1]), [1, 2, 0])
+        self.assertEqual(linque.argsort_by(items, lambda d: d[1], True), [0, 2, 1])
+        
+        items = (d for d in data)
+        self.assertEqual(linque.argsort_by(items, lambda d: d[1]), [1, 2, 0])
+        
+        items = (d for d in data)
+        self.assertEqual(linque.argsort_by(items, lambda d: d[1], True), [0, 2, 1])
+    
+    
     def test_bisect(self):
         """Tests whether binary search works correctly."""
         
