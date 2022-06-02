@@ -522,6 +522,117 @@ def last_or_default(sequence, condition=None, default=None):
     return first_or_default(sequence, condition, default)
 
 
+def rank(sequence, method='average', reverse=False):
+    """
+    Provides 1-based rank for each item of a sequence by using default
+    comparer. The ties are resolved according to selected method.
+    
+    Args:
+        sequence: iterable
+            Sequence of items to go through.
+        
+        method: str
+            Method used to assign ranks to tied items.
+                'average' - tied values are assigned by their average rank
+                'min' - tied values are assigned by their minimum rank
+                'max' - tied values are assigned by their maximum rank
+                'dense' - like 'min' but without rank gaps
+                'ordinal' - distinct rank for all values
+        
+        reverse: bool
+            If set to True, sorting is reversed.
+    
+    Returns:
+        (int,)
+            Items' ranks.
+    """
+    
+    items = list(sequence)
+    size = len(items)
+    idxs = sorted(range(size), key=items.__getitem__, reverse=reverse)
+    
+    if method == 'ordinal':
+        return [i+1 for i in idxs]
+    
+    items = [items[r] for r in idxs]
+    ranks = [0]*size
+    
+    dupls = 0
+    sums = 0
+    lost = 0
+    
+    if method == 'average':
+        for i in range(size):
+            dupls += 1
+            sums += i
+            if i == size - 1 or items[i] != items[i + 1]:
+                for j in range(i - dupls + 1, i + 1):
+                    ranks[idxs[j]] = sums / dupls + 1
+                dupls = 0
+                sums = 0
+    
+    elif method == 'min':
+        for i in range(size):
+            dupls += 1
+            if i == size - 1 or items[i] != items[i + 1]:
+                for j in range(i - dupls + 1, i + 1):
+                    ranks[idxs[j]] = i + 1 - dupls + 1
+                dupls = 0
+    
+    elif method == 'max':
+        for i in range(size):
+            dupls += 1
+            if i == size - 1 or items[i] != items[i + 1]:
+                for j in range(i - dupls + 1, i + 1):
+                    ranks[idxs[j]] = i + 1
+                dupls = 0
+    
+    elif method == 'dense':
+        for i in range(size):
+            dupls += 1
+            sums += i
+            if i == size - 1 or items[i] != items[i + 1]:
+                for j in range(i - dupls + 1, i + 1):
+                    ranks[idxs[j]] = i + 1 - lost
+                dupls = 0
+            else:
+                lost += 1
+    
+    return ranks
+
+
+def rank_by(sequence, key, method='average', reverse=False):
+    """
+    Provides 1-based rank for each item of a sequence by using default
+    comparer. The ties are resolved according to selected method.
+    
+    Args:
+        sequence: iterable
+            Sequence of items to go through.
+        
+        key: callable
+            Item's key selector.
+        
+        method: str
+            Method used to assign ranks to tied items.
+                'average' - tied values are assigned by their average rank
+                'min' - tied values are assigned by their minimum rank
+                'max' - tied values are assigned by their maximum rank
+                'dense' - like 'min' but without rank gaps
+                'ordinal' - distinct rank for all values
+        
+        reverse: bool
+            If set to True, sorting is reversed.
+    
+    Returns:
+        (int,)
+            Items' ranks.
+    """
+    
+    keys = (key(d) for d in sequence)
+    return rank(keys, method, reverse)
+
+
 def single(sequence, condition=None):
     """
     Returns the single item in a sequence that satisfies specified condition or
