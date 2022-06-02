@@ -96,10 +96,8 @@ or simply by using pip
 ### Sorting Operations
 
 - [reverse](#reverse): Produces new sequence by inverting order of items.
-- [sort](#sort): Produces new sequence by sorting elements in ascending order by using default comparer.
-- [sort_desc](#sort_desc): Produces new sequence by sorting elements in ascending order by using default comparer.
-- [sort_by](#sort_bykey): Produces new sequence by sorting elements in ascending order by using selected item's key.
-- [sort_by_desc](#sort_by_desckey): Produces new sequence by sorting elements in ascending order by using selected item's key.
+- [sort](#sort-reverse): Produces new sequence by sorting elements by using default comparer.
+- [sort_by](#sort_bykey-reverse): Produces new sequence by sorting elements by using selected item's key.
 
 ### Filtering Operations
 
@@ -639,9 +637,8 @@ print(result)
 # [4, 5, 4, 3, 2, 2, 0]
 ```
 
-### .sort()
-Sorts elements of current sequence in ascending order by using default comparer. This call fully evaluates current
-sequence.
+### .sort(reverse)
+Sorts elements of current sequence by using default comparer. This call fully evaluates current sequence.
 
 ```python
 data = (8, 0, 2, 3, 5, 1, 6, 7, 4, 9)
@@ -651,21 +648,8 @@ print(result)
 # [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 ```
 
-### .sort_desc()
-Produces new sequence by sorting elements of current sequence in ascending order by using default comparer. This call
-fully evaluates current sequence.
-
-```python
-data = (8, 0, 2, 3, 5, 1, 6, 7, 4, 9)
-result = Linque(data).sort_desc().to_list()
-print(result)
-
-# [9, 8, 7, 6, 5, 4, 3, 2, 1, 0]
-```
-
-### .sort_by(key)
-Sorts elements of current sequence in ascending order by using selected item's key. This call fully
-evaluates current sequence.
+### .sort_by(key, reverse)
+Sorts elements of current sequence by using selected item's key. This call fully evaluates current sequence.
 
 ```python
 data = ((1, 8), (2, 0), (3, 2), (4, 3), (5, 5), (6, 1), (7, 6), (8, 7), (9, 4), (0, 9))
@@ -673,18 +657,6 @@ result = Linque(data).sort_by(lambda d: d[1]).to_list()
 print(result)
 
 # [(2, 0), (6, 1), (3, 2), (4, 3), (9, 4), (5, 5), (7, 6), (8, 7), (1, 8), (0, 9)]
-```
-
-### .sort_by_desc(key)
-Produces new sequence by sorting elements of current sequence in ascending order by using selected item's key. This call
-fully evaluates current sequence.
-
-```python
-data = ((1, 8), (2, 0), (3, 2), (4, 3), (5, 5), (6, 1), (7, 6), (8, 7), (9, 4), (0, 9))
-result = Linque(data).sort_by_desc(lambda d: d[1]).to_list()
-print(result)
-
-# [(0, 9), (1, 8), (8, 7), (7, 6), (5, 5), (9, 4), (4, 3), (3, 2), (6, 1), (2, 0)]
 ```
 
 ### .sum(selector)

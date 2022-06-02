@@ -720,68 +720,41 @@ class Linque(object):
         return Linque(result, self._evaluate)
     
     
-    def sort(self):
+    def sort(self, reverse=False):
         """
-        Produces new sequence by sorting elements of current sequence in
-        ascending order by using default comparer. This call fully evaluates
-        current sequence.
+        Produces new sequence by sorting elements of current sequence by using
+        default comparer. This call fully evaluates current sequence.
+        
+        Args:
+            reverse: bool
+                If set to True, sorting is reversed.
         
         Returns:
             Linque
         """
         
-        result = sorted(self)
+        result = sorted(self, reverse=reverse)
         
         return Linque(result, self._evaluate)
     
     
-    def sort_desc(self):
+    def sort_by(self, key, reverse=False):
         """
-        Sorts elements of current sequence in descending order by using default
-        comparer. This call fully evaluates current sequence.
-        
-        Returns:
-            Linque
-        """
-        
-        result = sorted(self, reverse=True)
-        
-        return Linque(result, self._evaluate)
-    
-    
-    def sort_by(self, key):
-        """
-        Produces new sequence by sorting elements of current sequence in
-        ascending order by using selected item's key. This call fully evaluates
-        current sequence.
+        Produces new sequence by sorting elements of current sequence by using
+        selected item's key. This call fully evaluates current sequence.
         
         Args:
             key: callable
                 Item's key selector.
+            
+            reverse: bool
+                If set to True, sorting is reversed.
         
         Returns:
             Linque
         """
         
-        result = sorted(self, key=key)
-        
-        return Linque(result, self._evaluate)
-    
-    
-    def sort_by_desc(self, key):
-        """
-        Sorts elements of current sequence in descending order by using selected
-        item's key. This call fully evaluates current sequence.
-        
-        Args:
-            key: callable
-                Item's key selector.
-        
-        Returns:
-            Linque
-        """
-        
-        result = sorted(self, key=key, reverse=True)
+        result = sorted(self, key=key, reverse=reverse)
         
         return Linque(result, self._evaluate)
     

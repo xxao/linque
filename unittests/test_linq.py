@@ -653,6 +653,12 @@ class TestCase(unittest.TestCase):
         
         linq = linque.Linque(d for d in data)
         self.assertEqual(linq.sort().to_tuple(), (0, 1, 2, 3, 4, 5, 6, 7, 8, 9))
+        
+        linq = linque.Linque(data)
+        self.assertEqual(linq.sort(True).to_tuple(), (9, 8, 7, 6, 5, 4, 3, 2, 1, 0))
+        
+        linq = linque.Linque(d for d in data)
+        self.assertEqual(linq.sort(True).to_tuple(), (9, 8, 7, 6, 5, 4, 3, 2, 1, 0))
     
     
     def test_sort_by(self):
@@ -661,36 +667,16 @@ class TestCase(unittest.TestCase):
         data = ((1, 8), (2, 0), (3, 2), (4, 3), (5, 5), (6, 1), (7, 6), (8, 7), (9, 4), (0, 9))
         
         linq = linque.Linque(data)
-        self.assertEqual(
-            linq.sort_by(lambda d: d[1]).to_tuple(), ((2, 0), (6, 1), (3, 2), (4, 3), (9, 4), (5, 5), (7, 6), (8, 7), (1, 8), (0, 9)))
+        self.assertEqual(linq.sort_by(lambda d: d[1]).to_tuple(), ((2, 0), (6, 1), (3, 2), (4, 3), (9, 4), (5, 5), (7, 6), (8, 7), (1, 8), (0, 9)))
         
         linq = linque.Linque(d for d in data)
-        self.assertEqual(
-            linq.sort_by(lambda d: d[1]).to_tuple(), ((2, 0), (6, 1), (3, 2), (4, 3), (9, 4), (5, 5), (7, 6), (8, 7), (1, 8), (0, 9)))
-    
-    
-    def test_sort_desc(self):
-        """Tests whether sort_desc works correctly."""
-        
-        data = (8, 0, 2, 3, 5, 1, 6, 7, 4, 9)
+        self.assertEqual(linq.sort_by(lambda d: d[1]).to_tuple(), ((2, 0), (6, 1), (3, 2), (4, 3), (9, 4), (5, 5), (7, 6), (8, 7), (1, 8), (0, 9)))
         
         linq = linque.Linque(data)
-        self.assertEqual(linq.sort_desc().to_tuple(), (9, 8, 7, 6, 5, 4, 3, 2, 1, 0))
+        self.assertEqual(linq.sort_by(lambda d: d[1], True).to_tuple(), ((0, 9), (1, 8), (8, 7), (7, 6), (5, 5), (9, 4), (4, 3), (3, 2), (6, 1), (2, 0)))
         
         linq = linque.Linque(d for d in data)
-        self.assertEqual(linq.sort_desc().to_tuple(), (9, 8, 7, 6, 5, 4, 3, 2, 1, 0))
-    
-    
-    def test_sort_by_desc(self):
-        """Tests whether sort_by_desc works correctly."""
-        
-        data = ((1, 8), (2, 0), (3, 2), (4, 3), (5, 5), (6, 1), (7, 6), (8, 7), (9, 4), (0, 9))
-        
-        linq = linque.Linque(data)
-        self.assertEqual(linq.sort_by_desc(lambda d: d[1]).to_tuple(), ((0, 9), (1, 8), (8, 7), (7, 6), (5, 5), (9, 4), (4, 3), (3, 2), (6, 1), (2, 0)))
-        
-        linq = linque.Linque(d for d in data)
-        self.assertEqual(linq.sort_by_desc(lambda d: d[1]).to_tuple(), ((0, 9), (1, 8), (8, 7), (7, 6), (5, 5), (9, 4), (4, 3), (3, 2), (6, 1), (2, 0)))
+        self.assertEqual(linq.sort_by(lambda d: d[1], True).to_tuple(), ((0, 9), (1, 8), (8, 7), (7, 6), (5, 5), (9, 4), (4, 3), (3, 2), (6, 1), (2, 0)))
     
     
     def test_sum(self):
