@@ -537,6 +537,62 @@ class TestCase(unittest.TestCase):
         self.assertEqual(linq.min_by(lambda d: d[1]), (4, -40))
     
     
+    def test_rank(self):
+        """Tests whether rank works correctly."""
+        
+        data = (0, 2, 3, 2)
+        
+        linq = linque.Linque(data)
+        self.assertEqual(linq.rank('average').to_tuple(), (1, 2.5, 4, 2.5))
+        self.assertEqual(linq.rank('min').to_tuple(), (1, 2, 4, 2))
+        self.assertEqual(linq.rank('max').to_tuple(), (1, 3, 4, 3))
+        self.assertEqual(linq.rank('dense').to_tuple(), (1, 2, 3, 2))
+        self.assertEqual(linq.rank('ordinal').to_tuple(), (1, 2, 4, 3))
+        
+        linq = linque.Linque(d for d in data)
+        self.assertEqual(linq.rank('average').to_tuple(), (1, 2.5, 4, 2.5))
+        
+        linq = linque.Linque(d for d in data)
+        self.assertEqual(linq.rank('min').to_tuple(), (1, 2, 4, 2))
+        
+        linq = linque.Linque(d for d in data)
+        self.assertEqual(linq.rank('max').to_tuple(), (1, 3, 4, 3))
+        
+        linq = linque.Linque(d for d in data)
+        self.assertEqual(linq.rank('dense').to_tuple(), (1, 2, 3, 2))
+        
+        linq = linque.Linque(d for d in data)
+        self.assertEqual(linq.rank('ordinal').to_tuple(), (1, 2, 4, 3))
+    
+    
+    def test_rank_by(self):
+        """Tests whether rank_by works correctly."""
+        
+        data = ((2, 0), (3, 2), (2, 3), (0, 2))
+        
+        linq = linque.Linque(data)
+        self.assertEqual(linq.rank_by(lambda d: d[1], 'average').to_tuple(), (1, 2.5, 4, 2.5))
+        self.assertEqual(linq.rank_by(lambda d: d[1], 'min').to_tuple(), (1, 2, 4, 2))
+        self.assertEqual(linq.rank_by(lambda d: d[1], 'max').to_tuple(), (1, 3, 4, 3))
+        self.assertEqual(linq.rank_by(lambda d: d[1], 'dense').to_tuple(), (1, 2, 3, 2))
+        self.assertEqual(linq.rank_by(lambda d: d[1], 'ordinal').to_tuple(), (1, 2, 4, 3))
+        
+        linq = linque.Linque(d for d in data)
+        self.assertEqual(linq.rank_by(lambda d: d[1], 'average').to_tuple(), (1, 2.5, 4, 2.5))
+        
+        linq = linque.Linque(d for d in data)
+        self.assertEqual(linq.rank_by(lambda d: d[1], 'min').to_tuple(), (1, 2, 4, 2))
+        
+        linq = linque.Linque(d for d in data)
+        self.assertEqual(linq.rank_by(lambda d: d[1], 'max').to_tuple(), (1, 3, 4, 3))
+        
+        linq = linque.Linque(d for d in data)
+        self.assertEqual(linq.rank_by(lambda d: d[1], 'dense').to_tuple(), (1, 2, 3, 2))
+        
+        linq = linque.Linque(d for d in data)
+        self.assertEqual(linq.rank_by(lambda d: d[1], 'ordinal').to_tuple(), (1, 2, 4, 3))
+    
+    
     def test_reverse(self):
         """Tests whether reverse works correctly."""
         
@@ -559,20 +615,20 @@ class TestCase(unittest.TestCase):
         
         linq = linque.Linque(d for d in data)
         self.assertEqual(linq.select(lambda d: d[1]).to_tuple(), (0, 10, 20, 30, 40))
-
-
+    
+    
     def test_select_many(self):
         """Tests whether select_many works correctly."""
-
+        
         data = ((0, 0), (1, 10), (2, 20), (3, 30), (4, 40))
-
+        
         linq = linque.Linque(data)
         self.assertEqual(linq.select_many(lambda d: d).to_tuple(), (0, 0, 1, 10, 2, 20, 3, 30, 4, 40))
-
+        
         linq = linque.Linque(d for d in data)
         self.assertEqual(linq.select_many(lambda d: d).to_tuple(), (0, 0, 1, 10, 2, 20, 3, 30, 4, 40))
-
-
+    
+    
     def test_single(self):
         """Tests whether single works correctly."""
         

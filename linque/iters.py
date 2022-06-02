@@ -603,8 +603,8 @@ def rank(sequence, method='average', reverse=False):
 
 def rank_by(sequence, key, method='average', reverse=False):
     """
-    Provides 1-based rank for each item of a sequence by using default
-    comparer. The ties are resolved according to selected method.
+    Provides 1-based rank for each item of a sequence by using selected item's
+    key. The ties are resolved according to selected method.
     
     Args:
         sequence: iterable

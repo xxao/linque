@@ -9,7 +9,7 @@ class Linque(object):
     """
     Linque provides a functionality similar to .NET LINQ (Language Integrated
     Query) and IEnumerable. It allows chaining multiple queries on a sequence of
-    items, mostly without evaluating the sequence until necessary. Therefore
+    items, mostly without evaluating the sequence until necessary. Therefore,
     each linq chain can only be called once to get a final result. To break this
     logic, the class can be initialized with 'evaluate' parameter set to True,
     to make sure all input data are stored as fully evaluated sequence such as
@@ -630,6 +630,63 @@ class Linque(object):
         """
         
         return min(self, key=key)
+    
+    
+    def rank(self, method='average', reverse=False):
+        """
+        Provides 1-based rank for each item of current sequence by using default
+        comparer. The ties are resolved according to selected method. This call
+        fully evaluates current sequence.
+        
+        Args:
+            method: str
+                Method used to assign ranks to tied items.
+                    'average' - tied values are assigned by their average rank
+                    'min' - tied values are assigned by their minimum rank
+                    'max' - tied values are assigned by their maximum rank
+                    'dense' - like 'min' but without rank gaps
+                    'ordinal' - distinct rank for all values
+            
+            reverse: bool
+                If set to True, sorting is reversed.
+        
+        Returns:
+            Linque
+        """
+        
+        result = iters.rank(self, method=method, reverse=reverse)
+        
+        return Linque(result, self._evaluate)
+    
+    
+    def rank_by(self, key, method='average', reverse=False):
+        """
+        Provides 1-based rank for each item of current sequence by using
+        selected item's key. The ties are resolved according to selected
+        method. This call fully evaluates current sequence.
+        
+        Args:
+            key: callable
+                Item's key selector.
+            
+            method: str
+                Method used to assign ranks to tied items.
+                    'average' - tied values are assigned by their average rank
+                    'min' - tied values are assigned by their minimum rank
+                    'max' - tied values are assigned by their maximum rank
+                    'dense' - like 'min' but without rank gaps
+                    'ordinal' - distinct rank for all values
+            
+            reverse: bool
+                If set to True, sorting is reversed.
+        
+        Returns:
+            Linque
+        """
+        
+        result = iters.rank_by(self, key, method=method, reverse=reverse)
+        
+        return Linque(result, self._evaluate)
     
     
     def reverse(self):

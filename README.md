@@ -98,6 +98,8 @@ or simply by using pip
 - [argsort](#argsort-reverse): Returns items indices that would sort current sequence by using default comparer.
 - [argsort_by](#argsort_bykey-reverse): Returns items indices that would sort current sequence by using selected item's key.
 - [reverse](#reverse): Produces new sequence by inverting order of items.
+- [rank](#rank-method-reverse): Provides 1-based rank for each item of current sequence by using default comparer.
+- [rank_by](#rank_bykey-method-reverse): Provides 1-based rank for each item of current sequence by using selected item's key.
 - [sort](#sort-reverse): Produces new sequence by sorting elements by using default comparer.
 - [sort_by](#sort_bykey-reverse): Produces new sequence by sorting elements by using selected item's key.
 
@@ -576,6 +578,72 @@ result = Linque(data).min_by(lambda d: d[1])
 print(result)
 
 # (4, -40)
+```
+
+### .rank(method, reverse)
+Provides 1-based rank for each item of current sequence by using default comparer. The ties are resolved according to selected method.
+This call fully evaluates current sequence.
+
+```python
+data = (0, 2, 3, 2)
+
+result = Linque(data).rank('average').to_list()
+print(result)
+
+# [1, 2.5, 4, 2.5]
+
+result = Linque(data).rank('min').to_list()
+print(result)
+
+# [1, 2, 4, 2]
+
+result = Linque(data).rank('max').to_list()
+print(result)
+
+# [1, 3, 4, 3]
+
+result = Linque(data).rank('dense').to_list()
+print(result)
+
+# [1, 2, 3, 2]
+
+result = Linque(data).rank('ordinal').to_list()
+print(result)
+
+# [1, 2, 4, 3]
+```
+
+### .rank_by(key, method, reverse)
+Provides 1-based rank for each item of current sequence by using selected item's key. The ties are resolved according to selected method.
+This call fully evaluates current sequence.
+
+```python
+data = ((2, 0), (3, 2), (2, 3), (0, 2))
+
+result = Linque(data).rank_by(lambda d: d[1], 'average').to_list()
+print(result)
+
+# [1, 2.5, 4, 2.5]
+
+result = Linque(data).rank_by(lambda d: d[1], 'min').to_list()
+print(result)
+
+# [1, 2, 4, 2]
+
+result = Linque(data).rank_by(lambda d: d[1], 'max').to_list()
+print(result)
+
+# [1, 3, 4, 3]
+
+result = Linque(data).rank_by(lambda d: d[1], 'dense').to_list()
+print(result)
+
+# [1, 2, 3, 2]
+
+result = Linque(data).rank_by(lambda d: d[1], 'ordinal').to_list()
+print(result)
+
+# [1, 2, 4, 3]
 ```
 
 ### .reverse()

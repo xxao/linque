@@ -357,6 +357,21 @@ class TestCase(unittest.TestCase):
         self.assertEqual(linque.rank(data, 'max'), [1, 3, 4, 3])
         self.assertEqual(linque.rank(data, 'dense'), [1, 2, 3, 2])
         self.assertEqual(linque.rank(data, 'ordinal'), [1, 2, 4, 3])
+        
+        items = (d for d in data)
+        self.assertEqual(linque.rank(items, 'average'), [1, 2.5, 4, 2.5])
+        
+        items = (d for d in data)
+        self.assertEqual(linque.rank(items, 'min'), [1, 2, 4, 2])
+        
+        items = (d for d in data)
+        self.assertEqual(linque.rank(items, 'max'), [1, 3, 4, 3])
+        
+        items = (d for d in data)
+        self.assertEqual(linque.rank(items, 'dense'), [1, 2, 3, 2])
+        
+        items = (d for d in data)
+        self.assertEqual(linque.rank(items, 'ordinal'), [1, 2, 4, 3])
     
     
     def test_rank_by(self):
@@ -369,6 +384,21 @@ class TestCase(unittest.TestCase):
         self.assertEqual(linque.rank_by(data, lambda d: d[1], 'max'), [1, 3, 4, 3])
         self.assertEqual(linque.rank_by(data, lambda d: d[1], 'dense'), [1, 2, 3, 2])
         self.assertEqual(linque.rank_by(data, lambda d: d[1], 'ordinal'), [1, 2, 4, 3])
+        
+        items = (d for d in data)
+        self.assertEqual(linque.rank_by(items, lambda d: d[1], 'average'), [1, 2.5, 4, 2.5])
+        
+        items = (d for d in data)
+        self.assertEqual(linque.rank_by(items, lambda d: d[1], 'min'), [1, 2, 4, 2])
+        
+        items = (d for d in data)
+        self.assertEqual(linque.rank_by(items, lambda d: d[1], 'max'), [1, 3, 4, 3])
+        
+        items = (d for d in data)
+        self.assertEqual(linque.rank_by(items, lambda d: d[1], 'dense'), [1, 2, 3, 2])
+        
+        items = (d for d in data)
+        self.assertEqual(linque.rank_by(items, lambda d: d[1], 'ordinal'), [1, 2, 4, 3])
     
     
     def test_single(self):
