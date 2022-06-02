@@ -347,6 +347,30 @@ class TestCase(unittest.TestCase):
         self.assertEqual(linque.last_or_default(items, lambda d: d > 10, -1), -1)
     
     
+    def test_rank(self):
+        """Tests whether rank works correctly."""
+        
+        data = (0, 2, 3, 2)
+        
+        self.assertEqual(linque.rank(data, 'average'), [1, 2.5, 4, 2.5])
+        self.assertEqual(linque.rank(data, 'min'), [1, 2, 4, 2])
+        self.assertEqual(linque.rank(data, 'max'), [1, 3, 4, 3])
+        self.assertEqual(linque.rank(data, 'dense'), [1, 2, 3, 2])
+        self.assertEqual(linque.rank(data, 'ordinal'), [1, 2, 4, 3])
+    
+    
+    def test_rank_by(self):
+        """Tests whether rank_by works correctly."""
+        
+        data = ((2, 0), (3, 2), (2, 3), (0, 2))
+        
+        self.assertEqual(linque.rank_by(data, lambda d: d[1], 'average'), [1, 2.5, 4, 2.5])
+        self.assertEqual(linque.rank_by(data, lambda d: d[1], 'min'), [1, 2, 4, 2])
+        self.assertEqual(linque.rank_by(data, lambda d: d[1], 'max'), [1, 3, 4, 3])
+        self.assertEqual(linque.rank_by(data, lambda d: d[1], 'dense'), [1, 2, 3, 2])
+        self.assertEqual(linque.rank_by(data, lambda d: d[1], 'ordinal'), [1, 2, 4, 3])
+    
+    
     def test_single(self):
         """Tests whether single works correctly."""
         
