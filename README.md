@@ -83,11 +83,14 @@ or simply by using pip
 - [any](#anycondition): Determines whether a sequence contains any item or whether any item satisfies given condition.
 - [contains](#containsvalue-key): Determines whether a sequence contains item with given value by using default comparer or specified item's key.
 
-### Element Operations
+### Search Operations
 
+- [argmax](#argmaxkey): Returns index of the maximum item in a sequence by using default comparer or specified item's key.
+- [argmin](#argminkey): Returns index of the minimum item in a sequence by using default comparer or specified item's key.
 - [first](#firstcondition-default): Returns the first item that satisfies specified condition or specified default if provided.
 - [last](#lastcondition-default): Returns the last item that satisfies specified condition or specified default if provided.
 - [single](#singlecondition-default): Returns the single item that satisfies specified condition, specified default or raises error.
+- [where](#wherecondition): Produces new sequence by selecting items by specified predicate.
 
 ### Sorting Operations
 
@@ -95,10 +98,6 @@ or simply by using pip
 - [reverse](#reverse): Produces new sequence by inverting order of items.
 - [rank](#rankkey-method-reverse): Provides 1-based rank for each item of current sequence by using default comparer or selected item's key.
 - [sort](#sortkey-reverse): Produces new sequence by sorting elements by using default comparer or selected item's key.
-
-### Filtering Operations
-
-- [where](#wherecondition): Produces new sequence by selecting items by specified predicate.
 
 ### Projection Operations
 
