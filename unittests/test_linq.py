@@ -60,13 +60,13 @@ class TestCase(unittest.TestCase):
         
         linq = linque.Linque(data)
         self.assertEqual(linq.argsort().to_tuple(), (1, 2, 0))
-        self.assertEqual(linq.argsort(True).to_tuple(), (0, 2, 1))
+        self.assertEqual(linq.argsort(reverse=True).to_tuple(), (0, 2, 1))
         
         linq = linque.Linque(d for d in data)
         self.assertEqual(linq.argsort().to_tuple(), (1, 2, 0))
         
         linq = linque.Linque(d for d in data)
-        self.assertEqual(linq.argsort(True).to_tuple(), (0, 2, 1))
+        self.assertEqual(linq.argsort(reverse=True).to_tuple(), (0, 2, 1))
     
     
     def test_argsort_by(self):
@@ -76,13 +76,13 @@ class TestCase(unittest.TestCase):
         
         linq = linque.Linque(data)
         self.assertEqual(linq.argsort_by(lambda d: d[1]).to_tuple(), (1, 2, 0))
-        self.assertEqual(linq.argsort_by(lambda d: d[1], True).to_tuple(), (0, 2, 1))
+        self.assertEqual(linq.argsort_by(lambda d: d[1], reverse=True).to_tuple(), (0, 2, 1))
         
         linq = linque.Linque(d for d in data)
         self.assertEqual(linq.argsort_by(lambda d: d[1]).to_tuple(), (1, 2, 0))
         
         linq = linque.Linque(d for d in data)
-        self.assertEqual(linq.argsort_by(lambda d: d[1], True).to_tuple(), (0, 2, 1))
+        self.assertEqual(linq.argsort_by(lambda d: d[1], reverse=True).to_tuple(), (0, 2, 1))
     
     
     def test_concat(self):
@@ -543,26 +543,26 @@ class TestCase(unittest.TestCase):
         data = (0, 2, 3, 2)
         
         linq = linque.Linque(data)
-        self.assertEqual(linq.rank('average').to_tuple(), (1, 2.5, 4, 2.5))
-        self.assertEqual(linq.rank('min').to_tuple(), (1, 2, 4, 2))
-        self.assertEqual(linq.rank('max').to_tuple(), (1, 3, 4, 3))
-        self.assertEqual(linq.rank('dense').to_tuple(), (1, 2, 3, 2))
-        self.assertEqual(linq.rank('ordinal').to_tuple(), (1, 2, 4, 3))
+        self.assertEqual(linq.rank(method='average').to_tuple(), (1, 2.5, 4, 2.5))
+        self.assertEqual(linq.rank(method='min').to_tuple(), (1, 2, 4, 2))
+        self.assertEqual(linq.rank(method='max').to_tuple(), (1, 3, 4, 3))
+        self.assertEqual(linq.rank(method='dense').to_tuple(), (1, 2, 3, 2))
+        self.assertEqual(linq.rank(method='ordinal').to_tuple(), (1, 2, 4, 3))
         
         linq = linque.Linque(d for d in data)
-        self.assertEqual(linq.rank('average').to_tuple(), (1, 2.5, 4, 2.5))
+        self.assertEqual(linq.rank(method='average').to_tuple(), (1, 2.5, 4, 2.5))
         
         linq = linque.Linque(d for d in data)
-        self.assertEqual(linq.rank('min').to_tuple(), (1, 2, 4, 2))
+        self.assertEqual(linq.rank(method='min').to_tuple(), (1, 2, 4, 2))
         
         linq = linque.Linque(d for d in data)
-        self.assertEqual(linq.rank('max').to_tuple(), (1, 3, 4, 3))
+        self.assertEqual(linq.rank(method='max').to_tuple(), (1, 3, 4, 3))
         
         linq = linque.Linque(d for d in data)
-        self.assertEqual(linq.rank('dense').to_tuple(), (1, 2, 3, 2))
+        self.assertEqual(linq.rank(method='dense').to_tuple(), (1, 2, 3, 2))
         
         linq = linque.Linque(d for d in data)
-        self.assertEqual(linq.rank('ordinal').to_tuple(), (1, 2, 4, 3))
+        self.assertEqual(linq.rank(method='ordinal').to_tuple(), (1, 2, 4, 3))
     
     
     def test_rank_by(self):
@@ -571,26 +571,26 @@ class TestCase(unittest.TestCase):
         data = ((2, 0), (3, 2), (2, 3), (0, 2))
         
         linq = linque.Linque(data)
-        self.assertEqual(linq.rank_by(lambda d: d[1], 'average').to_tuple(), (1, 2.5, 4, 2.5))
-        self.assertEqual(linq.rank_by(lambda d: d[1], 'min').to_tuple(), (1, 2, 4, 2))
-        self.assertEqual(linq.rank_by(lambda d: d[1], 'max').to_tuple(), (1, 3, 4, 3))
-        self.assertEqual(linq.rank_by(lambda d: d[1], 'dense').to_tuple(), (1, 2, 3, 2))
-        self.assertEqual(linq.rank_by(lambda d: d[1], 'ordinal').to_tuple(), (1, 2, 4, 3))
+        self.assertEqual(linq.rank_by(lambda d: d[1], method='average').to_tuple(), (1, 2.5, 4, 2.5))
+        self.assertEqual(linq.rank_by(lambda d: d[1], method='min').to_tuple(), (1, 2, 4, 2))
+        self.assertEqual(linq.rank_by(lambda d: d[1], method='max').to_tuple(), (1, 3, 4, 3))
+        self.assertEqual(linq.rank_by(lambda d: d[1], method='dense').to_tuple(), (1, 2, 3, 2))
+        self.assertEqual(linq.rank_by(lambda d: d[1], method='ordinal').to_tuple(), (1, 2, 4, 3))
         
         linq = linque.Linque(d for d in data)
-        self.assertEqual(linq.rank_by(lambda d: d[1], 'average').to_tuple(), (1, 2.5, 4, 2.5))
+        self.assertEqual(linq.rank_by(lambda d: d[1], method='average').to_tuple(), (1, 2.5, 4, 2.5))
         
         linq = linque.Linque(d for d in data)
-        self.assertEqual(linq.rank_by(lambda d: d[1], 'min').to_tuple(), (1, 2, 4, 2))
+        self.assertEqual(linq.rank_by(lambda d: d[1], method='min').to_tuple(), (1, 2, 4, 2))
         
         linq = linque.Linque(d for d in data)
-        self.assertEqual(linq.rank_by(lambda d: d[1], 'max').to_tuple(), (1, 3, 4, 3))
+        self.assertEqual(linq.rank_by(lambda d: d[1], method='max').to_tuple(), (1, 3, 4, 3))
         
         linq = linque.Linque(d for d in data)
-        self.assertEqual(linq.rank_by(lambda d: d[1], 'dense').to_tuple(), (1, 2, 3, 2))
+        self.assertEqual(linq.rank_by(lambda d: d[1], method='dense').to_tuple(), (1, 2, 3, 2))
         
         linq = linque.Linque(d for d in data)
-        self.assertEqual(linq.rank_by(lambda d: d[1], 'ordinal').to_tuple(), (1, 2, 4, 3))
+        self.assertEqual(linq.rank_by(lambda d: d[1], method='ordinal').to_tuple(), (1, 2, 4, 3))
     
     
     def test_reverse(self):

@@ -551,9 +551,6 @@ def rank(sequence, method='average', reverse=False):
     size = len(items)
     idxs = sorted(range(size), key=items.__getitem__, reverse=reverse)
     
-    if method == 'ordinal':
-        return [i+1 for i in idxs]
-    
     items = [items[r] for r in idxs]
     ranks = [0]*size
     
@@ -597,6 +594,10 @@ def rank(sequence, method='average', reverse=False):
                 dupls = 0
             else:
                 lost += 1
+    
+    elif method == 'ordinal':
+        for i in range(size):
+            ranks[idxs[i]] = i + 1
     
     return ranks
 

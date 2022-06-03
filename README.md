@@ -588,27 +588,27 @@ selected method. This call fully evaluates current sequence. This functionality 
 ```python
 data = (0, 2, 3, 2)
 
-result = Linque(data).rank('average').to_list()
+result = Linque(data).rank(method='average').to_list()
 print(result)
 
 # [1, 2.5, 4, 2.5]
 
-result = Linque(data).rank('min').to_list()
+result = Linque(data).rank(method='min').to_list()
 print(result)
 
 # [1, 2, 4, 2]
 
-result = Linque(data).rank('max').to_list()
+result = Linque(data).rank(method='max').to_list()
 print(result)
 
 # [1, 3, 4, 3]
 
-result = Linque(data).rank('dense').to_list()
+result = Linque(data).rank(method='dense').to_list()
 print(result)
 
 # [1, 2, 3, 2]
 
-result = Linque(data).rank('ordinal').to_list()
+result = Linque(data).rank(method='ordinal').to_list()
 print(result)
 
 # [1, 2, 4, 3]
@@ -622,27 +622,27 @@ selected method. This call fully evaluates current sequence. This functionality 
 ```python
 data = ((2, 0), (3, 2), (2, 3), (0, 2))
 
-result = Linque(data).rank_by(lambda d: d[1], 'average').to_list()
+result = Linque(data).rank_by(lambda d: d[1], method='average').to_list()
 print(result)
 
 # [1, 2.5, 4, 2.5]
 
-result = Linque(data).rank_by(lambda d: d[1], 'min').to_list()
+result = Linque(data).rank_by(lambda d: d[1], method='min').to_list()
 print(result)
 
 # [1, 2, 4, 2]
 
-result = Linque(data).rank_by(lambda d: d[1], 'max').to_list()
+result = Linque(data).rank_by(lambda d: d[1], method='max').to_list()
 print(result)
 
 # [1, 3, 4, 3]
 
-result = Linque(data).rank_by(lambda d: d[1], 'dense').to_list()
+result = Linque(data).rank_by(lambda d: d[1], method='dense').to_list()
 print(result)
 
 # [1, 2, 3, 2]
 
-result = Linque(data).rank_by(lambda d: d[1], 'ordinal').to_list()
+result = Linque(data).rank_by(lambda d: d[1], method='ordinal').to_list()
 print(result)
 
 # [1, 2, 4, 3]
