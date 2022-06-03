@@ -144,11 +144,11 @@ or simply by using pip
 - [aggregate](#aggregateaccumulator-seed): Applies accumulator function over a sequence.
 - [count](#countcondition): Returns number of items in a sequence satisfying given condition.
 - [maximum](#maximumselector): Returns maximum value in a sequence by specified items data selector.
-- [max_by](#max_bykey): Returns item having maximum value in a sequence specified item's key.
+- [max](#maxkey): Returns item having maximum value in a sequence specified item's key.
 - [mean](#meanselector): Returns average value of a sequence by specified items data selector.
 - [median](#medianselector): Returns median value of a sequence by specified items data selector.
 - [minimum](#minimumselector): Returns minimum value in a sequence by specified items data selector.
-- [min_by](#min_bykey): Returns item having minimum value in a sequence by using specified item's key.
+- [min](#minkey): Returns item having minimum value in a sequence by using specified item's key.
 - [sum](#sumselector): Returns summed value in a sequence by specified items data selector.
 
 
@@ -494,16 +494,22 @@ print(result)
 # 40
 ```
 
-### .max_by(key)
+### .max(key)
 Returns item having maximum value in current sequence by using specified item's key. This call fully evaluates current
 sequence.
 
 ```python
-data = ((0, 0), (1, 10), (2, 20), (3, 30), (4, 40))
-result = Linque(data).max_by(lambda d: d[1])
+data = ((0, 0), (1, 100), (20, 20), (3, 30), (4, 40))
+
+result = Linque(data).max()
 print(result)
 
-# (4, 40)
+# (20, 20)
+
+result = Linque(data).max(lambda d: d[1])
+print(result)
+
+# (1, 100)
 ```
 
 ### .mean(selector)
@@ -539,16 +545,22 @@ print(result)
 # -40
 ```
 
-### .min_by(key)
+### .min(key)
 Returns item having minimum value in current sequence by using specified item's key. This call fully evaluates current
 sequence.
 
 ```python
-data = ((0, 0), (1, -10), (2, -20), (3, -30), (4, -40))
-result = Linque(data).min_by(lambda d: d[1])
+data = ((0, 0), (1, -100), (-2, -20), (3, -30), (4, -40))
+
+result = Linque(data).min()
 print(result)
 
-# (4, -40)
+# (-2, -20)
+
+result = Linque(data).min(lambda d: d[1])
+print(result)
+
+# (1, -100)
 ```
 
 ### .rank(key, method, reverse)

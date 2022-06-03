@@ -445,21 +445,21 @@ class Linque(object):
         return max(selector(d) for d in self)
     
     
-    def max_by(self, key):
+    def max(self, key=None):
         """
         Returns item having maximum value in current sequence by using default
         comparer or specified item's key. This call fully evaluates current
         sequence.
         
         Args:
-            key: callable
+            key: callable or None
                 Item's key selector.
         
         Returns:
             any
         """
         
-        return max(self, key=key)
+        return max(self, key=key) if key is not None else max(self)
     
     
     def mean(self, selector=None):
@@ -519,21 +519,21 @@ class Linque(object):
         return min(selector(d) for d in self)
     
     
-    def min_by(self, key):
+    def min(self, key=None):
         """
         Returns item having minimum value in current sequence by using default
         comparer or specified item's key. This call fully evaluates current
         sequence.
         
         Args:
-            key: callable
+            key: callable or None
                 Item's key selector.
         
         Returns:
             any
         """
         
-        return min(self, key=key)
+        return min(self, key=key) if key is not None else min(self)
     
     
     def rank(self, key=None, method='average', reverse=False):
