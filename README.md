@@ -219,8 +219,8 @@ Returns items indices that would sort current sequence by using specified item's
 sequence. This functionality is also available as a *linque.argsort_by(sequence, key, reverse)* utility function.
 
 ```python
-data = (3, 1, 2)
-result = Linque(data).argsort().to_list()
+data = ((2, 3), (1, 1), (3, 2))
+result = Linque(data).argsort_by(lambda d: d[1]).to_list()
 print(result)
 
 # [1, 2, 0]
