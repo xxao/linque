@@ -366,7 +366,9 @@ def index(sequence, condition):
             Index of the first valid item.
     """
     
-    for i, item in enumerate(sequence):
+    i = -1
+    for item in sequence:
+        i += 1
         if condition(item):
             return i
     
