@@ -89,6 +89,8 @@ or simply by using pip
 - [argmin](#argminkey): Returns index of the minimum item in a sequence by using default comparer or specified item's key.
 - [first](#firstcondition-default): Returns the first item that satisfies specified condition or specified default if provided.
 - [last](#lastcondition-default): Returns the last item that satisfies specified condition or specified default if provided.
+- [max](#maxkey): Returns item having maximum value in a sequence specified item's key.
+- [min](#minkey): Returns item having minimum value in a sequence by using specified item's key.
 - [single](#singlecondition-default): Returns the single item that satisfies specified condition, specified default or raises error.
 - [where](#wherecondition): Produces new sequence by selecting items by specified predicate.
 
@@ -144,11 +146,9 @@ or simply by using pip
 - [aggregate](#aggregateaccumulator-seed): Applies accumulator function over a sequence.
 - [count](#countcondition): Returns number of items in a sequence satisfying given condition.
 - [maximum](#maximumselector): Returns maximum value in a sequence by specified items data selector.
-- [max](#maxkey): Returns item having maximum value in a sequence specified item's key.
 - [mean](#meanselector): Returns average value of a sequence by specified items data selector.
 - [median](#medianselector): Returns median value of a sequence by specified items data selector.
 - [minimum](#minimumselector): Returns minimum value in a sequence by specified items data selector.
-- [min](#minkey): Returns item having minimum value in a sequence by using specified item's key.
 - [sum](#sumselector): Returns summed value in a sequence by specified items data selector.
 
 
