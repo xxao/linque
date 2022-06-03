@@ -190,6 +190,44 @@ print(result)
 # True
 ```
 
+### .argmax(key)
+Returns index of the maximum item in a sequence by using default comparer or specified item's key. This call fully
+evaluates current sequence. This functionality is also available as a *linque.argmax(sequence, key)*
+utility function.
+
+```python
+data = (3, 1, 2, 0, 9, 7, 8)
+result = Linque(data).argmax()
+print(result)
+
+# 4
+
+data = ((0, 3), (1, 1), (2, 2), (3, 0), (4, 9), (5, 7), (6, 8))
+result = Linque(data).argmax(lambda d: d[1])
+print(result)
+
+# 4
+```
+
+### .argmin(key)
+Returns index of the minimum item in a sequence by using default comparer or specified item's key. This call fully
+evaluates current sequence. This functionality is also available as a *linque.argmin(sequence, key)*
+utility function.
+
+```python
+data = (3, 1, 2, 0, 9, 7, 8)
+result = Linque(data).argmin()
+print(result)
+
+# 3
+
+data = ((0, 3), (1, 1), (2, 2), (3, 0), (4, 9), (5, 7), (6, 8))
+result = Linque(data).argmin(lambda d: d[1])
+print(result)
+
+# 3
+```
+
 ### .argsort(key, reverse)
 Returns items indices that would sort current sequence by using default comparer or specified item's key. This call
 fully evaluates current sequence. This functionality is also available as a *linque.argsort(sequence, key, reverse)*

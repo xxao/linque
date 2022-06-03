@@ -36,6 +36,56 @@ def aggregate(sequence, func, seed=None):
     return res
 
 
+def argmax(sequence, key=None):
+    """
+    Returns index of the maximum item in a sequence by using default comparer
+    or specified item's key.
+    
+    Args:
+        sequence: iterable
+            Sequence of items to sort.
+        
+        key: callable or None
+            Item's key selector.
+    
+    Returns:
+        int
+            Index of the maximum item.
+    """
+    
+    items = [key(d) for d in sequence] if key is not None else sequence
+    
+    if not hasattr(items, '__len__'):
+        items = list(items)
+    
+    return max(range(len(items)), key=items.__getitem__)
+
+
+def argmin(sequence, key=None):
+    """
+    Returns index of the minimum item in a sequence by using default comparer
+    or specified item's key.
+    
+    Args:
+        sequence: iterable
+            Sequence of items to sort.
+        
+        key: callable or None
+            Item's key selector.
+    
+    Returns:
+        int
+            Index of the minimum item.
+    """
+    
+    items = [key(d) for d in sequence] if key is not None else sequence
+    
+    if not hasattr(items, '__len__'):
+        items = list(items)
+    
+    return min(range(len(items)), key=items.__getitem__)
+
+
 def argsort(sequence, key=None, reverse=False):
     """
     Returns items indices that would sort a sequence by using default comparer
@@ -56,7 +106,11 @@ def argsort(sequence, key=None, reverse=False):
             Indexes of sorted items.
     """
     
-    items = [key(d) for d in sequence] if key is not None else list(sequence)
+    items = [key(d) for d in sequence] if key is not None else sequence
+    
+    if not hasattr(items, '__len__'):
+        items = list(items)
+    
     return sorted(range(len(items)), key=items.__getitem__, reverse=reverse)
 
 
@@ -370,9 +424,19 @@ def last(sequence, condition=None, default=UNDEFINED):
             Last valid item.
     """
     
-    sequence = reversed(list(sequence))
+    if condition is not None:
+        items = (d for d in sequence if condition(d))
+    else:
+        items = (d for d in sequence)
     
-    return first(sequence, condition, default)
+    item = default
+    for item in items:
+        pass
+    
+    if item is UNDEFINED:
+        raise StopIteration
+    
+    return item
 
 
 def rank(sequence, key=None, method='average', reverse=False):
@@ -404,7 +468,11 @@ def rank(sequence, key=None, method='average', reverse=False):
             Items' ranks.
     """
     
-    items = [key(d) for d in sequence] if key is not None else list(sequence)
+    items = [key(d) for d in sequence] if key is not None else sequence
+    
+    if not hasattr(items, '__len__'):
+        items = list(items)
+    
     size = len(items)
     idxs = sorted(range(size), key=items.__getitem__, reverse=reverse)
     
@@ -480,7 +548,10 @@ def single(sequence, condition=None, default=UNDEFINED):
             Single valid item.
     """
     
-    items = list(sequence) if condition is None else [d for d in sequence if condition(d)]
+    items = [d for d in sequence if condition(d)] if condition is not None else sequence
+    
+    if not hasattr(items, '__len__'):
+        items = list(items)
     
     if len(items) == 1:
         return items[0]

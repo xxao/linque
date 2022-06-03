@@ -96,6 +96,40 @@ class Linque(object):
         return any(condition(d) for d in self)
     
     
+    def argmax(self, key=None):
+        """
+        Returns index of the maximum item in a sequence by using default
+        comparer or specified item's key. This call fully evaluates current
+        sequence.
+        
+        Args:
+            key: callable or None
+                Item's key selector.
+        
+        Returns:
+            int
+        """
+        
+        return iters.argmax(self, key)
+    
+    
+    def argmin(self, key=None):
+        """
+        Returns index of the minimum item in a sequence by using default
+        comparer or specified item's key. This call fully evaluates current
+        sequence.
+        
+        Args:
+            key: callable or None
+                Item's key selector.
+        
+        Returns:
+            int
+        """
+        
+        return iters.argmin(self, key)
+    
+    
     def argsort(self, key=None, reverse=False):
         """
         Returns items indices that would sort current sequence by using

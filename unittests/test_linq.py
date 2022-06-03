@@ -53,6 +53,46 @@ class TestCase(unittest.TestCase):
         self.assertTrue(linq.any(lambda d: d > 5))
     
     
+    def test_argmax(self):
+        """Tests whether argmax works correctly."""
+        
+        data = (3, 1, 2, 0, 9, 7, 8)
+        
+        linq = linque.Linque(data)
+        self.assertEqual(linq.argmax(), 4)
+        
+        linq = linque.Linque(d for d in data)
+        self.assertEqual(linq.argmax(), 4)
+        
+        data = ((0, 3), (1, 1), (2, 2), (3, 0), (4, 9), (5, 7), (6, 8))
+        
+        linq = linque.Linque(data)
+        self.assertEqual(linq.argmax(lambda d: d[1]), 4)
+        
+        linq = linque.Linque(d for d in data)
+        self.assertEqual(linq.argmax(lambda d: d[1]), 4)
+    
+    
+    def test_argmin(self):
+        """Tests whether argmin works correctly."""
+        
+        data = (3, 1, 2, 0, 9, 7, 8)
+        
+        linq = linque.Linque(data)
+        self.assertEqual(linq.argmin(), 3)
+        
+        linq = linque.Linque(d for d in data)
+        self.assertEqual(linq.argmin(), 3)
+        
+        data = ((0, 3), (1, 1), (2, 2), (3, 0), (4, 9), (5, 7), (6, 8))
+        
+        linq = linque.Linque(data)
+        self.assertEqual(linq.argmin(lambda d: d[1]), 3)
+        
+        linq = linque.Linque(d for d in data)
+        self.assertEqual(linq.argmin(lambda d: d[1]), 3)
+    
+    
     def test_argsort(self):
         """Tests whether argsort works correctly."""
         
@@ -361,6 +401,18 @@ class TestCase(unittest.TestCase):
             linq.last(lambda d: d > 10)
     
     
+    def test_max(self):
+        """Tests whether max works correctly."""
+        
+        data = ((0, 0), (1, 10), (2, 20), (3, 30), (4, 40))
+        
+        linq = linque.Linque(data)
+        self.assertEqual(linq.max_by(lambda d: d[1]), (4, 40))
+        
+        linq = linque.Linque(d for d in data)
+        self.assertEqual(linq.max_by(lambda d: d[1]), (4, 40))
+    
+    
     def test_maximum(self):
         """Tests whether max works correctly."""
         
@@ -379,18 +431,6 @@ class TestCase(unittest.TestCase):
         
         linq = linque.Linque(d for d in data)
         self.assertEqual(linq.maximum(lambda d: d[1]), 40)
-    
-    
-    def test_max_by(self):
-        """Tests whether max_by works correctly."""
-        
-        data = ((0, 0), (1, 10), (2, 20), (3, 30), (4, 40))
-        
-        linq = linque.Linque(data)
-        self.assertEqual(linq.max_by(lambda d: d[1]), (4, 40))
-        
-        linq = linque.Linque(d for d in data)
-        self.assertEqual(linq.max_by(lambda d: d[1]), (4, 40))
     
     
     def test_mean(self):
@@ -433,6 +473,18 @@ class TestCase(unittest.TestCase):
         self.assertEqual(linq.median(lambda d: d[1]), 20)
     
     
+    def test_min(self):
+        """Tests whether min works correctly."""
+        
+        data = ((0, 0), (1, -10), (2, -20), (3, -30), (4, -40))
+        
+        linq = linque.Linque(data)
+        self.assertEqual(linq.min_by(lambda d: d[1]), (4, -40))
+        
+        linq = linque.Linque(d for d in data)
+        self.assertEqual(linq.min_by(lambda d: d[1]), (4, -40))
+    
+    
     def test_minimum(self):
         """Tests whether min works correctly."""
         
@@ -451,18 +503,6 @@ class TestCase(unittest.TestCase):
         
         linq = linque.Linque(d for d in data)
         self.assertEqual(linq.minimum(lambda d: d[1]), -40)
-    
-    
-    def test_min_by(self):
-        """Tests whether min_by works correctly."""
-        
-        data = ((0, 0), (1, -10), (2, -20), (3, -30), (4, -40))
-        
-        linq = linque.Linque(data)
-        self.assertEqual(linq.min_by(lambda d: d[1]), (4, -40))
-        
-        linq = linque.Linque(d for d in data)
-        self.assertEqual(linq.min_by(lambda d: d[1]), (4, -40))
     
     
     def test_rank(self):

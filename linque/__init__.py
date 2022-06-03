@@ -5,7 +5,7 @@ version = (3, 0, 0)
 
 # import utils
 from .iters import aggregate, bisect, chunk, concat, count
-from .iters import argsort, index, rank
+from .iters import argmax, argmin, argsort, index, rank
 from .iters import first, last, single
 from .iters import skip, skip_while, take, take_while
 from .iters import distinct, exclude, group

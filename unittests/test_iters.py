@@ -21,6 +21,46 @@ class TestCase(unittest.TestCase):
         self.assertEqual(linque.aggregate(items, lambda r, n: r+chr(n), ''), 'aggregate')
     
     
+    def test_argmax(self):
+        """Tests whether argmax works correctly."""
+        
+        data = (3, 1, 2, 0, 9, 7, 8)
+        
+        items = data
+        self.assertEqual(linque.argmax(items), 4)
+        
+        items = (d for d in data)
+        self.assertEqual(linque.argmax(items), 4)
+        
+        data = ((0, 3), (1, 1), (2, 2), (3, 0), (4, 9), (5, 7), (6, 8))
+        
+        items = data
+        self.assertEqual(linque.argmax(items, lambda d: d[1]), 4)
+        
+        items = (d for d in data)
+        self.assertEqual(linque.argmax(items, lambda d: d[1]), 4)
+    
+    
+    def test_argmin(self):
+        """Tests whether argmin works correctly."""
+        
+        data = (3, 1, 2, 0, 9, 7, 8)
+        
+        items = data
+        self.assertEqual(linque.argmin(items), 3)
+        
+        items = (d for d in data)
+        self.assertEqual(linque.argmin(items), 3)
+        
+        data = ((0, 3), (1, 1), (2, 2), (3, 0), (4, 9), (5, 7), (6, 8))
+        
+        items = data
+        self.assertEqual(linque.argmin(items, lambda d: d[1]), 3)
+        
+        items = (d for d in data)
+        self.assertEqual(linque.argmin(items, lambda d: d[1]), 3)
+    
+    
     def test_argsort(self):
         """Tests whether argsort works correctly."""
         
