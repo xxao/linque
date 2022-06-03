@@ -392,7 +392,7 @@ class Linque(object):
         return iters.last(self, condition, default)
     
     
-    def max(self, selector=None):
+    def maximum(self, selector=None):
         """
         Returns maximum value in current sequence by specified items data
         selector. This call fully evaluates current sequence.
@@ -466,7 +466,7 @@ class Linque(object):
         return statistics.median(selector(d) for d in self)
     
     
-    def min(self, selector=None):
+    def minimum(self, selector=None):
         """
         Returns minimum value in current sequence by specified items data
         selector. This call fully evaluates current sequence.

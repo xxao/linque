@@ -144,11 +144,11 @@ or simply by using pip
 
 - [aggregate](#aggregateaccumulator-seed): Applies accumulator function over a sequence.
 - [count](#countcondition): Returns number of items in a sequence satisfying given condition.
-- [max](#maxselector): Returns maximum value in a sequence by specified items data selector.
+- [maximum](#maximumselector): Returns maximum value in a sequence by specified items data selector.
 - [max_by](#max_bykey): Returns item having maximum value in a sequence specified item's key.
 - [mean](#meanselector): Returns average value of a sequence by specified items data selector.
 - [median](#medianselector): Returns median value of a sequence by specified items data selector.
-- [min](#minselector): Returns minimum value in a sequence by specified items data selector.
+- [minimum](#minimumselector): Returns minimum value in a sequence by specified items data selector.
 - [min_by](#min_bykey): Returns item having minimum value in a sequence by using specified item's key.
 - [sum](#sumselector): Returns summed value in a sequence by specified items data selector.
 
@@ -446,12 +446,12 @@ print(result)
 # -1
 ```
 
-### .max(selector)
+### .maximum(selector)
 Returns maximum value in current sequence by specified items data selector. This call fully evaluates current sequence.
 
 ```python
 data = ((0, 0), (1, 10), (2, 20), (3, 30), (4, 40))
-result = Linque(data).max(lambda d: d[1])
+result = Linque(data).maximum(lambda d: d[1])
 print(result)
 
 # 40
@@ -491,12 +491,12 @@ print(result)
 # 20
 ```
 
-### .min(selector)
+### .minimum(selector)
 Returns minimum value in current sequence by specified items data selector. This call fully evaluates current sequence.
 
 ```python
 data = ((0, 0), (1, -10), (2, -20), (3, -30), (4, -40))
-result = Linque(data).min(lambda d: d[1])
+result = Linque(data).minimum(lambda d: d[1])
 print(result)
 
 # -40

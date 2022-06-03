@@ -361,24 +361,24 @@ class TestCase(unittest.TestCase):
             linq.last(lambda d: d > 10)
     
     
-    def test_max(self):
+    def test_maximum(self):
         """Tests whether max works correctly."""
         
         data = (0, 1, 2, 3, 4)
         
         linq = linque.Linque(data)
-        self.assertEqual(linq.max(), 4)
+        self.assertEqual(linq.maximum(), 4)
         
         linq = linque.Linque(d for d in data)
-        self.assertEqual(linq.max(), 4)
+        self.assertEqual(linq.maximum(), 4)
         
         data = ((0, 0), (1, 10), (2, 20), (3, 30), (4, 40))
         
         linq = linque.Linque(data)
-        self.assertEqual(linq.max(lambda d: d[1]), 40)
+        self.assertEqual(linq.maximum(lambda d: d[1]), 40)
         
         linq = linque.Linque(d for d in data)
-        self.assertEqual(linq.max(lambda d: d[1]), 40)
+        self.assertEqual(linq.maximum(lambda d: d[1]), 40)
     
     
     def test_max_by(self):
@@ -433,24 +433,24 @@ class TestCase(unittest.TestCase):
         self.assertEqual(linq.median(lambda d: d[1]), 20)
     
     
-    def test_min(self):
+    def test_minimum(self):
         """Tests whether min works correctly."""
         
         data = (0, -1, -2, -3, -4)
         
         linq = linque.Linque(data)
-        self.assertEqual(linq.min(), -4)
+        self.assertEqual(linq.minimum(), -4)
         
         linq = linque.Linque(d for d in data)
-        self.assertEqual(linq.min(), -4)
+        self.assertEqual(linq.minimum(), -4)
         
         data = ((0, 0), (1, -10), (2, -20), (3, -30), (4, -40))
         
         linq = linque.Linque(data)
-        self.assertEqual(linq.min(lambda d: d[1]), -40)
+        self.assertEqual(linq.minimum(lambda d: d[1]), -40)
         
         linq = linque.Linque(d for d in data)
-        self.assertEqual(linq.min(lambda d: d[1]), -40)
+        self.assertEqual(linq.minimum(lambda d: d[1]), -40)
     
     
     def test_min_by(self):
