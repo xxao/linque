@@ -96,31 +96,14 @@ class Linque(object):
         return any(condition(d) for d in self)
     
     
-    def argsort(self, reverse=False):
+    def argsort(self, key=None, reverse=False):
         """
         Returns items indices that would sort current sequence by using
-        default comparer. This call fully evaluates current sequence.
+        default comparer or specified item's key. This call fully evaluates
+        current sequence.
         
         Args:
-            reverse: bool
-                If set to True, sorting is reversed.
-        
-        Returns:
-            Linque
-        """
-        
-        result = iters.argsort(self, reverse=reverse)
-        
-        return Linque(result, self._evaluate)
-    
-    
-    def argsort_by(self, key, reverse=False):
-        """
-        Returns items indices that would sort current sequence by using
-        specified item's key. This call fully evaluates current sequence.
-        
-        Args:
-            key: callable
+            key: callable or None
                 Item's key selector.
             
             reverse: bool
@@ -130,7 +113,7 @@ class Linque(object):
             Linque
         """
         
-        result = iters.argsort_by(self, key, reverse=reverse)
+        result = iters.argsort(self, key, reverse=reverse)
         
         return Linque(result, self._evaluate)
     
@@ -173,39 +156,27 @@ class Linque(object):
         return Linque(result, self._evaluate)
     
     
-    def contains(self, item):
+    def contains(self, value, key=None):
         """
-        Determines whether current sequence contains specified item by using
-        default comparer. This call partially evaluates current sequence.
-        
-        Args:
-            item: any
-                Item to check.
-        
-        Returns:
-            bool
-        """
-        
-        return item in self
-    
-    
-    def contains_by(self, value, key):
-        """
-        Determines whether current sequence contains item with given value by
-        using specified item's key. This call partially evaluates current sequence.
+        Determines whether current sequence contains specified item or value by using
+        default comparer or specified item's key. This call partially evaluates
+        current sequence.
         
         Args:
             value: any
-                Value to check.
+                Item or value to check.
             
-            key: callable
+            key: callable or None
                 Item's key selector.
         
         Returns:
             bool
         """
         
-        return value in (key(d) for d in self)
+        if key is not None:
+            return value in (key(d) for d in self)
+        
+        return value in self
     
     
     def count(self, condition=None):
@@ -224,36 +195,21 @@ class Linque(object):
         return iters.count(self, condition)
     
     
-    def distinct(self):
+    def distinct(self, key=None):
         """
         Produces new sequence by selecting distinct items from current sequence
-        using default comparer. First occurrence of each item is used. This call
-        does not evaluate current sequence.
-        
-        Returns:
-            Linque
-        """
-        
-        result = iters.distinct(self)
-        
-        return Linque(result, self._evaluate)
-    
-    
-    def distinct_by(self, key):
-        """
-        Produces new sequence by selecting distinct items from current sequence
-        using specified item's key. First occurrence of each item is used. This
-        call does not evaluate current sequence.
+        using default comparer or specified item's key. First occurrence of each
+        item is used. This call does not evaluate current sequence.
         
         Args:
-            key: callable
+            key: callable or None
                 Item's key selector.
         
         Returns:
             Linque
         """
         
-        result = iters.distinct_by(self, key)
+        result = iters.distinct(self, key)
         
         return Linque(result, self._evaluate)
     
@@ -311,67 +267,33 @@ class Linque(object):
         return self
     
     
-    def exclude(self, items):
+    def exclude(self, items, key=None):
         """
         Produces new sequence by excluding specified items from current sequence
-        using default comparer. This call does not evaluate current sequence.
-        
-        Args:
-            items: (any,)
-                Items to exclude.
-        
-        Returns:
-            Linque
-        """
-        
-        result = iters.exclude(self, items)
-        
-        return Linque(result, self._evaluate)
-    
-    
-    def exclude_by(self, items, key):
-        """
-        Produces new sequence by excluding specified items from current sequence
-        using selected item's key. This call does not evaluate current sequence.
+        using default comparer or specified item's key. This call does not evaluate
+        current sequence.
         
         Args:
             items: (any,)
                 Items to exclude.
             
-            key: callable
+            key: callable or None
                 Item's key selector.
         
         Returns:
             Linque
         """
         
-        result = iters.exclude_by(self, items, key)
+        result = iters.exclude(self, items, key)
         
         return Linque(result, self._evaluate)
     
     
-    def first(self, condition=None):
+    def first(self, condition=None, default=iters.UNDEFINED):
         """
         Returns the first item in current sequence that satisfies specified
-        condition or raises error if no item found. This call partially
-        evaluates current sequence.
-        
-        Args:
-            condition: callable or None
-                Condition to test.
-        
-        Returns:
-            any
-        """
-        
-        return iters.first(self, condition)
-    
-    
-    def first_or_default(self, condition=None, default=None):
-        """
-        Returns the first item in current sequence that satisfies specified
-        condition or specified default value if no item found. This call
-        partially evaluates current sequence.
+        condition or raises error if no item found and no default value is
+        provided. This call partially evaluates current sequence.
         
         Args:
             condition: callable or None
@@ -384,7 +306,7 @@ class Linque(object):
             any
         """
         
-        return iters.first_or_default(self, condition, default)
+        return iters.first(self, condition, default)
     
     
     def flatten(self, selector=None):
@@ -408,105 +330,53 @@ class Linque(object):
         return Linque(result, self._evaluate)
     
     
-    def group(self):
+    def group(self, key=None):
         """
         Produces new sequence by grouping items of current sequence according to
-        default comparer and creates result values as (key, group) pairs.
-        This call fully evaluates current sequence.
-        
-        Returns:
-            Linque
-        """
-        
-        groups = iters.group(self)
-        result = [(k, Linque(g, self._evaluate)) for k, g in groups]
-        
-        return Linque(result, self._evaluate)
-    
-    
-    def group_by(self, key):
-        """
-        Produces new sequence by grouping items of current sequence according to
-        specified key selector and creates result values as (key, group) pairs.
-        This call fully evaluates current sequence.
+        default comparer or specified item's key and creates result values as
+        (key, group) pairs. This call fully evaluates current sequence.
         
         Args:
-            key: callable
+            key: callable or None
                 Item's key selector.
         
         Returns:
             Linque
         """
         
-        groups = iters.group_by(self, key)
+        groups = iters.group(self, key)
         result = [(k, Linque(g, self._evaluate)) for k, g in groups]
         
         return Linque(result, self._evaluate)
     
     
-    def intersect(self, items):
+    def intersect(self, items, key=None):
         """
         Produces new sequence of shared unique items from current sequence and
-        given items by using default comparer. This call does not evaluate
-        current sequence.
-        
-        Args:
-            items: (any,)
-                Items to intersect.
-        
-        Returns:
-            Linque
-        """
-        
-        result = iters.intersect(self, items)
-        
-        return Linque(result, self._evaluate)
-    
-    
-    def intersect_by(self, items, key):
-        """
-        Produces new sequence of shared unique items from current sequence and
-        given items by using selected item's key. This call does not evaluate
-        current sequence.
+        given items by using default comparer or specified item's key. This
+        call does not evaluate current sequence.
         
         Args:
             items: (any,)
                 Items to intersect.
             
-            key: callable
+            key: callable or None
                 Item's key selector.
         
         Returns:
             Linque
         """
         
-        result = iters.intersect_by(self, items, key)
+        result = iters.intersect(self, items, key)
         
         return Linque(result, self._evaluate)
     
     
-    def last(self, condition=None):
+    def last(self, condition=None, default=iters.UNDEFINED):
         """
         Returns the last item in current sequence that satisfies specified
-        condition or raises error if no item found. This call fully evaluates
-        current sequence.
-        
-        Args:
-            condition: callable or None
-                Condition to test.
-        
-        Returns:
-            any
-        """
-        
-        return iters.last(self, condition)
-    
-    
-    def last_or_default(self, condition=None, default=None):
-        """
-        Returns the last item in current sequence that satisfies specified
-        condition or specified default value if no item found. This call
-        fully evaluates current sequence.
+        condition or raises error if no item found and no default value is
+        provided. This call fully evaluates current sequence.
         
         Args:
             condition: callable or None
@@ -519,7 +389,7 @@ class Linque(object):
             any
         """
         
-        return iters.last_or_default(self, condition, default)
+        return iters.last(self, condition, default)
     
     
     def max(self, selector=None):
@@ -632,41 +502,14 @@ class Linque(object):
         return min(self, key=key)
     
     
-    def rank(self, method='average', reverse=False):
+    def rank(self, key=None, method='average', reverse=False):
         """
         Provides 1-based rank for each item of current sequence by using default
-        comparer. The ties are resolved according to selected method. This call
-        fully evaluates current sequence.
+        comparer or specified item's key. The ties are resolved according to
+        selected method. This call fully evaluates current sequence.
         
         Args:
-            method: str
-                Method used to assign ranks to tied items.
-                    'average' - tied values are assigned by their average rank
-                    'min' - tied values are assigned by their minimum rank
-                    'max' - tied values are assigned by their maximum rank
-                    'dense' - like 'min' but without rank gaps
-                    'ordinal' - distinct rank for all values
-            
-            reverse: bool
-                If set to True, sorting is reversed.
-        
-        Returns:
-            Linque
-        """
-        
-        result = iters.rank(self, method=method, reverse=reverse)
-        
-        return Linque(result, self._evaluate)
-    
-    
-    def rank_by(self, key, method='average', reverse=False):
-        """
-        Provides 1-based rank for each item of current sequence by using
-        selected item's key. The ties are resolved according to selected
-        method. This call fully evaluates current sequence.
-        
-        Args:
-            key: callable
+            key: callable or None
                 Item's key selector.
             
             method: str
@@ -684,7 +527,7 @@ class Linque(object):
             Linque
         """
         
-        result = iters.rank_by(self, key, method=method, reverse=reverse)
+        result = iters.rank(self, key, method=method, reverse=reverse)
         
         return Linque(result, self._evaluate)
     
@@ -742,28 +585,12 @@ class Linque(object):
         return Linque(result, self._evaluate)
     
     
-    def single(self, condition=None):
+    def single(self, condition=None, default=iters.UNDEFINED):
         """
         Returns the single item in current sequence that satisfies specified
-        condition or raises error if none or more items found. This call fully
+        condition or raises error if more items found. If no item is found,
+        returns default value if provided or raises error. This call fully
         evaluates current sequence.
-        
-        Args:
-            condition: callable
-                Condition to test.
-        
-        Returns:
-            any
-        """
-        
-        return iters.single(self, condition)
-    
-    
-    def single_or_default(self, condition=None, default=None):
-        """
-        Returns the single item in current sequence that satisfies specified
-        condition or specified default value if no item found. Raises error if
-        more items found. This call fully evaluates current sequence.
         
         Args:
             condition: callable
@@ -776,7 +603,7 @@ class Linque(object):
             any
         """
         
-        return iters.single_or_default(self, condition, default)
+        return iters.single(self, condition, default)
     
     
     def skip(self, count):
@@ -816,31 +643,14 @@ class Linque(object):
         return Linque(result, self._evaluate)
     
     
-    def sort(self, reverse=False):
+    def sort(self, key=None, reverse=False):
         """
         Produces new sequence by sorting elements of current sequence by using
-        default comparer. This call fully evaluates current sequence.
+        default comparer or specified item's key. This call fully evaluates
+        current sequence.
         
         Args:
-            reverse: bool
-                If set to True, sorting is reversed.
-        
-        Returns:
-            Linque
-        """
-        
-        result = sorted(self, reverse=reverse)
-        
-        return Linque(result, self._evaluate)
-    
-    
-    def sort_by(self, key, reverse=False):
-        """
-        Produces new sequence by sorting elements of current sequence by using
-        selected item's key. This call fully evaluates current sequence.
-        
-        Args:
-            key: callable
+            key: callable or None
                 Item's key selector.
             
             reverse: bool
@@ -850,7 +660,10 @@ class Linque(object):
             Linque
         """
         
-        result = sorted(self, key=key, reverse=reverse)
+        if key is not None:
+            result = sorted(self, key=key, reverse=reverse)
+        else:
+            result = sorted(self, reverse=reverse)
         
         return Linque(result, self._evaluate)
     
@@ -972,43 +785,24 @@ class Linque(object):
         return tuple(self)
     
     
-    def union(self, items):
+    def union(self, items, key=None):
         """
         Produces new sequence of unique items from current sequence and given
-        items by using default comparer. This call does not evaluate current
-        sequence.
-        
-        Args:
-            items: (any,)
-                Items to union.
-        
-        Returns:
-            Linque
-        """
-        
-        result = iters.union(self, items)
-        
-        return Linque(result, self._evaluate)
-    
-    
-    def union_by(self, items, key):
-        """
-        Produces new sequence of unique items from current sequence and given
-        items by using selected item's key. This call does not evaluate current
-        sequence.
+        items by using default comparer or specified item's key. This call does
+        not evaluate current sequence.
         
         Args:
             items: (any,)
                 Items to union.
             
-            key: callable
+            key: callable or None
                 Item's key selector.
         
         Returns:
             Linque
         """
         
-        result = iters.union_by(self, items, key)
+        result = iters.union(self, items, key)
         
         return Linque(result, self._evaluate)
     

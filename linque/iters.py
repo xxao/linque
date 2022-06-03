@@ -3,6 +3,8 @@
 
 from itertools import islice
 
+UNDEFINED = object()
+
 
 def aggregate(sequence, func, seed=None):
     """
@@ -34,36 +36,16 @@ def aggregate(sequence, func, seed=None):
     return res
 
 
-def argsort(sequence, reverse=False):
+def argsort(sequence, key=None, reverse=False):
     """
-    Returns items indices that would sort a sequence by using default comparer.
+    Returns items indices that would sort a sequence by using default comparer
+    or specified item's key.
     
     Args:
         sequence: iterable
             Sequence of items to sort.
         
-        reverse: bool
-            If set to True, sorting is reversed.
-    
-    Returns:
-        (int,)
-            Indexes of sorted items.
-    """
-    
-    items = list(sequence)
-    return sorted(range(len(items)), key=items.__getitem__, reverse=reverse)
-
-
-def argsort_by(sequence, key, reverse=False):
-    """
-    Returns items indices that would sort a sequence by using specified item's
-    key.
-    
-    Args:
-        sequence: iterable
-            Sequence of items to sort.
-        
-        key: callable
+        key: callable or None
             Item's key selector.
         
         reverse: bool
@@ -74,8 +56,8 @@ def argsort_by(sequence, key, reverse=False):
             Indexes of sorted items.
     """
     
-    keys = [key(d) for d in sequence]
-    return sorted(range(len(keys)), key=keys.__getitem__, reverse=reverse)
+    items = [key(d) for d in sequence] if key is not None else list(sequence)
+    return sorted(range(len(items)), key=items.__getitem__, reverse=reverse)
 
 
 def bisect(sequence, value, key=None, side='left'):
@@ -191,38 +173,16 @@ def count(sequence, condition=None):
     return sum(1 for d in sequence if condition(d))
 
 
-def distinct(sequence):
+def distinct(sequence, key=None):
     """
-    Iterates over distinct items in a sequence by using default comparer. First
-    occurrence of each item is used.
-    
-    Args:
-        sequence: iterable
-            Sequence of items to go through.
-    
-    Returns:
-        iter(any)
-            Iterator over distinct items.
-    """
-    
-    seen = set()
-    
-    for item in sequence:
-        if item not in seen:
-            seen.add(item)
-            yield item
-
-
-def distinct_by(sequence, key):
-    """
-    Iterates over distinct items in a sequence by using specified item's key.
-    First occurrence of each item is used.
+    Iterates over distinct items in a sequence by using default comparer or
+    specified item's key. First occurrence of each item is used.
     
     Args:
         sequence: iterable
             Sequence of items to go through.
         
-        key: callable
+        key: callable or None
             Item's key selector.
     
     Returns:
@@ -230,41 +190,21 @@ def distinct_by(sequence, key):
             Iterator over distinct items.
     """
     
+    has_key = key is not None
     seen = set()
     
     for item in sequence:
-        k = key(item)
+        k = key(item) if has_key else item
+        
         if k not in seen:
             seen.add(k)
             yield item
 
 
-def exclude(sequence, items):
+def exclude(sequence, items, key=None):
     """
-    Excludes specified items from a sequence by using default comparer.
-    
-    Args:
-        sequence: iterable
-            Sequence of items to go through.
-        
-        items: iterable
-            Items to exclude.
-    
-    Returns:
-        iter(any)
-            Iterator over remaining items.
-    """
-    
-    keys = set((d for d in items))
-    
-    for item in sequence:
-        if item not in keys:
-            yield item
-
-
-def exclude_by(sequence, items, key):
-    """
-    Excludes specified items from a sequence by using selected item's key.
+    Excludes specified items from a sequence by using default comparer or
+    specified item's key.
     
     Args:
         sequence: iterable
@@ -273,7 +213,7 @@ def exclude_by(sequence, items, key):
         items: iterable
             Items to exclude.
         
-        key: callable
+        key: callable or None
             Item's key selector.
     
     Returns:
@@ -281,41 +221,20 @@ def exclude_by(sequence, items, key):
             Iterator over remaining items.
     """
     
-    keys = set((key(d) for d in items))
+    has_key = key is not None
+    keys = set((key(d) if has_key else d for d in items))
     
     for item in sequence:
-        k = key(item)
+        k = key(item) if has_key else item
+        
         if k not in keys:
             yield item
 
 
-def first(sequence, condition=None):
+def first(sequence, condition=None, default=UNDEFINED):
     """
     Returns the first item in a sequence that satisfies specified condition or
-    raises error if no item found.
-    
-    Args:
-        sequence: iterable
-            Sequence of items to go through.
-        
-        condition: callable
-            Condition to test.
-    
-    Returns:
-        any
-            First valid item.
-    """
-    
-    if condition is None:
-        return next((d for d in sequence))
-    
-    return next((d for d in sequence if condition(d)))
-
-
-def first_or_default(sequence, condition=None, default=None):
-    """
-    Returns the first item in a sequence that satisfies specified condition or
-    specified default value if no item found.
+    raises error if no item found and no default value is provided.
     
     Args:
         sequence: iterable
@@ -332,49 +251,27 @@ def first_or_default(sequence, condition=None, default=None):
             First valid item.
     """
     
-    if condition is None:
-        return next((d for d in sequence), default)
+    if condition is not None:
+        items = (d for d in sequence if condition(d))
+    else:
+        items = (d for d in sequence)
     
-    return next((d for d in sequence if condition(d)), default)
+    if default is not UNDEFINED:
+        return next(items, default)
+    
+    return next(items)
 
 
-def group(sequence):
+def group(sequence, key=None):
     """
-    Groups items of a sequence according to default comparer and creates result
-    values as (key, group) pairs.
-    
-    Args:
-        sequence: iterable
-            Sequence of items to go through.
-    
-    Returns:
-        ((any, (any,)),)
-            Grouped items as (key, group) pairs.
-    """
-    
-    keys = []
-    groups = {}
-    
-    for item in sequence:
-        if item not in groups:
-            keys.append(item)
-            groups[item] = []
-        
-        groups[item].append(item)
-    
-    return [(k, tuple(groups[k])) for k in keys]
-
-
-def group_by(sequence, key):
-    """
-    Groups items of a sequence according to specified key selector and creates
-    result values as (key, group) pairs.
+    Groups items of a sequence according to default comparer or specified
+    item's key and creates result values as (key, group) pairs.
     
     Args:
         sequence: iterable
             Sequence of items to go through.
         
-        key: callable
+        key: callable or None
             Item's key selector.
     
     Returns:
@@ -382,11 +279,12 @@ def group_by(sequence, key):
             Grouped items as (key, group) pairs.
     """
     
+    has_key = key is not None
     keys = []
     groups = {}
     
     for item in sequence:
-        k = key(item)
+        k = key(item) if has_key else item
         
         if k not in groups:
             keys.append(k)
@@ -421,35 +319,10 @@ def index(sequence, condition):
     raise ValueError()
 
 
-def intersect(sequence, items):
+def intersect(sequence, items, key=None):
     """
     Produces a sequence of shared unique items from given sequences by using
-    default comparer.
-    
-    Args:
-        sequence: iterable
-            Sequence of items to go through.
-        
-        items: iterable
-            Items to intersect with.
-    
-    Returns:
-        iter(any)
-            Iterator over intersecting items.
-    """
-    
-    keys = set((d for d in items))
-    
-    for item in sequence:
-        if item in keys:
-            keys.remove(item)
-            yield item
-
-
-def intersect_by(sequence, items, key):
-    """
-    Produces a sequence of shared unique items from given sequences by using
-    selected item's key.
+    default comparer or specified item's key.
     
     Args:
         sequence: iterable
@@ -458,7 +331,7 @@ def intersect_by(sequence, items, key):
         items: iterable
             Items to intersect with.
         
-        key: callable
+        key: callable or None
             Item's key selector.
     
     Returns:
@@ -466,41 +339,21 @@ def intersect_by(sequence, items, key):
             Iterator over intersecting items.
     """
     
-    keys = set((key(d) for d in items))
+    has_key = key is not None
+    keys = set((key(d) if has_key else d for d in items))
     
     for item in sequence:
-        k = key(item)
+        k = key(item) if has_key else item
+        
         if k in keys:
             keys.remove(k)
             yield item
 
 
-def last(sequence, condition=None):
+def last(sequence, condition=None, default=UNDEFINED):
     """
     Returns the last item in a sequence that satisfies specified condition or
-    raises error if no item found.
-    
-    Args:
-        sequence: iterable
-            Sequence of items to go through.
-        
-        condition: callable
-            Condition to test.
-    
-    Returns:
-        any
-            Last valid item.
-    """
-    
-    sequence = reversed(list(sequence))
-    
-    return first(sequence, condition)
-
-
-def last_or_default(sequence, condition=None, default=None):
-    """
-    Returns the last item in a sequence that satisfies specified condition or
-    specified default value if no item found.
+    raises error if no item found and no default value is provided.
     
     Args:
         sequence: iterable
@@ -519,17 +372,21 @@ def last_or_default(sequence, condition=None, default=None):
     
     sequence = reversed(list(sequence))
     
-    return first_or_default(sequence, condition, default)
+    return first(sequence, condition, default)
 
 
-def rank(sequence, method='average', reverse=False):
+def rank(sequence, key=None, method='average', reverse=False):
     """
     Provides 1-based rank for each item of a sequence by using default
-    comparer. The ties are resolved according to selected method.
+    comparer or specified item's key. The ties are resolved according to
+    selected method.
     
     Args:
         sequence: iterable
             Sequence of items to go through.
+        
+        key: callable or None
+            Item's key selector.
         
         method: str
             Method used to assign ranks to tied items.
@@ -547,7 +404,7 @@ def rank(sequence, method='average', reverse=False):
             Items' ranks.
     """
     
-    items = list(sequence)
+    items = [key(d) for d in sequence] if key is not None else list(sequence)
     size = len(items)
     idxs = sorted(range(size), key=items.__getitem__, reverse=reverse)
     
@@ -602,66 +459,11 @@ def rank(sequence, method='average', reverse=False):
     return ranks
 
 
-def rank_by(sequence, key, method='average', reverse=False):
-    """
-    Provides 1-based rank for each item of a sequence by using selected item's
-    key. The ties are resolved according to selected method.
-    
-    Args:
-        sequence: iterable
-            Sequence of items to go through.
-        
-        key: callable
-            Item's key selector.
-        
-        method: str
-            Method used to assign ranks to tied items.
-                'average' - tied values are assigned by their average rank
-                'min' - tied values are assigned by their minimum rank
-                'max' - tied values are assigned by their maximum rank
-                'dense' - like 'min' but without rank gaps
-                'ordinal' - distinct rank for all values
-        
-        reverse: bool
-            If set to True, sorting is reversed.
-    
-    Returns:
-        (int,)
-            Items' ranks.
-    """
-    
-    keys = (key(d) for d in sequence)
-    return rank(keys, method, reverse)
-
-
-def single(sequence, condition=None):
+def single(sequence, condition=None, default=UNDEFINED):
     """
     Returns the single item in a sequence that satisfies specified condition or
-    raises error if none or more items found.
-    
-    Args:
-        sequence: iterable
-            Sequence of items to go through.
-        
-        condition: callable
-            Condition to test.
-    
-    Returns:
-        any
-            Single valid item.
-    """
-    
-    items = list(sequence) if condition is None else [d for d in sequence if condition(d)]
-    if len(items) == 1:
-        return items[0]
-    
-    raise ValueError
-
-
-def single_or_default(sequence, condition=None, default=None):
-    """
-    Returns the single item in a sequence that satisfies specified condition or
-    specified default value if no item found. Raises error if more items found.
+    raises error if more items found. If no item is found, returns default
+    value if provided or raises error.
     
     Args:
         sequence: iterable
@@ -679,9 +481,11 @@ def single_or_default(sequence, condition=None, default=None):
     """
     
     items = list(sequence) if condition is None else [d for d in sequence if condition(d)]
+    
     if len(items) == 1:
         return items[0]
-    if len(items) == 0:
+    
+    if len(items) == 0 and default is not UNDEFINED:
         return default
     
     raise ValueError
@@ -782,35 +586,10 @@ def take_while(sequence, condition):
             return
 
 
-def union(sequence, items):
+def union(sequence, items, key=None):
     """
     Produces a sequence of unique items from given sequences by using default
-    comparer.
-    
-    Args:
-        sequence: iterable
-            Sequence of items to go through.
-        
-        items: iterable
-            Items to union with.
-    
-    Returns:
-        iter(any)
-            Iterator over unionized items.
-    """
-    
-    keys = set()
-    
-    for item in concat(sequence, items):
-        if item not in keys:
-            keys.add(item)
-            yield item
-
-
-def union_by(sequence, items, key):
-    """
-    Produces a sequence of unique items from given sequences by using selected
-    item's key.
+    comparer or specified item's key.
     
     Args:
         sequence: iterable
@@ -819,7 +598,7 @@ def union_by(sequence, items, key):
         items: iterable
             Items to union with.
         
-        key: callable
+        key: callable or None
             Item's key selector.
     
     Returns:
@@ -827,10 +606,12 @@ def union_by(sequence, items, key):
             Iterator over unionized items.
     """
     
+    has_key = key is not None
     keys = set()
     
     for item in concat(sequence, items):
-        k = key(item)
+        k = key(item) if has_key else item
+        
         if k not in keys:
             keys.add(k)
             yield item

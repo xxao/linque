@@ -35,22 +35,18 @@ class TestCase(unittest.TestCase):
         
         items = (d for d in data)
         self.assertEqual(linque.argsort(items, reverse=True), [0, 2, 1])
-    
-    
-    def test_argsort_by(self):
-        """Tests whether argsort_by works correctly."""
         
         data = ((2, 3), (1, 1), (3, 2))
         
         items = data
-        self.assertEqual(linque.argsort_by(items, lambda d: d[1]), [1, 2, 0])
-        self.assertEqual(linque.argsort_by(items, lambda d: d[1], reverse=True), [0, 2, 1])
+        self.assertEqual(linque.argsort(items, lambda d: d[1]), [1, 2, 0])
+        self.assertEqual(linque.argsort(items, lambda d: d[1], reverse=True), [0, 2, 1])
         
         items = (d for d in data)
-        self.assertEqual(linque.argsort_by(items, lambda d: d[1]), [1, 2, 0])
+        self.assertEqual(linque.argsort(items, lambda d: d[1]), [1, 2, 0])
         
         items = (d for d in data)
-        self.assertEqual(linque.argsort_by(items, lambda d: d[1], reverse=True), [0, 2, 1])
+        self.assertEqual(linque.argsort(items, lambda d: d[1], reverse=True), [0, 2, 1])
     
     
     def test_bisect(self):
@@ -139,18 +135,14 @@ class TestCase(unittest.TestCase):
         
         items = (d for d in data)
         self.assertEqual(tuple(linque.distinct(items)), ((0, 1), (0, 2), (1, 1), (1, 2)))
-    
-    
-    def test_distinct_by(self):
-        """Tests whether distinct_by works correctly."""
         
         data = ((0, 1), (0, 1), (0, 2), (1, 1), (1, 2))
         
         items = data
-        self.assertEqual(tuple(linque.distinct_by(items, lambda d: d[1])), ((0, 1), (0, 2)))
+        self.assertEqual(tuple(linque.distinct(items, lambda d: d[1])), ((0, 1), (0, 2)))
         
         items = (d for d in data)
-        self.assertEqual(tuple(linque.distinct_by(items, lambda d: d[1])), ((0, 1), (0, 2)))
+        self.assertEqual(tuple(linque.distinct(items, lambda d: d[1])), ((0, 1), (0, 2)))
     
     
     def test_exclude(self):
@@ -166,21 +158,14 @@ class TestCase(unittest.TestCase):
         items1 = (d for d in data1)
         items2 = (d for d in data2)
         self.assertEqual(tuple(linque.exclude(items1, items2)), ((0, 2), (0, 3), (0, 4)))
-    
-    
-    def test_exclude_by(self):
-        """Tests whether exclude_by works correctly."""
-        
-        data1 = ((0, 1), (0, 1), (0, 2), (1, 2), (0, 3), (0, 4))
-        data2 = ((0, 1), (1, 2), (1, 2), (1, 3))
         
         items1 = data1
         items2 = data2
-        self.assertEqual(tuple(linque.exclude_by(items1, items2, lambda d: d[1])), ((0, 4),))
+        self.assertEqual(tuple(linque.exclude(items1, items2, lambda d: d[1])), ((0, 4),))
         
         items1 = (d for d in data1)
         items2 = (d for d in data2)
-        self.assertEqual(tuple(linque.exclude_by(items1, items2, lambda d: d[1])), ((0, 4),))
+        self.assertEqual(tuple(linque.exclude(items1, items2, lambda d: d[1])), ((0, 4),))
     
     
     def test_first(self):
@@ -201,30 +186,18 @@ class TestCase(unittest.TestCase):
         self.assertEqual(linque.first(items, lambda d: d > 4), 5)
         
         items = data
+        self.assertEqual(linque.first(items, lambda d: d > 10, -1), -1)
+        
+        items = (d for d in data)
+        self.assertEqual(linque.first(items, lambda d: d > 10, -1), -1)
+        
+        items = data
         with self.assertRaises(StopIteration):
             linque.first(items, lambda d: d > 10)
         
         items = (d for d in data)
         with self.assertRaises(StopIteration):
             linque.first(items, lambda d: d > 10)
-    
-    
-    def test_first_or_default(self):
-        """Tests whether first_or_default works correctly."""
-        
-        data = (0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
-        
-        items = data
-        self.assertEqual(linque.first_or_default(items, lambda d: d > 4), 5)
-        
-        items = (d for d in data)
-        self.assertEqual(linque.first_or_default(items, lambda d: d > 4), 5)
-        
-        items = data
-        self.assertEqual(linque.first_or_default(items, lambda d: d > 10, -1), -1)
-        
-        items = (d for d in data)
-        self.assertEqual(linque.first_or_default(items, lambda d: d > 10, -1), -1)
     
     
     def test_group(self):
@@ -243,20 +216,14 @@ class TestCase(unittest.TestCase):
             ((0, 1), ((0, 1), (0, 1))),
             ((0, 2), ((0, 2),)),
             ((1, 1), ((1, 1),))))
-    
-    
-    def test_group_by(self):
-        """Tests whether group_by works correctly."""
-        
-        data = ((0, 1), (0, 1), (0, 2), (1, 1))
         
         items = data
-        self.assertEqual(tuple(linque.group_by(items, lambda d: d[1])), (
+        self.assertEqual(tuple(linque.group(items, lambda d: d[1])), (
             (1, ((0, 1), (0, 1), (1, 1))),
             (2, ((0, 2),))))
         
         items = (d for d in data)
-        self.assertEqual(tuple(linque.group_by(items, lambda d: d[1])), (
+        self.assertEqual(tuple(linque.group(items, lambda d: d[1])), (
             (1, ((0, 1), (0, 1), (1, 1))),
             (2, ((0, 2),))))
     
@@ -286,21 +253,14 @@ class TestCase(unittest.TestCase):
         items1 = (d for d in data1)
         items2 = (d for d in data2)
         self.assertEqual(tuple(linque.intersect(items1, items2)), ((0, 1), (1, 2)))
-    
-    
-    def test_intersect_by(self):
-        """Tests whether intersect_by works correctly."""
-        
-        data1 = ((0, 1), (0, 1), (0, 2), (1, 2))
-        data2 = ((0, 1), (1, 2), (1, 2), (0, 3))
         
         items1 = data1
         items2 = data2
-        self.assertEqual(tuple(linque.intersect_by(items1, items2, lambda d: d[1])), ((0, 1), (0, 2)))
+        self.assertEqual(tuple(linque.intersect(items1, items2, lambda d: d[1])), ((0, 1), (0, 2)))
         
         items1 = (d for d in data1)
         items2 = (d for d in data2)
-        self.assertEqual(tuple(linque.intersect_by(items1, items2, lambda d: d[1])), ((0, 1), (0, 2)))
+        self.assertEqual(tuple(linque.intersect(items1, items2, lambda d: d[1])), ((0, 1), (0, 2)))
     
     
     def test_last(self):
@@ -321,30 +281,18 @@ class TestCase(unittest.TestCase):
         self.assertEqual(linque.last(items, lambda d: d > 4), 6)
         
         items = data
+        self.assertEqual(linque.last(items, lambda d: d > 10, -1), -1)
+        
+        items = (d for d in data)
+        self.assertEqual(linque.last(items, lambda d: d > 10, -1), -1)
+        
+        items = data
         with self.assertRaises(StopIteration):
             linque.last(items, lambda d: d > 10)
         
         items = (d for d in data)
         with self.assertRaises(StopIteration):
             linque.last(items, lambda d: d > 10)
-    
-    
-    def test_last_or_default(self):
-        """Tests whether last_or_default works correctly."""
-        
-        data = (0, 1, 2, 3, 4, 5, 4, 5, 6, 0)
-        
-        items = data
-        self.assertEqual(linque.last_or_default(items, lambda d: d > 4), 6)
-        
-        items = (d for d in data)
-        self.assertEqual(linque.last_or_default(items, lambda d: d > 4), 6)
-        
-        items = data
-        self.assertEqual(linque.last_or_default(items, lambda d: d > 10, -1), -1)
-        
-        items = (d for d in data)
-        self.assertEqual(linque.last_or_default(items, lambda d: d > 10, -1), -1)
     
     
     def test_rank(self):
@@ -378,39 +326,35 @@ class TestCase(unittest.TestCase):
         
         items = (d for d in data)
         self.assertEqual(linque.rank(items, method='ordinal'), [1, 2, 4, 3])
-    
-    
-    def test_rank_by(self):
-        """Tests whether rank_by works correctly."""
         
         data = ((2, 0), (3, 2), (2, 3), (0, 2))
         
-        self.assertEqual(linque.rank_by(data, lambda d: d[1], method='average'), [1, 2.5, 4, 2.5])
-        self.assertEqual(linque.rank_by(data, lambda d: d[1], method='min'), [1, 2, 4, 2])
-        self.assertEqual(linque.rank_by(data, lambda d: d[1], method='max'), [1, 3, 4, 3])
-        self.assertEqual(linque.rank_by(data, lambda d: d[1], method='dense'), [1, 2, 3, 2])
-        self.assertEqual(linque.rank_by(data, lambda d: d[1], method='ordinal'), [1, 2, 4, 3])
+        self.assertEqual(linque.rank(data, lambda d: d[1], method='average'), [1, 2.5, 4, 2.5])
+        self.assertEqual(linque.rank(data, lambda d: d[1], method='min'), [1, 2, 4, 2])
+        self.assertEqual(linque.rank(data, lambda d: d[1], method='max'), [1, 3, 4, 3])
+        self.assertEqual(linque.rank(data, lambda d: d[1], method='dense'), [1, 2, 3, 2])
+        self.assertEqual(linque.rank(data, lambda d: d[1], method='ordinal'), [1, 2, 4, 3])
         
-        self.assertEqual(linque.rank_by(data, lambda d: d[1], method='average', reverse=True), [4, 2.5, 1, 2.5])
-        self.assertEqual(linque.rank_by(data, lambda d: d[1], method='min', reverse=True), [4, 2, 1, 2])
-        self.assertEqual(linque.rank_by(data, lambda d: d[1], method='max', reverse=True), [4, 3, 1, 3])
-        self.assertEqual(linque.rank_by(data, lambda d: d[1], method='dense', reverse=True), [3, 2, 1, 2])
-        self.assertEqual(linque.rank_by(data, lambda d: d[1], method='ordinal', reverse=True), [4, 2, 1, 3])
-        
-        items = (d for d in data)
-        self.assertEqual(linque.rank_by(items, lambda d: d[1], method='average'), [1, 2.5, 4, 2.5])
+        self.assertEqual(linque.rank(data, lambda d: d[1], method='average', reverse=True), [4, 2.5, 1, 2.5])
+        self.assertEqual(linque.rank(data, lambda d: d[1], method='min', reverse=True), [4, 2, 1, 2])
+        self.assertEqual(linque.rank(data, lambda d: d[1], method='max', reverse=True), [4, 3, 1, 3])
+        self.assertEqual(linque.rank(data, lambda d: d[1], method='dense', reverse=True), [3, 2, 1, 2])
+        self.assertEqual(linque.rank(data, lambda d: d[1], method='ordinal', reverse=True), [4, 2, 1, 3])
         
         items = (d for d in data)
-        self.assertEqual(linque.rank_by(items, lambda d: d[1], method='min'), [1, 2, 4, 2])
+        self.assertEqual(linque.rank(items, lambda d: d[1], method='average'), [1, 2.5, 4, 2.5])
         
         items = (d for d in data)
-        self.assertEqual(linque.rank_by(items, lambda d: d[1], method='max'), [1, 3, 4, 3])
+        self.assertEqual(linque.rank(items, lambda d: d[1], method='min'), [1, 2, 4, 2])
         
         items = (d for d in data)
-        self.assertEqual(linque.rank_by(items, lambda d: d[1], method='dense'), [1, 2, 3, 2])
+        self.assertEqual(linque.rank(items, lambda d: d[1], method='max'), [1, 3, 4, 3])
         
         items = (d for d in data)
-        self.assertEqual(linque.rank_by(items, lambda d: d[1], method='ordinal'), [1, 2, 4, 3])
+        self.assertEqual(linque.rank(items, lambda d: d[1], method='dense'), [1, 2, 3, 2])
+        
+        items = (d for d in data)
+        self.assertEqual(linque.rank(items, lambda d: d[1], method='ordinal'), [1, 2, 4, 3])
     
     
     def test_single(self):
@@ -433,46 +377,10 @@ class TestCase(unittest.TestCase):
         self.assertEqual(linque.single(items, lambda d: 3 < d < 5), 4)
         
         items = data
-        with self.assertRaises(ValueError):
-            linque.single(items)
+        self.assertEqual(linque.single(items, lambda d: d > 10, -1), -1)
         
         items = (d for d in data)
-        with self.assertRaises(ValueError):
-            linque.single(items)
-        
-        items = data
-        with self.assertRaises(ValueError):
-            linque.single(items, lambda d: d > 5)
-        
-        items = (d for d in data)
-        with self.assertRaises(ValueError):
-            linque.single(items, lambda d: d > 5)
-    
-    
-    def test_single_or_default(self):
-        """Tests whether single_or_default works correctly."""
-        
-        data = (42, )
-        
-        items = data
-        self.assertEqual(linque.single_or_default(items), 42)
-        
-        items = (d for d in data)
-        self.assertEqual(linque.single_or_default(items), 42)
-        
-        data = (0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
-        
-        items = data
-        self.assertEqual(linque.single_or_default(items, lambda d: 3 < d < 5), 4)
-        
-        items = data
-        self.assertEqual(linque.single_or_default(items, lambda d: d > 10, -1), -1)
-        
-        items = (d for d in data)
-        self.assertEqual(linque.single_or_default(items, lambda d: 3 < d < 5), 4)
-        
-        items = (d for d in data)
-        self.assertEqual(linque.single_or_default(items, lambda d: d > 10, -1), -1)
+        self.assertEqual(linque.single(items, lambda d: d > 10, -1), -1)
         
         items = data
         with self.assertRaises(ValueError):
@@ -489,6 +397,14 @@ class TestCase(unittest.TestCase):
         items = (d for d in data)
         with self.assertRaises(ValueError):
             linque.single(items, lambda d: d > 5)
+        
+        items = data
+        with self.assertRaises(ValueError):
+            linque.single(items, lambda d: d > 5, -1)
+        
+        items = (d for d in data)
+        with self.assertRaises(ValueError):
+            linque.single(items, lambda d: d > 5, -1)
     
     
     def test_skip(self):
@@ -555,21 +471,14 @@ class TestCase(unittest.TestCase):
         items1 = (d for d in data1)
         items2 = (d for d in data2)
         self.assertEqual(tuple(linque.union(items1, items2)), ((0, 1), (0, 2), (1, 1), (1, 2), (0, 3)))
-    
-    
-    def test_union_by(self):
-        """Tests whether union_by works correctly."""
-        
-        data1 = ((0, 1), (0, 1), (0, 2))
-        data2 = ((1, 1), (1, 2), (1, 2), (0, 3))
         
         items1 = data1
         items2 = data2
-        self.assertEqual(tuple(linque.union_by(items1, items2, lambda d: d[1])), ((0, 1), (0, 2), (0, 3)))
+        self.assertEqual(tuple(linque.union(items1, items2, lambda d: d[1])), ((0, 1), (0, 2), (0, 3)))
         
         items1 = (d for d in data1)
         items2 = (d for d in data2)
-        self.assertEqual(tuple(linque.union_by(items1, items2, lambda d: d[1])), ((0, 1), (0, 2), (0, 3)))
+        self.assertEqual(tuple(linque.union(items1, items2, lambda d: d[1])), ((0, 1), (0, 2), (0, 3)))
 
 
 # run test case

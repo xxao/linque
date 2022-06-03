@@ -13,8 +13,8 @@ result = Linque(words) \
     .select(lambda d: d.upper()) \
     .distinct() \
     .sort() \
-    .group_by(lambda d: len(d)) \
-    .sort_by(lambda d: d[0]) \
+    .group(lambda d: len(d)) \
+    .sort(lambda d: d[0]) \
     .flatten(lambda d: d[1]) \
     .to_list() \
 
@@ -81,27 +81,20 @@ or simply by using pip
 
 - [all](#allcondition): Determines whether all items satisfy given condition.
 - [any](#anycondition): Determines whether a sequence contains any item or whether any item satisfies given condition.
-- [contains](#containsitem): Determines whether a sequence contains specified item by using default comparer.
-- [contains_by](#contains_byvalue-key): Determines whether a sequence contains item with given value by using specified item's key.
+- [contains](#containsvalue-key): Determines whether a sequence contains item with given value by using default comparer or specified item's key.
 
 ### Element Operations
 
-- [first](#firstcondition): Returns the first item that satisfies specified condition or raises error.
-- [first_or_default](#first_or_defaultcondition-default): Returns the first item that satisfies specified condition or specified default.
-- [last](#lastcondition): Returns the last item that satisfies specified condition or raises error.
-- [last_or_default](#last_or_defaultcondition-default): Returns the last item that satisfies specified condition or specified default.
-- [single](#singlecondition): Returns the single item that satisfies specified condition or raises error.
-- [single_or_default](#single_or_defaultcondition-default): Returns the single item that satisfies specified condition, specified default or raises error.
+- [first](#firstcondition-default): Returns the first item that satisfies specified condition or specified default if provided.
+- [last](#lastcondition-default): Returns the last item that satisfies specified condition or specified default if provided.
+- [single](#singlecondition-default): Returns the single item that satisfies specified condition, specified default or raises error.
 
 ### Sorting Operations
 
-- [argsort](#argsortreverse): Returns items indices that would sort current sequence by using default comparer.
-- [argsort_by](#argsort_bykey-reverse): Returns items indices that would sort current sequence by using selected item's key.
+- [argsort](#argsortkey-reverse): Returns items indices that would sort current sequence by using default comparer or selected item's key.
 - [reverse](#reverse): Produces new sequence by inverting order of items.
-- [rank](#rankmethod-reverse): Provides 1-based rank for each item of current sequence by using default comparer.
-- [rank_by](#rank_bykey-method-reverse): Provides 1-based rank for each item of current sequence by using selected item's key.
-- [sort](#sortreverse): Produces new sequence by sorting elements by using default comparer.
-- [sort_by](#sort_bykey-reverse): Produces new sequence by sorting elements by using selected item's key.
+- [rank](#rankkey-method-reverse): Provides 1-based rank for each item of current sequence by using default comparer or selected item's key.
+- [sort](#sortkey-reverse): Produces new sequence by sorting elements by using default comparer or selected item's key.
 
 ### Filtering Operations
 
@@ -116,8 +109,7 @@ or simply by using pip
 
 ### Grouping Operations
 
-- [group](#group): Produces new sequence by grouping items according to default comparer.
-- [group_by](#group_bykey): Produces new sequence by grouping items according to specified key selector.
+- [group](#groupkey): Produces new sequence by grouping items according to default comparer or specified key selector.
 
 ### Partitioning Operations
 
@@ -133,14 +125,10 @@ or simply by using pip
 
 ### Set Operations
 
-- [distinct](#distinct): Produces new sequence by selecting distinct items by using default comparer.
-- [distinct_by](#distinct_bykey): Produces new sequence by selecting distinct items by using specified item's key.
-- [exclude](#excludeitems): Produces new sequence by excluding specified items by using default comparer.
-- [exclude_by](#exclude_byitems-key): Produces new sequence by excluding specified items by using selected item's key.
-- [intersect](#intersectitems): Produces new sequence of shared unique items by using default comparer.
-- [intersect_by](#intersect_byitems-key): Produces new sequence of shared unique items by using selected item's key.
-- [union](#unionitems): Produces new sequence of unique items by using default comparer.
-- [union_by](#union_byitems-key): Produces new sequence of unique items by using selected item's key.
+- [distinct](#distinctkey): Produces new sequence by selecting distinct items by using default comparer or specified item's key.
+- [exclude](#excludeitems-key): Produces new sequence by excluding specified items by using default comparer or selected item's key.
+- [intersect](#intersectitems-key): Produces new sequence of shared unique items by using default comparer or selected item's key.
+- [union](#unionitems-key): Produces new sequence of unique items by using default comparer or selected item's key.
 
 ### Converting Operations
 
@@ -202,9 +190,10 @@ print(result)
 # True
 ```
 
-### .argsort(reverse)
-Returns items indices that would sort current sequence by using default comparer. This call fully evaluates current
-sequence. This functionality is also available as a *linque.argsort(sequence, reverse)* utility function.
+### .argsort(key, reverse)
+Returns items indices that would sort current sequence by using default comparer or specified item's key. This call
+fully evaluates current sequence. This functionality is also available as a *linque.argsort(sequence, key, reverse)*
+utility function.
 
 ```python
 data = (3, 1, 2)
@@ -212,15 +201,9 @@ result = Linque(data).argsort().to_list()
 print(result)
 
 # [1, 2, 0]
-```
 
-### .argsort_by(key, reverse)
-Returns items indices that would sort current sequence by using specified item's key. This call fully evaluates current
-sequence. This functionality is also available as a *linque.argsort_by(sequence, key, reverse)* utility function.
-
-```python
 data = ((2, 3), (1, 1), (3, 2))
-result = Linque(data).argsort_by(lambda d: d[1]).to_list()
+result = Linque(data).argsort(lambda d: d[1]).to_list()
 print(result)
 
 # [1, 2, 0]
@@ -251,9 +234,9 @@ print(result)
 # [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 ```
 
-### .contains(item)
-Determines whether current sequence contains specified item by using default comparer. This call partially evaluates
-current sequence.
+### .contains(value, key)
+Determines whether current sequence contains item with given value by using default comparer or specified item's key.
+This call partially evaluates current sequence.
 
 ```python
 data = ((0, 0), (1, 10), (2, 20), (3, 30), (4, 40))
@@ -261,14 +244,9 @@ result = Linque(data).contains((1, 10))
 print(result)
 
 # True
-```
-### .contains_by(value, key)
-Determines whether current sequence contains item with given value by using specified item's key. This call partially
-evaluates current sequence.
 
-```python
 data = ((0, 0), (1, 10), (2, 20), (3, 30), (4, 40))
-result = Linque(data).contains_by(10, lambda d: d[1])
+result = Linque(data).contains(10, lambda d: d[1])
 print(result)
 
 # True
@@ -286,10 +264,10 @@ print(result)
 # 5
 ```
 
-### .distinct()
-Produces new sequence by selecting distinct items from current sequence using default comparer. First occurrence of each
-item is used. This call does not evaluate current sequence. This functionality is also available as a
-*linque.distinct(sequence, items)* utility function.
+### .distinct(key)
+Produces new sequence by selecting distinct items from current sequence using default comparer or specified item's key.
+First occurrence of each item is used. This call does not evaluate current sequence. This functionality is also
+available as a *linque.distinct(sequence, items, key)* utility function.
 
 ```python
 data = ((0, 1), (0, 1), (0, 2), (1, 1), (1, 2))
@@ -297,16 +275,9 @@ result = Linque(data).distinct().to_list()
 print(result)
 
 # [(0, 1), (0, 2), (1, 1), (1, 2)]
-```
 
-### .distinct_by(key)
-Produces new sequence by selecting distinct items from current sequence using specified item's key. First occurrence of
-each item is used. This call does not evaluate current sequence. This functionality is also available as a
-*linque.distinct_by(sequence, items, key)* utility function.
-
-```python
 data = ((0, 1), (0, 1), (0, 2), (1, 1), (1, 2))
-result = Linque(data).distinct_by(lambda d: d[1]).to_list()
+result = Linque(data).distinct(lambda d: d[1]).to_list()
 print(result)
 
 # [(0, 1), (0, 2)]
@@ -359,55 +330,40 @@ print(linq.to_list())
 # [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 ```
 
-### .exclude(items)
-Produces new sequence by excluding specified items from current sequence using default comparer. This call does not
-evaluate current sequence. This functionality is also available as a
-*linque.exclude(sequence, items)* utility function.
+### .exclude(items, key)
+Produces new sequence by excluding specified items from current sequence using default comparer or selected item's key.
+This call does not evaluate current sequence. This functionality is also available as a
+*linque.exclude(sequence, items, key)* utility function.
 
 ```python
 data1 = ((0, 1), (0, 1), (0, 2), (1, 2), (0, 3), (0, 4))
 data2 = ((0, 1), (1, 2), (1, 2), (1, 3))
+
 result = Linque(data1).exclude(data2).to_list()
 print(result)
 
 # [(0, 2), (0, 3), (0, 4)]
-```
 
-### .exclude_by(items, key)
-Produces new sequence by excluding specified items from current sequence using selected item's key. This call does not
-evaluate current sequence. This functionality is also available as a
-*linque.exclude_by(sequence, items, key)* utility function.
-
-```python
-data1 = ((0, 1), (0, 1), (0, 2), (1, 2), (0, 3), (0, 4))
-data2 = ((0, 1), (1, 2), (1, 2), (1, 3))
-result = Linque(data1).exclude_by(data2, lambda d: d[1]).to_list()
+result = Linque(data1).exclude(data2, lambda d: d[1]).to_list()
 print(result)
 
 # [(0, 4)]
 ```
 
-### .first(condition)
-Returns the first item in current sequence that satisfies specified condition or raises error if no item found. This
-call partially evaluates current sequence. This functionality is also available as a
-*linque.first(sequence, condition)* utility function.
+### .first(condition, default)
+Returns the first item in current sequence that satisfies specified condition or specified default value if provided and
+no item found. This call partially evaluates current sequence. This functionality is also available as a
+*linque.first(sequence, condition, default)* utility function.
 
 ```python
 data = (0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
+
 result = Linque(data).first(lambda d: d > 4)
 print(result)
 
 # 5
-```
 
-### .first_or_default(condition, default)
-Returns the first item in current sequence that satisfies specified condition or specified default value if no item
-found. This call partially evaluates current sequence. This functionality is also available as a
-*linque.first_or_default(sequence, condition, default)* utility function.
-
-```python
-data = (0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
-result = Linque(data).first_or_default(lambda d: d > 10, -1)
+result = Linque(data).first(lambda d: d > 10, -1)
 print(result)
 
 # -1
@@ -425,13 +381,14 @@ print(result)
 # [0, 0, 1, 10, 2, 20, 3, 30, 4, 40]
 ```
 
-### .group()
-Produces new sequence by grouping items of current sequence according to default comparer and creates result
+### .group(key)
+Produces new sequence by grouping items of current sequence according to specified key selector and creates result
 values as (key, group) pairs. This call fully evaluates current sequence. This functionality is also available as a
-*linque.group(sequence)* utility function.
+*linque.group(sequence, key)* utility function.
 
 ```python
 data = ((0, 1), (0, 1), (0, 2), (1, 1))
+
 result = Linque(data).group().to_dict(lambda d: d[0], lambda d: d[1].to_list())
 print(result)
 
@@ -440,16 +397,8 @@ print(result)
 #     (0, 2): [(0, 2)],
 #     (1, 1): [(1, 1)]
 # }
-```
 
-### .group_by(key)
-Produces new sequence by grouping items of current sequence according to specified key selector and creates result
-values as (key, group) pairs. This call fully evaluates current sequence. This functionality is also available as a
-*linque.group_by(sequence, key)* utility function.
-
-```python
-data = ((0, 1), (0, 1), (0, 2), (1, 1))
-result = Linque(data).group_by(lambda d: d[1]).to_dict(lambda d: d[0], lambda d: d[1].to_list())
+result = Linque(data).group(lambda d: d[1]).to_dict(lambda d: d[0], lambda d: d[1].to_list())
 print(result)
 
 # {
@@ -458,55 +407,40 @@ print(result)
 # }
 ```
 
-### .intersect(items)
-Produces new sequence of shared unique items from current sequence and given items by using default comparer. This call
-does not evaluate current sequence. This functionality is also available as a
-*linque.intersect(sequence, items)* utility function.
+### .intersect(items, key)
+Produces new sequence of shared unique items from current sequence and given items by using default comparer or selected
+item's key. This call does not evaluate current sequence. This functionality is also available as a
+*linque.intersect(sequence, items, key)* utility function.
 
 ```python
 data1 = ((0, 1), (0, 1), (0, 2), (1, 2))
 data2 = ((0, 1), (1, 2), (1, 2), (0, 3))
+
 result = Linque(data1).intersect(data2).to_list()
 print(result)
 
 # [(0, 1), (1, 2)]
-```
 
-### .intersect_by(items, key)
-Produces new sequence of shared unique items from current sequence and given items by using selected item's key. This
-call does not evaluate current sequence. This functionality is also available as a
-*linque.intersect_by(sequence, items, key)* utility function.
-
-```python
-data1 = ((0, 1), (0, 1), (0, 2), (1, 2))
-data2 = ((0, 1), (1, 2), (1, 2), (0, 3))
-result = Linque(data1).intersect_by(data2, lambda d: d[1]).to_list()
+result = Linque(data1).intersect(data2, lambda d: d[1]).to_list()
 print(result)
 
 # [(0, 1), (0, 2)]
 ```
 
-### .last(condition)
-Returns the last item in current sequence that satisfies specified condition or raises error if no item found. This call
-partially evaluates current sequence. This functionality is also available as a
-*linque.last(sequence, condition)* utility function.
+### .last(condition, default)
+Returns the last item in current sequence that satisfies specified condition or specified default value if provided and
+no item  found. This call partially evaluates current sequence. This functionality is also available as a
+*linque.last(sequence, condition, default)* utility function.
 
 ```python
 data = (0, 1, 2, 3, 4, 5, 4, 5, 6, 0)
+
 result = Linque(data).last(lambda d: d > 4)
 print(result)
 
 # 6
-```
 
-### .last_or_default(condition, default)
-Returns the last item in current sequence that satisfies specified condition or specified default value if no item
-found. This call partially evaluates current sequence. This functionality is also available as a
-*linque.last_or_default(sequence, condition, default)* utility function.
-
-```python
-data = (0, 1, 2, 3, 4, 5, 4, 5, 6, 0)
-result = Linque(data).last_or_default(lambda d: d > 10, -1)
+result = Linque(data).last(lambda d: d > 10, -1)
 print(result)
 
 # -1
@@ -580,10 +514,10 @@ print(result)
 # (4, -40)
 ```
 
-### .rank(method, reverse)
-Provides 1-based rank for each item of current sequence by using default comparer. The ties are resolved according to
-selected method. This call fully evaluates current sequence. This functionality is also available as a
-*linque.rank(sequence, method, reverse)* utility function.
+### .rank(key, method, reverse)
+Provides 1-based rank for each item of current sequence by using default comparer or selected item's key. The ties are
+resolved according to selected method. This call fully evaluates current sequence. This functionality is also available
+as a *linque.rank(sequence, key, method, reverse)* utility function.
 
 ```python
 data = (0, 2, 3, 2)
@@ -612,37 +546,30 @@ result = Linque(data).rank(method='ordinal').to_list()
 print(result)
 
 # [1, 2, 4, 3]
-```
 
-### .rank_by(key, method, reverse)
-Provides 1-based rank for each item of current sequence by using selected item's key. The ties are resolved according to
-selected method. This call fully evaluates current sequence. This functionality is also available as a
-*linque.rank_by(sequence, key, method, reverse)* utility function.
-
-```python
 data = ((2, 0), (3, 2), (2, 3), (0, 2))
 
-result = Linque(data).rank_by(lambda d: d[1], method='average').to_list()
+result = Linque(data).rank(lambda d: d[1], method='average').to_list()
 print(result)
 
 # [1, 2.5, 4, 2.5]
 
-result = Linque(data).rank_by(lambda d: d[1], method='min').to_list()
+result = Linque(data).rank(lambda d: d[1], method='min').to_list()
 print(result)
 
 # [1, 2, 4, 2]
 
-result = Linque(data).rank_by(lambda d: d[1], method='max').to_list()
+result = Linque(data).rank(lambda d: d[1], method='max').to_list()
 print(result)
 
 # [1, 3, 4, 3]
 
-result = Linque(data).rank_by(lambda d: d[1], method='dense').to_list()
+result = Linque(data).rank(lambda d: d[1], method='dense').to_list()
 print(result)
 
 # [1, 2, 3, 2]
 
-result = Linque(data).rank_by(lambda d: d[1], method='ordinal').to_list()
+result = Linque(data).rank(lambda d: d[1], method='ordinal').to_list()
 print(result)
 
 # [1, 2, 4, 3]
@@ -682,27 +609,20 @@ print(result)
 # [0, 0, 1, 10, 2, 20, 3, 30, 4, 40]
 ```
 
-### .single(condition)
-Returns the single item in current sequence that satisfies specified condition or raises error if none or more items
-found. This call fully evaluates current sequence. This functionality is also available as a
-*linque.single(sequence, condition)* utility function.
+### .single(condition, default)
+Returns the single item in current sequence that satisfies specified condition or specified default value if provided
+and no item found. Raises error if more items found. This call fully evaluates current sequence. This functionality is
+also available as a *linque.single(sequence, condition, default)* utility function.
 
 ```python
 data = (0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
+
 result = Linque(data).single(lambda d: 3<d<5)
 print(result)
 
 # 4
-```
 
-### .single_or_default(condition, default)
-Returns the single item in current sequence that satisfies specified condition or specified default value if no item
-found. Raises error if more items found. This call fully evaluates current sequence. This functionality is also
-available as a *linque.single_or_default(sequence, condition, default)* utility function.
-
-```python
-data = (0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
-result = Linque(data).single_or_default(lambda d: d>10, -1)
+result = Linque(data).single(lambda d: d>10, -1)
 print(result)
 
 # -1
@@ -733,8 +653,9 @@ print(result)
 # [4, 5, 4, 3, 2, 2, 0]
 ```
 
-### .sort(reverse)
-Sorts elements of current sequence by using default comparer. This call fully evaluates current sequence.
+### .sort(key, reverse)
+Sorts elements of current sequence by using default comparer or selected item's key. This call fully evaluates current
+sequence.
 
 ```python
 data = (8, 0, 2, 3, 5, 1, 6, 7, 4, 9)
@@ -742,14 +663,9 @@ result = Linque(data).sort().to_list()
 print(result)
 
 # [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
-```
 
-### .sort_by(key, reverse)
-Sorts elements of current sequence by using selected item's key. This call fully evaluates current sequence.
-
-```python
 data = ((1, 8), (2, 0), (3, 2), (4, 3), (5, 5), (6, 1), (7, 6), (8, 7), (9, 4), (0, 9))
-result = Linque(data).sort_by(lambda d: d[1]).to_list()
+result = Linque(data).sort(lambda d: d[1]).to_list()
 print(result)
 
 # [(2, 0), (6, 1), (3, 2), (4, 3), (9, 4), (5, 5), (7, 6), (8, 7), (1, 8), (0, 9)]
@@ -836,29 +752,21 @@ print(result)
 # (0, 1, 2, 3, 4, 0, 1)
 ```
 
-### .union(items)
-Produces new sequence of unique items from current sequence and given items by using default comparer. This call does
-not evaluate current sequence.  This functionality is also available as a
-*linque.union(sequence, items)* utility function.
+### .union(items, key)
+Produces new sequence of unique items from current sequence and given items by using default comparer and selected
+item's key. This call does not evaluate current sequence. This functionality is also available as a
+*linque.union(sequence, items, key)* utility function.
 
 ```python
 data1 = ((0, 1), (0, 1), (0, 2))
 data2 = ((1, 1), (1, 2), (1, 2), (0, 3))
+
 result = Linque(data1).union(data2).to_list()
 print(result)
 
 # [(0, 1), (0, 2), (1, 1), (1, 2), (0, 3)]
-```
 
-### .union_by(items, key)
-Produces new sequence of unique items from current sequence and given items by using selected item's key. This call does
-not evaluate current sequence.  This functionality is also available as a
-*linque.union_by(sequence, items, key)* utility function.
-
-```python
-data1 = ((0, 1), (0, 1), (0, 2))
-data2 = ((1, 1), (1, 2), (1, 2), (0, 3))
-result = Linque(data1).union_by(data2, lambda d: d[1]).to_list()
+result = Linque(data1).union(data2, lambda d: d[1]).to_list()
 print(result)
 
 # [(0, 1), (0, 2), (0, 3)]
