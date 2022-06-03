@@ -48,7 +48,7 @@ print(linq.to_list())
 # [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 
 # force source evaluation
-linq = Linque((d for d in range(10)), True)
+linq = Linque((d for d in range(10)), evaluate=True)
 s = linq.sum()
 print(linq.to_list())
 
@@ -203,8 +203,8 @@ print(result)
 ```
 
 ### .argsort(reverse)
-Returns items indices that would sort current sequence by using default comparer.
-This call fully evaluates current sequence.
+Returns items indices that would sort current sequence by using default comparer. This call fully evaluates current
+sequence. This functionality is also available as a *linque.argsort(sequence, reverse)* utility function.
 
 ```python
 data = (3, 1, 2)
@@ -215,8 +215,8 @@ print(result)
 ```
 
 ### .argsort_by(key, reverse)
-Returns items indices that would sort current sequence by using specified item's key.
-This call fully evaluates current sequence.
+Returns items indices that would sort current sequence by using specified item's key. This call fully evaluates current
+sequence. This functionality is also available as a *linque.argsort_by(sequence, key, reverse)* utility function.
 
 ```python
 data = (3, 1, 2)
@@ -581,8 +581,9 @@ print(result)
 ```
 
 ### .rank(method, reverse)
-Provides 1-based rank for each item of current sequence by using default comparer. The ties are resolved according to selected method.
-This call fully evaluates current sequence.
+Provides 1-based rank for each item of current sequence by using default comparer. The ties are resolved according to
+selected method. This call fully evaluates current sequence. This functionality is also available as a
+*linque.rank(sequence, method, reverse)* utility function.
 
 ```python
 data = (0, 2, 3, 2)
@@ -614,8 +615,9 @@ print(result)
 ```
 
 ### .rank_by(key, method, reverse)
-Provides 1-based rank for each item of current sequence by using selected item's key. The ties are resolved according to selected method.
-This call fully evaluates current sequence.
+Provides 1-based rank for each item of current sequence by using selected item's key. The ties are resolved according to
+selected method. This call fully evaluates current sequence. This functionality is also available as a
+*linque.rank_by(sequence, key, method, reverse)* utility function.
 
 ```python
 data = ((2, 0), (3, 2), (2, 3), (0, 2))
