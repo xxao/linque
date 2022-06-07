@@ -87,11 +87,11 @@ or simply by using pip
 
 - [argmax](#argmaxkey): Returns index of the maximum item in a sequence by using default comparer or specified item's key.
 - [argmin](#argminkey): Returns index of the minimum item in a sequence by using default comparer or specified item's key.
-- [first](#firstcondition-default): Returns the first item that satisfies specified condition or specified default if provided.
-- [last](#lastcondition-default): Returns the last item that satisfies specified condition or specified default if provided.
-- [max](#maxkey): Returns item having maximum value in a sequence specified item's key.
-- [min](#minkey): Returns item having minimum value in a sequence by using specified item's key.
-- [single](#singlecondition-default): Returns the single item that satisfies specified condition, specified default or raises error.
+- [first](#firstcondition-default): Returns the first item that satisfies specified condition or specified default value if provided.
+- [last](#lastcondition-default): Returns the last item that satisfies specified condition or specified default value if provided.
+- [max](#maxkey): Returns item having maximum value in a sequence by using default comparer or specified item's key.
+- [min](#minkey): Returns item having minimum value in a sequence by using default comparer or specified item's key.
+- [single](#singlecondition-default): Returns the single item that satisfies specified condition, specified default value or raises error.
 - [where](#wherecondition): Produces new sequence by selecting items by specified predicate.
 
 ### Sorting Operations
