@@ -703,8 +703,8 @@ print(result)
 ```
 
 ### .sort(key, reverse)
-Sorts elements of current sequence by using default comparer or selected item's key. This call fully evaluates current
-sequence.
+Sorts elements of current sequence by using default comparer or selected item's key. If the key provides multiple
+columns, the sorting direction can be specified for each individual column. This call fully evaluates current sequence.
 
 ```python
 data = (8, 0, 2, 3, 5, 1, 6, 7, 4, 9)
@@ -718,6 +718,12 @@ result = Linque(data).sort(lambda d: d[1]).to_list()
 print(result)
 
 # [(2, 0), (6, 1), (3, 2), (4, 3), (9, 4), (5, 5), (7, 6), (8, 7), (1, 8), (0, 9)]
+
+data = ((1, "d", 11), (0, "a", 10), (0, "c", 100), (0, "b", 100), (1, "e", 10), (0, "b", 1000), (2, "f", 20))
+result = Linque(data).sort(reverse=[True, False, True]).to_list()
+print(result)
+
+# [(2, "f", 20), (1, "d", 11), (1, "e", 10), (0, "a", 10), (0, "b", 1000), (0, "b", 100), (0, "c", 100)]
 ```
 
 ### .sum(selector)

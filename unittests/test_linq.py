@@ -709,6 +709,24 @@ class TestCase(unittest.TestCase):
         
         linq = linque.Linque(d for d in data)
         self.assertEqual(linq.sort(lambda d: d[1], True).to_tuple(), ((0, 9), (1, 8), (8, 7), (7, 6), (5, 5), (9, 4), (4, 3), (3, 2), (6, 1), (2, 0)))
+        
+        data = ((1, "d", 11), (0, "a", 10), (0, "c", 100), (0, "b", 100), (1, "e", 10), (0, "b", 1000), (2, "f", 20))
+        model = ((2, "f", 20), (1, "d", 11), (1, "e", 10), (0, "a", 10), (0, "b", 1000), (0, "b", 100), (0, "c", 100))
+        
+        linq = linque.Linque(data)
+        self.assertEqual(linq.sort(reverse=[True, False, True]).to_tuple(), model)
+        
+        linq = linque.Linque(d for d in data)
+        self.assertEqual(linq.sort(reverse=[True, False, True]).to_tuple(), model)
+        
+        data = ((1, "d", 11), (0, "a", 10), (0, "c", 100), (0, "b", 100), (1, "e", 10), (0, "b", 1000), (2, "f", 20))
+        model = ((0, "a", 10), (0, "b", 1000), (0, "b", 100), (0, "c", 100), (1, "d", 11), (1, "e", 10), (2, "f", 20))
+        
+        linq = linque.Linque(data)
+        self.assertEqual(linq.sort(lambda d: (d[1], d[2]), reverse=[False, True]).to_tuple(), model)
+        
+        linq = linque.Linque(d for d in data)
+        self.assertEqual(linq.sort(lambda d: (d[1], d[2]), reverse=[False, True]).to_tuple(), model)
     
     
     def test_sum(self):

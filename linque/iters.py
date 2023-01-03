@@ -441,6 +441,64 @@ def last(sequence, condition=None, default=UNDEFINED):
     return item
 
 
+def multisort(sequence, key=None, reverse=False, _n=0):
+    """
+    Produces new sequence by sorting elements of current sequence by using
+    default comparer or specified item's key. If the key provides multiple
+    columns, the sorting direction can be specified for each individual column.
+    
+    Args:
+        sequence: iterable
+            Sequence of items to sort.
+        
+        key: callable or None
+            Item's key selector.
+        
+        reverse: bool or (bool,)
+            If set to True, sorting is reversed. This flag can be specified
+            independently foreach key column.
+    
+    Returns:
+        list(any)
+            Sorted sequence.
+    """
+    
+    # simple sort
+    if reverse is True or reverse is False:
+        return sorted(sequence, key=key, reverse=reverse)
+    
+    # initial sort
+    sequence = sorted(sequence, key=key, reverse=reverse[_n])
+    
+    # no need for further sorts
+    if len(sequence) < 2 or all(reverse[_n:]) or not any(reverse[_n:]):
+        return sequence
+    
+    # get keys
+    keys = sequence if key is None else list(map(key, sequence))
+    
+    # re-sort same keys
+    final = []
+    i = 0
+    while i < len(keys):
+        
+        # get same
+        k = keys[i][:_n+1]
+        j = i+1
+        while j < len(keys) and k == keys[j][:_n+1]:
+            j += 1
+        
+        # sort same
+        if j - i > 1:
+            final += multisort(sequence[i:j], key, reverse, _n+1)
+        else:
+            final.append(sequence[i])
+        
+        i = j
+    
+    return final
+
+
 def rank(sequence, key=None, method='average', reverse=False):
     """
     Provides 1-based rank for each item of a sequence by using default

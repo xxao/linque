@@ -680,24 +680,23 @@ class Linque(object):
     def sort(self, key=None, reverse=False):
         """
         Produces new sequence by sorting elements of current sequence by using
-        default comparer or specified item's key. This call fully evaluates
-        current sequence.
+        default comparer or specified item's key. If the key provides multiple
+        columns, the sorting direction can be specified for each individual
+        column. This call fully evaluates current sequence.
         
         Args:
             key: callable or None
                 Item's key selector.
             
             reverse: bool
-                If set to True, sorting is reversed.
+                If set to True, sorting is reversed. This flag can be specified
+                independently foreach key column.
         
         Returns:
             Linque
         """
         
-        if key is not None:
-            result = sorted(self, key=key, reverse=reverse)
-        else:
-            result = sorted(self, reverse=reverse)
+        result = iters.multisort(self, key=key, reverse=reverse)
         
         return Linque(result, self._evaluate)
     

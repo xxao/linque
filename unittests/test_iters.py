@@ -335,6 +335,87 @@ class TestCase(unittest.TestCase):
             linque.last(items, lambda d: d > 10)
     
     
+    def test_multisort(self):
+        """Tests whether multisort works correctly."""
+        
+        data = ((1, "d", 11), (0, "a", 10), (0, "c", 100), (0, "b", 1000), (0, "b", 100), (1, "e", 10), (2, "f", 20))
+        
+        items = data
+        
+        model = [(0, "a", 10), (0, "b", 100), (0, "b", 1000), (0, "c", 100), (1, "d", 11), (1, "e", 10), (2, "f", 20)]
+        self.assertEqual(linque.multisort(items), model)
+        
+        model = [(2, "f", 20), (1, "e", 10), (1, "d", 11), (0, "c", 100), (0, "b", 1000), (0, "b", 100), (0, "a", 10)]
+        self.assertEqual(linque.multisort(items, reverse=True), model)
+        
+        model = [(0, "a", 10), (0, "b", 100), (0, "b", 1000), (0, "c", 100), (1, "d", 11), (1, "e", 10), (2, "f", 20)]
+        self.assertEqual(linque.multisort(items, reverse=[False, False, False]), model)
+        
+        model = [(2, "f", 20), (1, "e", 10), (1, "d", 11), (0, "c", 100), (0, "b", 1000), (0, "b", 100), (0, "a", 10)]
+        self.assertEqual(linque.multisort(items, reverse=[True, True, True]), model)
+        
+        model = [(2, "f", 20), (1, "d", 11), (1, "e", 10), (0, "a", 10), (0, "b", 100), (0, "b", 1000), (0, "c", 100)]
+        self.assertEqual(linque.multisort(items, reverse=[True, False, False]), model)
+        
+        model = [(2, "f", 20), (1, "d", 11), (1, "e", 10), (0, "a", 10), (0, "b", 1000), (0, "b", 100), (0, "c", 100)]
+        self.assertEqual(linque.multisort(items, reverse=[True, False, True]), model)
+        
+        model = [(2, "f", 20), (1, "e", 10), (1, "d", 11), (0, "c", 100), (0, "b", 100), (0, "b", 1000), (0, "a", 10)]
+        self.assertEqual(linque.multisort(items, reverse=[True, True, False]), model)
+        
+        model = [(0, "c", 100), (0, "b", 1000), (0, "b", 100), (0, "a", 10), (1, "e", 10), (1, "d", 11), (2, "f", 20)]
+        self.assertEqual(linque.multisort(items, reverse=[False, True, True]), model)
+        
+        model = [(0, "a", 10), (0, "b", 1000), (0, "b", 100), (0, "c", 100), (1, "d", 11), (1, "e", 10), (2, "f", 20)]
+        self.assertEqual(linque.multisort(items, reverse=[False, False, True]), model)
+        
+        model = [(0, "a", 10), (0, "b", 1000), (0, "b", 100), (0, "c", 100), (1, "d", 11), (1, "e", 10), (2, "f", 20)]
+        self.assertEqual(linque.multisort(items, key=lambda d: (d[0], d[1])), model)
+        
+        model = [(2, "f", 20), (1, "e", 10), (1, "d", 11), (0, "c", 100), (0, "b", 1000), (0, "b", 100), (0, "a", 10)]
+        self.assertEqual(linque.multisort(items, key=lambda d: (d[0], d[1]), reverse=True), model)
+        
+        model = [(0, "a", 10), (0, "b", 1000), (0, "b", 100), (0, "c", 100), (1, "d", 11), (1, "e", 10), (2, "f", 20)]
+        self.assertEqual(linque.multisort(items, key=lambda d: (d[0], d[1]), reverse=[False, False]), model)
+        
+        model = [(2, "f", 20), (1, "e", 10), (1, "d", 11), (0, "c", 100), (0, "b", 1000), (0, "b", 100), (0, "a", 10)]
+        self.assertEqual(linque.multisort(items, key=lambda d: (d[0], d[1]), reverse=[True, True]), model)
+        
+        model = [(2, "f", 20), (1, "d", 11), (1, "e", 10), (0, "a", 10), (0, "b", 1000), (0, "b", 100), (0, "c", 100)]
+        self.assertEqual(linque.multisort(items, key=lambda d: (d[0], d[1]), reverse=[True, False]), model)
+        
+        model = [(0, "c", 100), (0, "b", 1000), (0, "b", 100), (0, "a", 10), (1, "e", 10), (1, "d", 11), (2, "f", 20)]
+        self.assertEqual(linque.multisort(items, key=lambda d: (d[0], d[1]), reverse=[False, True]), model)
+        
+        model = [(0, "a", 10), (1, "e", 10), (1, "d", 11), (2, "f", 20), (0, "c", 100), (0, "b", 100), (0, "b", 1000)]
+        self.assertEqual(linque.multisort(items, key=lambda d: (d[2], d[0])), model)
+        
+        model = [(0, "b", 1000), (0, "c", 100), (0, "b", 100), (2, "f", 20), (1, "d", 11), (1, "e", 10), (0, "a", 10)]
+        self.assertEqual(linque.multisort(items, key=lambda d: (d[2], d[0]), reverse=True), model)
+        
+        model = [(0, "a", 10), (1, "e", 10), (1, "d", 11), (2, "f", 20), (0, "c", 100), (0, "b", 100), (0, "b", 1000)]
+        self.assertEqual(linque.multisort(items, key=lambda d: (d[2], d[0]), reverse=[False, False]), model)
+        
+        model = [(0, "b", 1000), (0, "c", 100), (0, "b", 100), (2, "f", 20), (1, "d", 11), (1, "e", 10), (0, "a", 10)]
+        self.assertEqual(linque.multisort(items, key=lambda d: (d[2], d[0]), reverse=[True, True]), model)
+        
+        model = [(0, "b", 1000), (0, "c", 100), (0, "b", 100), (2, "f", 20), (1, "d", 11), (0, "a", 10), (1, "e", 10)]
+        self.assertEqual(linque.multisort(items, key=lambda d: (d[2], d[0]), reverse=[True, False]), model)
+        
+        model = [(1, "e", 10), (0, "a", 10), (1, "d", 11), (2, "f", 20), (0, "c", 100), (0, "b", 100), (0, "b", 1000)]
+        self.assertEqual(linque.multisort(items, key=lambda d: (d[2], d[0]), reverse=[False, True]), model)
+        
+        items = (d for d in data)
+        
+        model = [(0, "c", 100), (0, "b", 1000), (0, "b", 100), (0, "a", 10), (1, "e", 10), (1, "d", 11), (2, "f", 20)]
+        self.assertEqual(linque.multisort(items, reverse=[False, True, True]), model)
+        
+        items = (d for d in data)
+        
+        model = [(0, "c", 100), (0, "b", 1000), (0, "b", 100), (0, "a", 10), (1, "e", 10), (1, "d", 11), (2, "f", 20)]
+        self.assertEqual(linque.multisort(items, key=lambda d: (d[0], d[1]), reverse=[False, True]), model)
+    
+    
     def test_rank(self):
         """Tests whether rank works correctly."""
         
