@@ -109,9 +109,9 @@ or simply by using pip
 - [zip](#zipsequences): Produces new sequence by merging given sequences as long as there are items in all sequences.
 
 ### Random Operations
-- [choice](#choiceweightsseed): Returns random item from current sequence.
-- [choices](#choicescountweightsseed): Produces new sequence by randomly choosing number of items from current sequence.
-- [sample](#samplecountseed): Produces new sequence by randomly sample number of items from current sequence.
+- [choice](#choiceweights-seed): Returns random item from current sequence.
+- [choices](#choicescount-weights-seed): Produces new sequence by randomly choosing number of items from current sequence.
+- [sample](#samplecount-seed): Produces new sequence by randomly sample number of items from current sequence.
 - [shuffle](#shuffleseed): Produces new sequence by randomly shuffling items from current sequence.
 
 ### Grouping Operations
