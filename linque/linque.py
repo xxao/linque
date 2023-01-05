@@ -186,7 +186,7 @@ class Linque(object):
         
         Args:
             count: int
-                NUmber of choices to make.
+                Number of choices to make.
             
             weights: (float,) or None
                 Relative probabilities for individual items to be selected.
@@ -763,7 +763,8 @@ class Linque(object):
     def skip_while(self, condition):
         """
         Produces new sequence by bypassing contiguous items from the start of
-        current sequence until specified condition fails the first time.
+        current sequence until specified condition fails the first time. This
+        call partially evaluates current sequence.
         
         Args:
             condition: callable
