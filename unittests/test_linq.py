@@ -129,16 +129,12 @@ class TestCase(unittest.TestCase):
         linq = linque.Linque(data)
         self.assertTrue(type(linq.choice()) == int)
         self.assertTrue(type(linq.choice(weights=[5, 5, 10, 5, 5])) == int)
-        self.assertTrue(type(linq.choice(weights=[5, 5, 10, 5, 5], seed=100)) == int)
         
         linq = linque.Linque(d for d in data)
         self.assertTrue(type(linq.choice()) == int)
         
         linq = linque.Linque(d for d in data)
         self.assertTrue(type(linq.choice(weights=[5, 5, 10, 5, 5])) == int)
-        
-        linq = linque.Linque(d for d in data)
-        self.assertTrue(type(linq.choice(weights=[5, 5, 10, 5, 5], seed=100)) == int)
     
     
     def test_choices(self):
@@ -150,20 +146,12 @@ class TestCase(unittest.TestCase):
         linq = linque.Linque(data)
         self.assertTrue(len(linq.choices(count).to_list()) == count)
         self.assertTrue(len(linq.choices(count, weights=[5, 5, 10, 5, 5]).to_list()) == count)
-        self.assertTrue(len(linq.choices(count, seed=100).to_list()) == count)
-        self.assertTrue(len(linq.choices(count, weights=[5, 5, 10, 5, 5], seed=100).to_list()) == count)
         
         linq = linque.Linque(d for d in data)
         self.assertTrue(len(linq.choices(count, ).to_list()) == count)
         
         linq = linque.Linque(d for d in data)
         self.assertTrue(len(linq.choices(count, weights=[5, 5, 10, 5, 5]).to_list()) == count)
-        
-        linq = linque.Linque(d for d in data)
-        self.assertTrue(len(linq.choices(count, seed=100).to_list()) == count)
-        
-        linq = linque.Linque(d for d in data)
-        self.assertTrue(len(linq.choices(count, weights=[5, 5, 10, 5, 5], seed=100).to_list()) == count)
     
     
     def test_concat(self):
@@ -265,9 +253,10 @@ class TestCase(unittest.TestCase):
         
         linq = linque.Linque(data)
         self.assertEqual(linq.each(action).to_tuple(), ([0, '0'], [1, '1'], [2, '2'], [3, '3'], [4, '4']))
+        self.assertEqual(data, ([0, '0'], [1, '1'], [2, '2'], [3, '3'], [4, '4']))
         
         linq = linque.Linque(d for d in data)
-        self.assertEqual(linq.each(action).to_tuple(), ([0, '0'], [1, '1'], [2, '2'], [3, '3'], [4, '4']))
+        self.assertEqual(linq.each(action).to_tuple(), ())
     
     
     def test_enumerate(self):
@@ -634,13 +623,9 @@ class TestCase(unittest.TestCase):
         
         linq = linque.Linque(data)
         self.assertTrue(len(linq.sample(count).to_list()) == count)
-        self.assertTrue(len(linq.sample(count, seed=100).to_list()) == count)
         
         linq = linque.Linque(d for d in data)
         self.assertTrue(len(linq.sample(count).to_list()) == count)
-        
-        linq = linque.Linque(d for d in data)
-        self.assertTrue(len(linq.sample(count, seed=100).to_list()) == count)
     
     
     def test_select(self):
@@ -675,13 +660,9 @@ class TestCase(unittest.TestCase):
         
         linq = linque.Linque(data)
         self.assertTrue(len(linq.shuffle().to_list()) == count)
-        self.assertTrue(len(linq.shuffle(seed=100).to_list()) == count)
         
         linq = linque.Linque(d for d in data)
         self.assertTrue(len(linq.shuffle().to_list()) == count)
-        
-        linq = linque.Linque(d for d in data)
-        self.assertTrue(len(linq.shuffle(seed=100).to_list()) == count)
     
     
     def test_single(self):

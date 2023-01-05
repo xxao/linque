@@ -43,8 +43,7 @@ class Linque(object):
     
     def aggregate(self, accumulator, seed=None):
         """
-        Applies accumulator function over current sequence. This call fully
-        evaluates current sequence.
+        Applies accumulator function over current sequence.
         
         Args:
             accumulator: callable
@@ -64,7 +63,7 @@ class Linque(object):
     def all(self, condition):
         """
         Determines whether all items of current sequence satisfy given
-        condition. This call partially evaluates current sequence.
+        condition.
         
         Args:
             condition: callable
@@ -80,8 +79,7 @@ class Linque(object):
     def any(self, condition=None):
         """
         Determines whether current sequence contains any item or whether any
-        item of current sequence satisfies given condition. This call partially
-        evaluates current sequence.
+        item of current sequence satisfies given condition.
         
         Args:
             condition: callable or None
@@ -100,8 +98,7 @@ class Linque(object):
     def argmax(self, key=None):
         """
         Returns index of the maximum item in a sequence by using default
-        comparer or specified item's key. This call fully evaluates current
-        sequence.
+        comparer or specified item's key.
         
         Args:
             key: callable or None
@@ -117,8 +114,7 @@ class Linque(object):
     def argmin(self, key=None):
         """
         Returns index of the minimum item in a sequence by using default
-        comparer or specified item's key. This call fully evaluates current
-        sequence.
+        comparer or specified item's key.
         
         Args:
             key: callable or None
@@ -134,8 +130,7 @@ class Linque(object):
     def argsort(self, key=None, reverse=False):
         """
         Returns items indices that would sort current sequence by using
-        default comparer or specified item's key. This call fully evaluates
-        current sequence.
+        default comparer or specified item's key.
         
         Args:
             key: callable or None
@@ -148,15 +143,18 @@ class Linque(object):
             Linque
         """
         
-        result = iters.argsort(self, key, reverse=reverse)
+        def source():
+            for item in iters.argsort(self, key, reverse=reverse):
+                yield item
+        
+        result = (d for d in source())
         
         return Linque(result, self._evaluate)
     
     
     def choice(self, weights=None, seed=None):
         """
-        Returns random item from current sequence. This call fully evaluates
-        current sequence.
+        Returns random item from current sequence.
         
         Args:
             weights: (float,) or None
@@ -178,11 +176,10 @@ class Linque(object):
         return random.choices(list(self), weights=weights, k=1)[0]
     
     
-    def choices(self, count, weights=None, seed=None):
+    def choices(self, count, weights=None):
         """
         Produces new sequence by randomly choosing number of items from current
-        sequence. Each item can be selected multiple times. This call fully
-        evaluates current sequence.
+        sequence. Each item can be selected multiple times.
         
         Args:
             count: int
@@ -190,26 +187,23 @@ class Linque(object):
             
             weights: (float,) or None
                 Relative probabilities for individual items to be selected.
-            
-            seed: int or None
-                Seed to initialize random generator.
         
         Returns:
             Linque
         """
         
-        if seed is not None:
-            random.seed(seed)
+        def source():
+            for item in random.choices(list(self), weights=weights, k=count):
+                yield item
         
-        result = random.choices(list(self), weights=weights, k=count)
+        result = (d for d in source())
         
         return Linque(result, self._evaluate)
     
     
     def chunk(self, size):
         """
-        Splits current sequence into chunks of specified size. This call does
-        not evaluate current sequence.
+        Splits current sequence into chunks of specified size.
         
         Args:
             
@@ -229,7 +223,7 @@ class Linque(object):
     def concat(self, items):
         """
         Produces new sequence by appending given items at the end of current
-        sequence. This call does not evaluate current sequence.
+        sequence.
         
         Args:
             items: (any,)
@@ -247,8 +241,7 @@ class Linque(object):
     def contains(self, value, key=None):
         """
         Determines whether current sequence contains specified item or value by using
-        default comparer or specified item's key. This call partially evaluates
-        current sequence.
+        default comparer or specified item's key.
         
         Args:
             value: any
@@ -270,7 +263,6 @@ class Linque(object):
     def count(self, condition=None):
         """
         Returns number of items in current sequence satisfying given condition.
-        This call fully evaluates current sequence.
         
         Args:
             condition: callable or None
@@ -287,7 +279,7 @@ class Linque(object):
         """
         Produces new sequence by selecting distinct items from current sequence
         using default comparer or specified item's key. First occurrence of each
-        item is used. This call does not evaluate current sequence.
+        item is used.
         
         Args:
             key: callable or None
@@ -304,10 +296,11 @@ class Linque(object):
     
     def each(self, action):
         """
-        Applies specified function to every item in current sequence. Note that
-        this does not replace the items, so it works only with objects. Any
-        return value of given function is ignored. This call fully evaluates
-        current sequence.
+        Applies specified function to every item in current sequence. Any
+        return value of given function is ignored. Since this call fully
+        evaluates current sequence, depending on the source, the items may no
+        longer be available. This may or may not be desired behavior. Consider
+        calling '.evaluate()' before calling this method.
         
         Args:
             action: callable
@@ -316,8 +309,6 @@ class Linque(object):
         Returns:
             Linque
         """
-        
-        self.evaluate()
         
         for item in self:
             action(item)
@@ -328,7 +319,7 @@ class Linque(object):
     def enumerate(self):
         """
         Produces new sequence by enumerating items of current sequence into
-        (index, item) pairs. This call does not evaluate current sequence.
+        (index, item) pairs.
         
         Returns:
             Linque
@@ -342,8 +333,7 @@ class Linque(object):
     def evaluate(self):
         """
         Evaluates all the iterators in current sequence and stores items as
-        internal list. This method is essential if current Linque instance
-        should be reused.
+        internal list.
         
         Returns:
             Linque
@@ -358,8 +348,7 @@ class Linque(object):
     def exclude(self, items, key=None):
         """
         Produces new sequence by excluding specified items from current sequence
-        using default comparer or specified item's key. This call does not evaluate
-        current sequence.
+        using default comparer or specified item's key.
         
         Args:
             items: (any,)
@@ -381,7 +370,7 @@ class Linque(object):
         """
         Returns the first item in current sequence that satisfies specified
         condition or raises error if no item found and no default value is
-        provided. This call partially evaluates current sequence.
+        provided.
         
         Args:
             condition: callable or None
@@ -400,7 +389,7 @@ class Linque(object):
     def flatten(self, selector=None):
         """
         Produces new sequence by selecting and flattening items data using
-        specified selector. This call does not evaluate current sequence.
+        specified selector.
         
         Args:
             selector: callable
@@ -422,7 +411,7 @@ class Linque(object):
         """
         Produces new sequence by grouping items of current sequence according to
         default comparer or specified item's key and creates result values as
-        (key, group) pairs. This call fully evaluates current sequence.
+        (key, group) pairs.
         
         Args:
             key: callable or None
@@ -432,8 +421,11 @@ class Linque(object):
             Linque
         """
         
-        groups = iters.group(self, key)
-        result = [(k, Linque(g, self._evaluate)) for k, g in groups]
+        def source():
+            for item in iters.group(self, key):
+                yield item
+        
+        result = ((k, Linque(g, self._evaluate)) for k, g in source())
         
         return Linque(result, self._evaluate)
     
@@ -441,8 +433,7 @@ class Linque(object):
     def intersect(self, items, key=None):
         """
         Produces new sequence of shared unique items from current sequence and
-        given items by using default comparer or specified item's key. This
-        call does not evaluate current sequence.
+        given items by using default comparer or specified item's key.
         
         Args:
             items: (any,)
@@ -464,7 +455,7 @@ class Linque(object):
         """
         Returns the last item in current sequence that satisfies specified
         condition or raises error if no item found and no default value is
-        provided. This call fully evaluates current sequence.
+        provided.
         
         Args:
             condition: callable or None
@@ -483,7 +474,7 @@ class Linque(object):
     def maximum(self, selector=None):
         """
         Returns maximum value in current sequence by specified items data
-        selector. This call fully evaluates current sequence.
+        selector.
         
         Args:
             selector: callable
@@ -502,8 +493,7 @@ class Linque(object):
     def max(self, key=None):
         """
         Returns item having maximum value in current sequence by using default
-        comparer or specified item's key. This call fully evaluates current
-        sequence.
+        comparer or specified item's key.
         
         Args:
             key: callable or None
@@ -519,7 +509,7 @@ class Linque(object):
     def mean(self, selector=None):
         """
         Returns average value of current sequence by specified items data
-        selector. This call fully evaluates current sequence.
+        selector.
         
         Args:
             selector: callable
@@ -538,7 +528,7 @@ class Linque(object):
     def median(self, selector=None):
         """
         Returns median value of current sequence by specified items data
-        selector. This call fully evaluates current sequence.
+        selector.
         
         Args:
             selector: callable
@@ -557,7 +547,7 @@ class Linque(object):
     def minimum(self, selector=None):
         """
         Returns minimum value in current sequence by specified items data
-        selector. This call fully evaluates current sequence.
+        selector.
         
         Args:
             selector: callable
@@ -576,8 +566,7 @@ class Linque(object):
     def min(self, key=None):
         """
         Returns item having minimum value in current sequence by using default
-        comparer or specified item's key. This call fully evaluates current
-        sequence.
+        comparer or specified item's key.
         
         Args:
             key: callable or None
@@ -594,7 +583,7 @@ class Linque(object):
         """
         Provides 1-based rank for each item of current sequence by using default
         comparer or specified item's key. The ties are resolved according to
-        selected method. This call fully evaluates current sequence.
+        selected method.
         
         Args:
             key: callable or None
@@ -615,7 +604,11 @@ class Linque(object):
             Linque
         """
         
-        result = iters.rank(self, key, method=method, reverse=reverse)
+        def source():
+            for item in iters.rank(self, key, method=method, reverse=reverse):
+                yield item
+        
+        result = (d for d in source())
         
         return Linque(result, self._evaluate)
     
@@ -623,38 +616,38 @@ class Linque(object):
     def reverse(self):
         """
         Produces new sequence by inverting order of items in current sequence.
-        This call fully evaluates current sequence.
         
         Returns:
             Linque
         """
         
-        result = reversed([d for d in self])
+        def source():
+            for item in reversed(list(self)):
+                yield item
+        
+        result = (d for d in source())
         
         return Linque(result, self._evaluate)
     
     
-    def sample(self, count, seed=None):
+    def sample(self, count):
         """
         Produces new sequence by randomly sampling number of items from current
-        sequence. Each item can be selected only once. This call fully evaluates
-        current sequence.
+        sequence. Each item can be selected only once.
         
         Args:
             count: int
                 Number of items to sample.
-            
-            seed: int or None
-                Seed to initialize random generator.
         
         Returns:
             Linque
         """
         
-        if seed is not None:
-            random.seed(seed)
+        def source():
+            for item in random.sample(list(self), count):
+                yield item
         
-        result = random.sample(list(self), count)
+        result = (d for d in source())
         
         return Linque(result, self._evaluate)
     
@@ -662,7 +655,6 @@ class Linque(object):
     def select(self, selector):
         """
         Produces new sequence by selecting items data by specified selector.
-        This call does not evaluate current sequence.
         
         Args:
             selector: callable
@@ -680,7 +672,7 @@ class Linque(object):
     def select_many(self, selector=None):
         """
         Produces new sequence by selecting and flattening items data using
-        specified selector. This call does not evaluate current sequence.
+        specified selector.
         
         Args:
             selector: callable
@@ -698,24 +690,21 @@ class Linque(object):
         return Linque(result, self._evaluate)
     
     
-    def shuffle(self, seed=None):
+    def shuffle(self):
         """
         Produces new sequence by randomly shuffling items from current sequence.
-        This call fully evaluates current sequence.
-        
-        Args:
-            seed: int or None
-                Seed to initialize random generator.
         
         Returns:
             Linque
         """
         
-        if seed is not None:
-            random.seed(seed)
+        def source():
+            items = list(self)
+            random.shuffle(items)
+            for item in items:
+                yield item
         
-        result = list(self)
-        random.shuffle(result)
+        result = (d for d in source())
         
         return Linque(result, self._evaluate)
     
@@ -724,8 +713,7 @@ class Linque(object):
         """
         Returns the single item in current sequence that satisfies specified
         condition or raises error if more items found. If no item is found,
-        returns default value if provided or raises error. This call fully
-        evaluates current sequence.
+        returns default value if provided or raises error.
         
         Args:
             condition: callable
@@ -744,8 +732,7 @@ class Linque(object):
     def skip(self, count):
         """
         Produces new sequence by bypassing specified number of items in current
-        sequence and returns the remaining items. This call does not evaluate
-        current sequence.
+        sequence and returns the remaining items.
         
         Args:
             count: int
@@ -763,8 +750,7 @@ class Linque(object):
     def skip_while(self, condition):
         """
         Produces new sequence by bypassing contiguous items from the start of
-        current sequence until specified condition fails the first time. This
-        call does not evaluate current sequence.
+        current sequence until specified condition fails the first time.
         
         Args:
             condition: callable
@@ -784,7 +770,7 @@ class Linque(object):
         Produces new sequence by sorting elements of current sequence by using
         default comparer or specified item's key. If the key provides multiple
         columns, the sorting direction can be specified for each individual
-        column. This call fully evaluates current sequence.
+        column.
         
         Args:
             key: callable or None
@@ -798,7 +784,11 @@ class Linque(object):
             Linque
         """
         
-        result = iters.multisort(self, key=key, reverse=reverse)
+        def source():
+            for item in iters.multisort(self, key=key, reverse=reverse):
+                yield item
+        
+        result = (d for d in source())
         
         return Linque(result, self._evaluate)
     
@@ -806,7 +796,7 @@ class Linque(object):
     def sum(self, selector=None):
         """
         Returns summed value in current sequence by specified items data
-        selector. This call fully evaluates current sequence.
+        selector.
         
         Args:
             selector: callable
@@ -825,8 +815,7 @@ class Linque(object):
     def take(self, count):
         """
         Produces new sequence by selecting specified number of contiguous items
-        from the start of current sequence. This call does not evaluate
-        current sequence.
+        from the start of current sequence.
         
         Args:
             count: int
@@ -844,8 +833,7 @@ class Linque(object):
     def take_while(self, condition):
         """
         Produces new sequence by selecting items from current sequence as long
-        as specified condition is true. This call does not evaluate current
-        sequence.
+        as specified condition is true.
         
         Args:
             condition: callable
@@ -862,8 +850,7 @@ class Linque(object):
     
     def to_dict(self, key, value=lambda d: d):
         """
-        Evaluates items into dictionary. This call fully evaluates current
-        sequence.
+        Evaluates items into dictionary.
         
         Args:
             key: callable
@@ -889,7 +876,7 @@ class Linque(object):
     
     def to_list(self):
         """
-        Evaluate items into list. This call fully evaluates current sequence.
+        Evaluate items into list.
         
         Returns:
             list
@@ -900,7 +887,7 @@ class Linque(object):
     
     def to_set(self):
         """
-        Evaluate items into set. This call fully evaluates current sequence.
+        Evaluate items into set.
         
         Returns:
             set
@@ -911,7 +898,7 @@ class Linque(object):
     
     def to_tuple(self):
         """
-        Evaluate items into tuple. This call fully evaluates current sequence.
+        Evaluate items into tuple.
         
         Returns:
             tuple
@@ -923,8 +910,7 @@ class Linque(object):
     def union(self, items, key=None):
         """
         Produces new sequence of unique items from current sequence and given
-        items by using default comparer or specified item's key. This call does
-        not evaluate current sequence.
+        items by using default comparer or specified item's key.
         
         Args:
             items: (any,)
@@ -944,8 +930,7 @@ class Linque(object):
     
     def where(self, condition):
         """
-        Produces new sequence by selecting items by specified predicate. This
-        call does not evaluate current sequence.
+        Produces new sequence by selecting items by specified predicate.
         
         Args:
             condition: callable
@@ -963,8 +948,7 @@ class Linque(object):
     def zip(self, *sequences):
         """
         Produces new sequence by merging given sequences with current sequence
-        as long as there are items available in all sequences. This call does
-        not evaluate current sequence.
+        as long as there are items available in all sequences.
         
         Args:
             sequences: ((any,),)
