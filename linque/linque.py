@@ -18,27 +18,27 @@ class Linque(object):
     steps in memory as a list.
     """
     
-    def __init__(self, items, evaluate=False):
+    def __init__(self, source, evaluate=False):
         """
         Initializes a new instance of Linque.
         
         Args:
-            items: iterable
+            source: iterable
                 Sequence of items.
             
             evaluate: bool
-                If set to True, items sequence is evaluated into tuple upon
+                If set to True, items sequence is evaluated into list upon
                 class init and for each method call as well.
         """
         
-        self._items = list(items) if evaluate else items
+        self._source = list(source) if evaluate else source
         self._evaluate = evaluate
     
     
     def __iter__(self):
         """Gets items iterator."""
         
-        return iter(self._items)
+        return iter(self._source)
     
     
     def aggregate(self, accumulator, seed=None):
@@ -64,7 +64,7 @@ class Linque(object):
     def all(self, condition):
         """
         Determines whether all items of current sequence satisfy given
-        condition. This call does not evaluate current sequence.
+        condition. This call partially evaluates current sequence.
         
         Args:
             condition: callable
@@ -80,8 +80,8 @@ class Linque(object):
     def any(self, condition=None):
         """
         Determines whether current sequence contains any item or whether any
-        item of current sequence satisfies given condition. This call does not
-        evaluate current sequence.
+        item of current sequence satisfies given condition. This call partially
+        evaluates current sequence.
         
         Args:
             condition: callable or None
@@ -349,8 +349,8 @@ class Linque(object):
             Linque
         """
         
-        if not isinstance(self._items, (list, tuple)):
-            self._items = list(self)
+        if not isinstance(self._source, (list, tuple)):
+            self._source = list(self)
         
         return self
     
@@ -744,7 +744,7 @@ class Linque(object):
     def skip(self, count):
         """
         Produces new sequence by bypassing specified number of items in current
-        sequence and returns the remaining items. This call partially evaluates
+        sequence and returns the remaining items. This call does not evaluate
         current sequence.
         
         Args:
@@ -764,7 +764,7 @@ class Linque(object):
         """
         Produces new sequence by bypassing contiguous items from the start of
         current sequence until specified condition fails the first time. This
-        call partially evaluates current sequence.
+        call does not evaluate current sequence.
         
         Args:
             condition: callable
@@ -825,7 +825,7 @@ class Linque(object):
     def take(self, count):
         """
         Produces new sequence by selecting specified number of contiguous items
-        from the start of current sequence. This call partially evaluates
+        from the start of current sequence. This call does not evaluate
         current sequence.
         
         Args:
@@ -844,7 +844,7 @@ class Linque(object):
     def take_while(self, condition):
         """
         Produces new sequence by selecting items from current sequence as long
-        as specified condition is true. This call partially evaluates current
+        as specified condition is true. This call does not evaluate current
         sequence.
         
         Args:

@@ -173,7 +173,7 @@ print(result)
 ```
 
 ### .all(condition)
-Determines whether all items of current sequence satisfy given condition. This call does not evaluate current sequence.
+Determines whether all items of current sequence satisfy given condition. This call partially evaluates current sequence.
 
 ```python
 data = (0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
@@ -185,7 +185,7 @@ print(result)
 
 ### .any(condition)
 Determines whether current sequence contains any item or whether any item of current sequence satisfies given condition.
-This call does not evaluate current sequence.
+This call partially evaluates current sequence.
 
 ```python
 data = (0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
@@ -731,7 +731,7 @@ print(result)
 
 ### .skip(count)
 Produces new sequence by bypassing specified number of items in current sequence and returns the remaining items. This
-call partially evaluates current sequence. This functionality is also available as a *linque.skip(sequence, n)* utility
+call does not evaluate current sequence. This functionality is also available as a *linque.skip(sequence, n)* utility
 function.
 
 ```python
@@ -744,7 +744,8 @@ print(result)
 
 ### .skip_while(condition)
 Produces new sequence by bypassing contiguous items from the start of current sequence until specified condition fails
-the first time. This functionality is also available as a *linque.skip_while(sequence, condition)* utility function.
+the first time. This call does not evaluate current sequence. This functionality is also available as
+a *linque.skip_while(sequence, condition)* utility function.
 
 ```python
 data = (0, 1, 2, 3, 4, 5, 4, 3, 2, 2, 0)
@@ -792,7 +793,7 @@ print(result)
 
 ### .take(count)
 Produces new sequence by selecting specified number of contiguous items from the start of current sequence. This call
-partially evaluates current sequence. This functionality is also available as a *linque.take(sequence, n)* utility
+does not evaluate current sequence. This functionality is also available as a *linque.take(sequence, n)* utility
 function.
 
 ```python
@@ -805,7 +806,7 @@ print(result)
 
 ### .take_while(condition)
 Produces new sequence by selecting items from current sequence as long as specified condition is true. This call
-partially evaluates current sequence. This functionality is also available as a *linque.take_while(sequence, condition)*
+does not evaluate current sequence. This functionality is also available as a *linque.take_while(sequence, condition)*
 utility function.
 
 ```python
