@@ -23,7 +23,7 @@ print(result)
 # ['DOG', 'FOX', 'THE', 'LAZY', 'OVER', 'BROWN', 'JUMPS', 'QUICK']
 ```
 
-Similar to .NET, *LinQue* internally uses iterators only and does not evaluate the source sequence until necessary.
+Similar to .NET, *LinQue* is using iterators (if possible) and does not evaluate the source sequence until necessary.
 Depending on whether the source sequence itself is fully evaluated (i.e. list or tuple) or not (i.e. iterator), a Linque
 instance can be safely reused or used just in a single chained query. By default, type of the source sequence is not
 changed and the instance behaves accordingly. This behavior can be changed by initializing it with the 'evaluate' flag
