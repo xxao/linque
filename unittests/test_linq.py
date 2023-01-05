@@ -121,6 +121,51 @@ class TestCase(unittest.TestCase):
         self.assertEqual(linq.argsort(lambda d: d[1], reverse=True).to_tuple(), (0, 2, 1))
     
     
+    def test_choice(self):
+        """Tests whether choice works correctly."""
+        
+        data = (0, 1, 2, 3, 4)
+        
+        linq = linque.Linque(data)
+        self.assertTrue(type(linq.choice()) == int)
+        self.assertTrue(type(linq.choice(weights=[5, 5, 10, 5, 5])) == int)
+        self.assertTrue(type(linq.choice(weights=[5, 5, 10, 5, 5], seed=100)) == int)
+        
+        linq = linque.Linque(d for d in data)
+        self.assertTrue(type(linq.choice()) == int)
+        
+        linq = linque.Linque(d for d in data)
+        self.assertTrue(type(linq.choice(weights=[5, 5, 10, 5, 5])) == int)
+        
+        linq = linque.Linque(d for d in data)
+        self.assertTrue(type(linq.choice(weights=[5, 5, 10, 5, 5], seed=100)) == int)
+    
+    
+    def test_choices(self):
+        """Tests whether choices works correctly."""
+        
+        data = (0, 1, 2, 3, 4)
+        count = 10
+        
+        linq = linque.Linque(data)
+        self.assertTrue(len(linq.choices(count).to_list()) == count)
+        self.assertTrue(len(linq.choices(count, weights=[5, 5, 10, 5, 5]).to_list()) == count)
+        self.assertTrue(len(linq.choices(count, seed=100).to_list()) == count)
+        self.assertTrue(len(linq.choices(count, weights=[5, 5, 10, 5, 5], seed=100).to_list()) == count)
+        
+        linq = linque.Linque(d for d in data)
+        self.assertTrue(len(linq.choices(count, ).to_list()) == count)
+        
+        linq = linque.Linque(d for d in data)
+        self.assertTrue(len(linq.choices(count, weights=[5, 5, 10, 5, 5]).to_list()) == count)
+        
+        linq = linque.Linque(d for d in data)
+        self.assertTrue(len(linq.choices(count, seed=100).to_list()) == count)
+        
+        linq = linque.Linque(d for d in data)
+        self.assertTrue(len(linq.choices(count, weights=[5, 5, 10, 5, 5], seed=100).to_list()) == count)
+    
+    
     def test_concat(self):
         """Tests whether concat works correctly."""
         
@@ -581,6 +626,23 @@ class TestCase(unittest.TestCase):
         self.assertEqual(linq.reverse().to_tuple(), (9, 8, 7, 6, 5, 4, 3, 2, 1, 0))
     
     
+    def test_sample(self):
+        """Tests whether sample works correctly."""
+        
+        data = (0, 1, 2, 3, 4)
+        count = 3
+        
+        linq = linque.Linque(data)
+        self.assertTrue(len(linq.sample(count).to_list()) == count)
+        self.assertTrue(len(linq.sample(count, seed=100).to_list()) == count)
+        
+        linq = linque.Linque(d for d in data)
+        self.assertTrue(len(linq.sample(count).to_list()) == count)
+        
+        linq = linque.Linque(d for d in data)
+        self.assertTrue(len(linq.sample(count, seed=100).to_list()) == count)
+    
+    
     def test_select(self):
         """Tests whether select works correctly."""
         
@@ -603,6 +665,23 @@ class TestCase(unittest.TestCase):
         
         linq = linque.Linque(d for d in data)
         self.assertEqual(linq.select_many(lambda d: d).to_tuple(), (0, 0, 1, 10, 2, 20, 3, 30, 4, 40))
+    
+    
+    def test_shuffle(self):
+        """Tests whether shuffle works correctly."""
+        
+        data = (0, 1, 2, 3, 4)
+        count = len(data)
+        
+        linq = linque.Linque(data)
+        self.assertTrue(len(linq.shuffle().to_list()) == count)
+        self.assertTrue(len(linq.shuffle(seed=100).to_list()) == count)
+        
+        linq = linque.Linque(d for d in data)
+        self.assertTrue(len(linq.shuffle().to_list()) == count)
+        
+        linq = linque.Linque(d for d in data)
+        self.assertTrue(len(linq.shuffle(seed=100).to_list()) == count)
     
     
     def test_single(self):

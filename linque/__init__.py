@@ -1,7 +1,7 @@
 #  Created byMartin.cz
 #  Copyright (c) Martin Strohalm. All rights reserved.
 
-version = (3, 1, 0)
+version = (3, 2, 0)
 
 # import utils
 from .iters import aggregate, bisect, chunk, concat, count
@@ -30,3 +30,6 @@ def linq(items, evaluate=False):
     """
     
     return Linque(items, evaluate)
+
+
+linque = linq

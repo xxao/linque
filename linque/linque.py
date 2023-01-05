@@ -2,6 +2,7 @@
 #  Copyright (c) Martin Strohalm. All rights reserved.
 
 import statistics
+import random
 from . import iters
 
 
@@ -148,6 +149,59 @@ class Linque(object):
         """
         
         result = iters.argsort(self, key, reverse=reverse)
+        
+        return Linque(result, self._evaluate)
+    
+    
+    def choice(self, weights=None, seed=None):
+        """
+        Returns random item from current sequence. This call fully evaluates
+        current sequence.
+        
+        Args:
+            weights: (float,) or None
+                Relative probabilities for individual items to be selected.
+            
+            seed: int or None
+                Seed to initialize random generator.
+        
+        Returns:
+            any
+        """
+        
+        if seed is not None:
+            random.seed(seed)
+        
+        if weights is None:
+            return random.choice(list(self))
+        
+        return random.choices(list(self), weights=weights, k=1)[0]
+    
+    
+    def choices(self, count, weights=None, seed=None):
+        """
+        Produces new sequence by randomly choosing number of items from current
+        sequence. Each item can be selected multiple times. This call fully
+        evaluates current sequence.
+        
+        Args:
+            count: int
+                NUmber of choices to make.
+            
+            weights: (float,) or None
+                Relative probabilities for individual items to be selected.
+            
+            seed: int or None
+                Seed to initialize random generator.
+        
+        Returns:
+            Linque
+        """
+        
+        if seed is not None:
+            random.seed(seed)
+        
+        result = random.choices(list(self), weights=weights, k=count)
         
         return Linque(result, self._evaluate)
     
@@ -580,6 +634,31 @@ class Linque(object):
         return Linque(result, self._evaluate)
     
     
+    def sample(self, count, seed=None):
+        """
+        Produces new sequence by randomly sampling number of items from current
+        sequence. Each item can be selected only once. This call fully evaluates
+        current sequence.
+        
+        Args:
+            count: int
+                Number of items to sample.
+            
+            seed: int or None
+                Seed to initialize random generator.
+        
+        Returns:
+            Linque
+        """
+        
+        if seed is not None:
+            random.seed(seed)
+        
+        result = random.sample(list(self), count)
+        
+        return Linque(result, self._evaluate)
+    
+    
     def select(self, selector):
         """
         Produces new sequence by selecting items data by specified selector.
@@ -615,6 +694,28 @@ class Linque(object):
             result = (d2 for d1 in self for d2 in d1)
         else:
             result = (d2 for d1 in self for d2 in selector(d1))
+        
+        return Linque(result, self._evaluate)
+    
+    
+    def shuffle(self, seed=None):
+        """
+        Produces new sequence by randomly shuffling items from current sequence.
+        This call fully evaluates current sequence.
+        
+        Args:
+            seed: int or None
+                Seed to initialize random generator.
+        
+        Returns:
+            Linque
+        """
+        
+        if seed is not None:
+            random.seed(seed)
+        
+        result = list(self)
+        random.shuffle(result)
         
         return Linque(result, self._evaluate)
     

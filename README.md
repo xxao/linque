@@ -108,6 +108,12 @@ or simply by using pip
 - [select_many](#select_manyselector): Produces new sequence by selecting and flattening items data using specified selector.
 - [zip](#zipsequences): Produces new sequence by merging given sequences as long as there are items in all sequences.
 
+### Random Operations
+- [choice](#choiceweightsseed): Returns random item from current sequence.
+- [choices](#choicescountweightsseed): Produces new sequence by randomly choosing number of items from current sequence.
+- [sample](#samplecountseed): Produces new sequence by randomly sample number of items from current sequence.
+- [shuffle](#shuffleseed): Produces new sequence by randomly shuffling items from current sequence.
+
 ### Grouping Operations
 
 - [group](#groupkey): Produces new sequence by grouping items according to default comparer or specified key selector.
@@ -244,6 +250,29 @@ result = Linque(data).argsort(lambda d: d[1]).to_list()
 print(result)
 
 # [1, 2, 0]
+```
+
+### .choice(weights, seed)
+Returns random item from current sequence. This call fully evaluates current sequence.
+
+```python
+data = (0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
+result = Linque(data).choice()
+print(result)
+
+# 7
+```
+
+### .choices(count, weights, seed)
+Produces new sequence by randomly choosing items from current sequence. Each item can be selected multiple times.
+This call fully evaluates current sequence.
+
+```python
+data = (0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
+result = Linque(data).choices(20).to_list()
+print(result)
+
+# [7, 0, 0, 0, 4, 7, 3, 1, 5, 0, 1, 6, 7, 1, 2, 6, 8, 0, 5, 8]
 ```
 
 ### .chunk(size)
@@ -635,6 +664,18 @@ print(result)
 # [9, 8, 7, 6, 5, 4, 3, 2, 1, 0]
 ```
 
+### .sample(count, seed)
+Produces new sequence by randomly sampling items from current sequence. Each item can be selected only once.
+This call fully evaluates current sequence.
+
+```python
+data = (0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
+result = Linque(data).sample(5).to_list()
+print(result)
+
+# [6, 3, 5, 0, 7]
+```
+
 ### .select(selector)
 Produces new sequence by selecting items data by specified selector. This call does not evaluate current sequence.
 
@@ -656,6 +697,17 @@ result = Linque(data).select_many(lambda d: d).to_list()
 print(result)
 
 # [0, 0, 1, 10, 2, 20, 3, 30, 4, 40]
+```
+
+### .shuffle(seed)
+Produces new sequence by randomly shuffling items from current sequence. This call fully evaluates current sequence.
+
+```python
+data = (0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
+result = Linque(data).shuffle().to_list()
+print(result)
+
+# [6, 5, 3, 2, 4, 0, 1, 9, 8, 7]
 ```
 
 ### .single(condition, default)
@@ -705,6 +757,7 @@ print(result)
 ### .sort(key, reverse)
 Sorts elements of current sequence by using default comparer or selected item's key. If the key provides multiple
 columns, the sorting direction can be specified for each individual column. This call fully evaluates current sequence.
+This functionality is also available as a *linque.multisort(sequence, key, reverse)* utility function.
 
 ```python
 data = (8, 0, 2, 3, 5, 1, 6, 7, 4, 9)
@@ -714,16 +767,16 @@ print(result)
 # [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 
 data = ((1, 8), (2, 0), (3, 2), (4, 3), (5, 5), (6, 1), (7, 6), (8, 7), (9, 4), (0, 9))
-result = Linque(data).sort(lambda d: d[1]).to_list()
+result = Linque(data).sort(lambda d: d[1], reverse=True).to_list()
 print(result)
 
-# [(2, 0), (6, 1), (3, 2), (4, 3), (9, 4), (5, 5), (7, 6), (8, 7), (1, 8), (0, 9)]
+# [(0, 9), (1, 8), (8, 7), (7, 6), (5, 5), (9, 4), (4, 3), (3, 2), (6, 1), (2, 0)]
 
-data = ((1, "d", 11), (0, "a", 10), (0, "c", 100), (0, "b", 100), (1, "e", 10), (0, "b", 1000), (2, "f", 20))
-result = Linque(data).sort(reverse=[True, False, True]).to_list()
+data = ((1, "d", 11), (0, "a", 10), (0, "b", 1000), (0, "c", 100), (0, "b", 100), (1, "e", 10), (2, "f", 20))
+result = Linque(data).sort(lambda d: (d[0], d[1]), reverse=[False, True]).to_list()
 print(result)
 
-# [(2, "f", 20), (1, "d", 11), (1, "e", 10), (0, "a", 10), (0, "b", 1000), (0, "b", 100), (0, "c", 100)]
+# [(0, 'c', 100), (0, 'b', 1000), (0, 'b', 100), (0, 'a', 10), (1, 'e', 10), (1, 'd', 11), (2, 'f', 20)]
 ```
 
 ### .sum(selector)
