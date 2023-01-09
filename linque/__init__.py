@@ -1,7 +1,7 @@
 #  Created byMartin.cz
 #  Copyright (c) Martin Strohalm. All rights reserved.
 
-version = (4, 0, 0)
+version = (4, 0, 1)
 
 # import utils
 from .iters import aggregate, bisect, chunk, concat, count
@@ -16,12 +16,12 @@ from .linque import Linque
 
 
 # create shortcuts
-def linq(items, evaluate=False):
+def linq(source, evaluate=False):
     """
     Initializes a new instance of Linque.
     
     Args:
-        items: iterable
+        source: iterable
             Sequence of items.
         
         evaluate: bool
@@ -29,7 +29,7 @@ def linq(items, evaluate=False):
             class init and for each method call as well.
     """
     
-    return Linque(items, evaluate)
+    return Linque(source, evaluate)
 
 
 linque = linq

@@ -152,23 +152,17 @@ class Linque(object):
         return Linque(result, self._evaluate)
     
     
-    def choice(self, weights=None, seed=None):
+    def choice(self, weights=None):
         """
         Returns random item from current sequence.
         
         Args:
             weights: (float,) or None
                 Relative probabilities for individual items to be selected.
-            
-            seed: int or None
-                Seed to initialize random generator.
         
         Returns:
             any
         """
-        
-        if seed is not None:
-            random.seed(seed)
         
         if weights is None:
             return random.choice(list(self))
