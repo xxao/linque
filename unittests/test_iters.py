@@ -562,6 +562,12 @@ class TestCase(unittest.TestCase):
         
         items = (d for d in data)
         self.assertEqual(tuple(linque.take(items, 4)), (0, 1, 2, 3))
+        
+        items = data
+        self.assertEqual(tuple(linque.take(items, 100)), data)
+        
+        items = (d for d in data)
+        self.assertEqual(tuple(linque.take(items, 10)), data)
     
     
     def test_take_while(self):

@@ -687,10 +687,13 @@ def take(sequence, n):
     
     items = (d for d in sequence)
     
-    i = 0
-    while i < n:
-        yield next(items)
-        i += 1
+    try:
+        i = 0
+        while i < n:
+            yield next(items)
+            i += 1
+    except StopIteration:
+        return
 
 
 def take_while(sequence, condition):

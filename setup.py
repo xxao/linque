@@ -4,11 +4,10 @@
 from setuptools import setup, find_packages
 
 # get version
-from linque import version
-version = '.'.join(str(x) for x in version)
+version = "4.0.2"
 
 # get description
-with open("README.md", "r") as fh:
+with open("README.md", "r", encoding="utf8") as fh:
     long_description = fh.read()
 
 # set classifiers
