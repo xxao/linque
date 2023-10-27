@@ -134,6 +134,107 @@ class TestCase(unittest.TestCase):
         self.assertEqual(tuple(linque.chunk(items, 3)), ((0, 1, 2), (3, 4, 5), (6, 7, 8), (9,)))
     
     
+    def test_chunks(self):
+        """Tests whether chunks works correctly."""
+        
+        data = (0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
+        
+        items = data
+        self.assertEqual(tuple(linque.chunks(items, 3, 2, 1)), ((0, 1, 2), (3, 4), (5,)))
+        
+        items = (d for d in data)
+        self.assertEqual(tuple(linque.chunks(items, 3, 2, 1)), ((0, 1, 2), (3, 4), (5,)))
+    
+        items = data
+        self.assertEqual(tuple(linque.chunks(items, 5, 4, 3, 2)), ((0, 1, 2, 3, 4), (5, 6, 7, 8), (9,), ()))
+        
+        items = (d for d in data)
+        self.assertEqual(tuple(linque.chunks(items, 5, 4, 3, 2)), ((0, 1, 2, 3, 4), (5, 6, 7, 8), (9,), ()))
+    
+    
+    def test_combinations(self):
+        """Tests whether combinations are generated correctly."""
+        
+        # standard combinations without repetitions
+        data = (1, 2, 3)
+        model = [
+            [1],
+            [1, 2],
+            [1, 3],
+            [2],
+            [2, 3],
+            [3]]
+        
+        items = data
+        combinations = linque.combinations(items, max_size=2, repetitions=False, unique=False)
+        self.assertEqual(list(combinations), model)
+        
+        items = (d for d in data)
+        combinations = linque.combinations(items, max_size=2, repetitions=False, unique=False)
+        self.assertEqual(list(combinations), model)
+        
+        # standard combinations with repetitions
+        data = (1, 2, 3)
+        model = [
+            [1],
+            [1, 1],
+            [1, 2],
+            [1, 3],
+            [2],
+            [2, 2],
+            [2, 3],
+            [3],
+            [3, 3]]
+        
+        items = data
+        combinations = linque.combinations(items, max_size=2, repetitions=True, unique=False)
+        self.assertEqual(list(combinations), model)
+        
+        items = (d for d in data)
+        combinations = linque.combinations(items, max_size=2, repetitions=True, unique=False)
+        self.assertEqual(list(combinations), model)
+        
+        # unique combinations without repetitions
+        data = (1, 1, 2, 3)
+        model = [
+            [1],
+            [1, 1],
+            [1, 2],
+            [1, 3],
+            [2],
+            [2, 3],
+            [3]]
+        
+        items = data
+        combinations = linque.combinations(items, max_size=2, repetitions=False, unique=True)
+        self.assertEqual(list(combinations), model)
+        
+        items = (d for d in data)
+        combinations = linque.combinations(items, max_size=2, repetitions=False, unique=True)
+        self.assertEqual(list(combinations), model)
+        
+        # unique combinations with repetitions
+        data = (1, 1, 2, 3)
+        model = [
+            [1],
+            [1, 1],
+            [1, 2],
+            [1, 3],
+            [2],
+            [2, 2],
+            [2, 3],
+            [3],
+            [3, 3]]
+        
+        items = data
+        combinations = linque.combinations(items, max_size=2, repetitions=True, unique=True)
+        self.assertEqual(list(combinations), model)
+        
+        items = (d for d in data)
+        combinations = linque.combinations(items, max_size=2, repetitions=True, unique=True)
+        self.assertEqual(list(combinations), model)
+    
+    
     def test_concat(self):
         """Tests whether concat works correctly."""
         
@@ -416,6 +517,27 @@ class TestCase(unittest.TestCase):
         self.assertEqual(linque.multisort(items, key=lambda d: (d[0], d[1]), reverse=[False, True]), model)
     
     
+    def test_permutations(self):
+        """Tests whether permutations are generated correctly."""
+        
+        data = (1, 2, 3)
+        model = [
+            [1, 2, 3],
+            [2, 1, 3],
+            [3, 1, 2],
+            [1, 3, 2],
+            [2, 3, 1],
+            [3, 2, 1]]
+        
+        items = data
+        permutations = linque.permutations(items)
+        self.assertEqual(list(permutations), model)
+        
+        items = (d for d in data)
+        permutations = linque.permutations(items)
+        self.assertEqual(list(permutations), model)
+    
+    
     def test_rank(self):
         """Tests whether rank works correctly."""
         
@@ -606,6 +728,50 @@ class TestCase(unittest.TestCase):
         items1 = (d for d in data1)
         items2 = (d for d in data2)
         self.assertEqual(tuple(linque.union(items1, items2, lambda d: d[1])), ((0, 1), (0, 2), (0, 3)))
+    
+    
+    def test_variations(self):
+        """Tests whether variations are generated correctly."""
+        
+        data = (1, 2, 3)
+        model = [
+            [1],
+            [2],
+            [3]]
+        
+        items = data
+        variations = linque.variations(items, size=1)
+        self.assertEqual(list(variations), model)
+        
+        items = (d for d in data)
+        variations = linque.variations(items, size=1)
+        self.assertEqual(list(variations), model)
+        
+        data = (1, 2, 3)
+        model = [
+            [1, 2],
+            [1, 3],
+            [2, 3]]
+        
+        items = data
+        variations = linque.variations(items, size=2)
+        self.assertEqual(list(variations), model)
+        
+        items = (d for d in data)
+        variations = linque.variations(items, size=2)
+        self.assertEqual(list(variations), model)
+        
+        data = (1, 2, 3)
+        model = [
+            [1, 2, 3]]
+        
+        items = data
+        variations = linque.variations(items, size=3)
+        self.assertEqual(list(variations), model)
+        
+        items = (d for d in data)
+        variations = linque.variations(items, size=3)
+        self.assertEqual(list(variations), model)
 
 
 # run test case

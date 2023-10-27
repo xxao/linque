@@ -169,7 +169,8 @@ def bisect(sequence, value, key=None, side='left'):
 
 def chunk(sequence, size):
     """
-    Splits sequence into chunks of specified size.
+    Splits sequence into chunks of specified size. If not enough items in given
+    sequence, partial tuple is returned at the end.
     
     Args:
         sequence: iterable
@@ -185,6 +186,72 @@ def chunk(sequence, size):
     
     items = (d for d in sequence)
     return iter(lambda: tuple(islice(items, size)), ())
+
+
+def chunks(sequence, *sizes):
+    """
+    Splits sequence into chunks of specified sizes. If not enough items in given
+    sequence, partial or fully empty tuples are returned.
+    
+    Args:
+        sequence: iterable
+            Sequence of items to go through.
+        
+        sizes: (int,)
+            Maximum size of each chunk.
+    
+    Returns:
+        iter((any,),)
+            Iterator over items chunks.
+    """
+    
+    items = (d for d in sequence)
+    return iter(tuple(islice(items, i)) for i in sizes)
+
+
+def combinations(sequence, max_size, repetitions=True, unique=False, _idx=0):
+    """
+    Generates possible combinations.
+    
+    Args:
+        sequence: iterable
+            Elements from which to generate combinations.
+        
+        max_size: int
+            Maximum number of elements in one set.
+        
+        repetitions: bool
+            If set to True, repetitive use of individual elements is allowed.
+        
+        unique: bool
+            If set to True, unique combinations only will be generated even if
+            the same item is available more than once.
+    
+    Returns:
+        iter((any,),)
+            Iterator over possible combinations.
+    """
+    
+    if not isinstance(sequence, (list, tuple)):
+        sequence = list(sequence)
+    
+    if max_size > 0:
+        
+        used = set()
+        
+        for i in range(_idx, len(sequence)):
+            
+            if unique and sequence[i] in used:
+                continue
+            
+            used.add(sequence[i])
+            
+            yield [sequence[i]]
+            
+            idx = i if repetitions else i+1
+            for item in combinations(sequence, max_size-1, repetitions, unique, _idx=idx):
+                item.insert(0, sequence[i])
+                yield item
 
 
 def concat(*sequences):
@@ -499,6 +566,39 @@ def multisort(sequence, key=None, reverse=False, _n=0):
     return final
 
 
+def permutations(sequence, _n=None):
+    """
+    Generates all possible permutations.
+    
+    Args:
+        sequence: iterable
+            Elements from which to generate permutations.
+    
+    Returns:
+        iter((any,),)
+            Iterator over possible permutations.
+    """
+    
+    if not isinstance(sequence, (list, tuple)):
+        sequence = list(sequence)
+    
+    if _n is None:
+        _n = len(sequence)
+        sequence = list(sequence[:])
+    
+    if _n == 1:
+        yield sequence[:]
+    
+    else:
+        for i in range(_n):
+            for item in permutations(sequence, _n-1):
+                yield item
+            if _n % 2:
+                sequence[0], sequence[_n-1] = sequence[_n-1], sequence[0]
+            else:
+                sequence[i], sequence[_n-1] = sequence[_n-1], sequence[i]
+
+
 def rank(sequence, key=None, method='average', reverse=False):
     """
     Provides 1-based rank for each item of a sequence by using default
@@ -749,3 +849,33 @@ def union(sequence, items, key=None):
         if k not in keys:
             keys.add(k)
             yield item
+
+
+def variations(sequence, size):
+    """
+    Generates all possible variations.
+    
+    Args:
+        sequence: iterable
+            Elements from which to generate variations.
+        
+        size: int
+            Number of elements in one set.
+    
+    Returns:
+        iter((any,),)
+            Iterator over possible variations.
+    """
+    
+    if not isinstance(sequence, (list, tuple)):
+        sequence = list(sequence)
+    
+    if size > 0:
+        for item in sequence:
+            if (size-1) > 0:
+                sequence = sequence[1:]
+                for combined in variations(sequence, size-1):
+                    combined.insert(0, item)
+                    yield combined
+            else:
+                yield [item]

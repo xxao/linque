@@ -1,15 +1,16 @@
 #  Created byMartin.cz
 #  Copyright (c) Martin Strohalm. All rights reserved.
 
-version = (4, 0, 2)
+version = (5, 0, 0)
 
 # import utils
-from .iters import aggregate, bisect, chunk, concat, count
+from .iters import aggregate, bisect, chunk, chunks, concat, count
 from .iters import argmax, argmin, argsort, index, multisort, rank
 from .iters import first, last, single
 from .iters import skip, skip_while, take, take_while
 from .iters import distinct, exclude, group
 from .iters import intersect, union
+from .iters import combinations, permutations, variations
 
 # import main class
 from .linque import Linque

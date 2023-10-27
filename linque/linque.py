@@ -197,7 +197,8 @@ class Linque(object):
     
     def chunk(self, size):
         """
-        Splits current sequence into chunks of specified size.
+        Splits current sequence into chunks of specified size. If not enough
+        items in given sequence, partial tuple is returned at the end.
         
         Args:
             
@@ -210,6 +211,51 @@ class Linque(object):
         
         chunks = iters.chunk(self, size)
         result = (Linque(c, self._evaluate) for c in chunks)
+        
+        return Linque(result, self._evaluate)
+    
+    
+    def chunks(self, *sizes):
+        """
+        Splits current sequence into chunks of specified sizes. If not enough
+        items in given sequence, partial or empty tuples are returned.
+        
+        Args:
+            
+            sizes: (int,)
+                Maximum size of each chunk.
+            
+        Returns:
+            Linque
+        """
+        
+        chunks = iters.chunks(self, *sizes)
+        result = (Linque(c, self._evaluate) for c in chunks)
+        
+        return Linque(result, self._evaluate)
+    
+    
+    def combinations(self, max_size, repetitions=True, unique=False):
+        """
+        Generates possible combinations of items in current sequence.
+        
+        Args:
+            max_size: int
+            Maximum number of elements in one set.
+            
+            repetitions: bool
+                If set to True, repetitive use of individual elements is allowed.
+            
+            unique: bool
+                If set to True, unique combinations only will be generated even if
+                the same item is available more than once.
+            
+        Returns:
+            Linque
+        """
+        
+        combinations = iters.combinations(self, max_size, repetitions, unique)
+        result = (Linque(c, self._evaluate) for c in combinations)
         
         return Linque(result, self._evaluate)
     
@@ -573,6 +619,20 @@ class Linque(object):
         return min(self, key=key) if key is not None else min(self)
     
     
+    def permutations(self):
+        """
+        Generates all possible permutations of items in current sequence.
+        
+        Returns:
+            Linque
+        """
+        
+        permutations = iters.permutations(self)
+        result = (Linque(p, self._evaluate) for p in permutations)
+        
+        return Linque(result, self._evaluate)
+    
+    
     def rank(self, key=None, method='average', reverse=False):
         """
         Provides 1-based rank for each item of current sequence by using default
@@ -918,6 +978,24 @@ class Linque(object):
         """
         
         result = iters.union(self, items, key)
+        
+        return Linque(result, self._evaluate)
+    
+    
+    def variations(self, size):
+        """
+        Generates all possible variations of items in current sequence.
+        
+        Args:
+            size: int
+            Number of elements in one set.
+        
+        Returns:
+            Linque
+        """
+        
+        variations = iters.variations(self, size)
+        result = (Linque(v, self._evaluate) for v in variations)
         
         return Linque(result, self._evaluate)
     

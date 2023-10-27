@@ -121,6 +121,7 @@ or simply by using pip
 ### Partitioning Operations
 
 - [chunk](#chunksize): Produces new sequence by splitting into chunks of specified size.
+- [chunks](#chunkssizes): Produces new sequence by splitting into chunks of specified sizes.
 - [skip](#skipcount): Produces new sequence by bypassing specified number of items and returns the remaining items.
 - [skip_while](#skip_whilecondition): Produces new sequence by bypassing contiguous items from the start until specified condition fails.
 - [take](#takecount): Produces new sequence by selecting specified number of contiguous items.
@@ -157,6 +158,11 @@ or simply by using pip
 - [minimum](#minimumselector): Returns minimum value in a sequence by specified items data selector.
 - [sum](#sumselector): Returns summed value in a sequence by specified items data selector.
 
+### Combinatorial Operation
+
+- [combinations](#combinationsmax_size_repetitions_unique): Generates possible combinations of items in current sequence.
+- [permutations](#permutations): Generates all possible permutations of items in current sequence.
+- [variations](#variationssize): Generates all possible variations of items in current sequence.
 
 ## Examples
 
@@ -280,6 +286,29 @@ result = Linque(data).chunk(3).select(lambda d: d.to_tuple()).to_list()
 print(result)
 
 # [(0, 1, 2), (3, 4, 5), (6, 7, 8), (9,)]
+```
+
+### .chunks(\*sizes)
+Produces new sequence by splitting current sequence into chunks of specified sizes. This functionality is also available
+as a *linque.chunks(sequence, *sizes)* utility function.
+
+```python
+data = (0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
+result = Linque(data).chunks(5, 4, 3, 2).select(lambda d: d.to_tuple()).to_list()
+print(result)
+
+# [(0, 1, 2, 3, 4), (5, 6, 7, 8), (9,), ()]
+```
+
+### .combinations(max_size, repetitions, unique)
+Produces a new sequence of possible combinations of items in current sequence.
+
+```python
+data = (0, 1, 2)
+result = Linque(data).combinations(2).select(lambda d: d.to_tuple()).to_list()
+print(result)
+
+# [(0,), (0, 0), (0, 1), (0, 2), (1,), (1, 1), (1, 2), (2,), (2, 2)]
 ```
 
 ### .concat(items)
@@ -578,6 +607,17 @@ print(result)
 # (1, -100)
 ```
 
+### .permutations()
+Produces a new sequence of possible permutations of items in current sequence.
+
+```python
+data = (0, 1, 2)
+result = Linque(data).permutations().select(lambda d: d.to_tuple()).to_list()
+print(result)
+
+# [(0, 1, 2), (1, 0, 2), (2, 0, 1), (0, 2, 1), (1, 2, 0), (2, 1, 0)]
+```
+
 ### .rank(key, method, reverse)
 Provides 1-based rank for each item of current sequence by using default comparer or selected item's key. The ties are
 resolved according to selected method. This functionality is also available as
@@ -858,6 +898,17 @@ result = Linque(data1).union(data2, lambda d: d[1]).to_list()
 print(result)
 
 # [(0, 1), (0, 2), (0, 3)]
+```
+
+### .variations(size)
+Produces a new sequence of possible variations of items in current sequence.
+
+```python
+data = (0, 1, 2)
+result = Linque(data).variations(2).select(lambda d: d.to_tuple()).to_list()
+print(result)
+
+# [(0, 1), (0, 2), (1, 2)]
 ```
 
 ### .where(condition)

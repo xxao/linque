@@ -209,6 +209,111 @@ class TestCase(unittest.TestCase):
             linq.chunk(3).select(lambda d: d.to_tuple()).to_tuple(), ((0, 1, 2), (3, 4, 5), (6, 7, 8), (9,)))
     
     
+    def test_chunks(self):
+        """Tests whether chunks works correctly."""
+        
+        data = (0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
+        
+        linq = linque.Linque(data)
+        self.assertEqual(
+            linq.chunks(3, 2, 1).select(lambda d: d.to_tuple()).to_tuple(), ((0, 1, 2), (3, 4), (5,)))
+        
+        linq = linque.Linque(d for d in data)
+        self.assertEqual(
+            linq.chunks(3, 2, 1).select(lambda d: d.to_tuple()).to_tuple(), ((0, 1, 2), (3, 4), (5,)))
+        
+        linq = linque.Linque(data)
+        self.assertEqual(
+            linq.chunks(5, 4, 3, 2).select(lambda d: d.to_tuple()).to_tuple(), ((0, 1, 2, 3, 4), (5, 6, 7, 8), (9,), ()))
+        
+        linq = linque.Linque(d for d in data)
+        self.assertEqual(
+            linq.chunks(5, 4, 3, 2).select(lambda d: d.to_tuple()).to_tuple(), ((0, 1, 2, 3, 4), (5, 6, 7, 8), (9,), ()))
+    
+    
+    def test_combinations(self):
+        """Tests whether combinations are generated correctly."""
+        
+        # standard combinations without repetitions
+        data = (1, 2, 3)
+        model = [
+            [1],
+            [1, 2],
+            [1, 3],
+            [2],
+            [2, 3],
+            [3]]
+        
+        linq = linque.Linque(data)
+        self.assertEqual(
+            linq.combinations(max_size=2, repetitions=False, unique=False).select(lambda d: d.to_list()).to_list(), model)
+        
+        linq = linque.Linque(d for d in data)
+        self.assertEqual(
+            linq.combinations(max_size=2, repetitions=False, unique=False).select(lambda d: d.to_list()).to_list(), model)
+        
+        # standard combinations with repetitions
+        data = (1, 2, 3)
+        model = [
+            [1],
+            [1, 1],
+            [1, 2],
+            [1, 3],
+            [2],
+            [2, 2],
+            [2, 3],
+            [3],
+            [3, 3]]
+        
+        linq = linque.Linque(data)
+        self.assertEqual(
+            linq.combinations(max_size=2, repetitions=True, unique=False).select(lambda d: d.to_list()).to_list(), model)
+        
+        linq = linque.Linque(d for d in data)
+        self.assertEqual(
+            linq.combinations(max_size=2, repetitions=True, unique=False).select(lambda d: d.to_list()).to_list(), model)
+        
+        # unique combinations without repetitions
+        data = (1, 1, 2, 3)
+        model = [
+            [1],
+            [1, 1],
+            [1, 2],
+            [1, 3],
+            [2],
+            [2, 3],
+            [3]]
+        
+        linq = linque.Linque(data)
+        self.assertEqual(
+            linq.combinations(max_size=2, repetitions=False, unique=True).select(lambda d: d.to_list()).to_list(), model)
+        
+        linq = linque.Linque(d for d in data)
+        self.assertEqual(
+            linq.combinations(max_size=2, repetitions=False, unique=True).select(lambda d: d.to_list()).to_list(), model)
+        
+        # unique combinations with repetitions
+        data = (1, 1, 2, 3)
+        model = [
+            [1],
+            [1, 1],
+            [1, 2],
+            [1, 3],
+            [2],
+            [2, 2],
+            [2, 3],
+            [3],
+            [3, 3]]
+        
+        linq = linque.Linque(data)
+        self.assertEqual(
+            linq.combinations(max_size=2, repetitions=True, unique=True).select(lambda d: d.to_list()).to_list(), model)
+        
+        linq = linque.Linque(d for d in data)
+        self.assertEqual(
+            linq.combinations(max_size=2, repetitions=True, unique=True).select(lambda d: d.to_list()).to_list(), model)
+    
+    
     def test_count(self):
         """Tests whether count works correctly."""
         
@@ -549,6 +654,27 @@ class TestCase(unittest.TestCase):
         
         linq = linque.Linque(d for d in data)
         self.assertEqual(linq.minimum(lambda d: d[1]), -40)
+    
+    
+    def test_permutations(self):
+        """Tests whether permutations are generated correctly."""
+        
+        data = (1, 2, 3)
+        model = [
+            [1, 2, 3],
+            [2, 1, 3],
+            [3, 1, 2],
+            [1, 3, 2],
+            [2, 3, 1],
+            [3, 2, 1]]
+        
+        linq = linque.Linque(data)
+        self.assertEqual(
+            linq.permutations().select(lambda d: d.to_list()).to_list(), model)
+        
+        linq = linque.Linque(d for d in data)
+        self.assertEqual(
+            linq.permutations().select(lambda d: d.to_list()).to_list(), model)
     
     
     def test_rank(self):
@@ -930,6 +1056,50 @@ class TestCase(unittest.TestCase):
         linq = linque.Linque(d for d in data1)
         items2 = (d for d in data2)
         self.assertEqual(linq.union(items2, lambda d: d[1]).to_tuple(), ((0, 1), (0, 2), (0, 3)))
+    
+    
+    def test_variations(self):
+        """Tests whether variations are generated correctly."""
+        
+        data = (1, 2, 3)
+        model = [
+            [1],
+            [2],
+            [3]]
+        
+        linq = linque.Linque(data)
+        self.assertEqual(
+            linq.variations(1).select(lambda d: d.to_list()).to_list(), model)
+        
+        linq = linque.Linque(d for d in data)
+        self.assertEqual(
+            linq.variations(1).select(lambda d: d.to_list()).to_list(), model)
+        
+        data = (1, 2, 3)
+        model = [
+            [1, 2],
+            [1, 3],
+            [2, 3]]
+        
+        linq = linque.Linque(data)
+        self.assertEqual(
+            linq.variations(2).select(lambda d: d.to_list()).to_list(), model)
+        
+        linq = linque.Linque(d for d in data)
+        self.assertEqual(
+            linq.variations(2).select(lambda d: d.to_list()).to_list(), model)
+        
+        data = (1, 2, 3)
+        model = [
+            [1, 2, 3]]
+        
+        linq = linque.Linque(data)
+        self.assertEqual(
+            linq.variations(3).select(lambda d: d.to_list()).to_list(), model)
+        
+        linq = linque.Linque(d for d in data)
+        self.assertEqual(
+            linq.variations(3).select(lambda d: d.to_list()).to_list(), model)
     
     
     def test_where(self):
