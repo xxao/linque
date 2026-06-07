@@ -247,8 +247,8 @@ class Linque(object):
                 If set to True, repetitive use of individual elements is allowed.
             
             unique: bool
-                If set to True, unique combinations only will be generated even if
-                the same item is available more than once.
+                If set to True, unique combinations only will be generated even
+                if the same item is available more than once.
             
         Returns:
             Linque
@@ -379,7 +379,7 @@ class Linque(object):
             Linque
         """
         
-        if not isinstance(self._source, (list, tuple)):
+        if not isinstance(self._source, (list, tuple, set)):
             self._source = list(self)
         
         return self
